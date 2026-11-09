@@ -4,7 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TUMUGOU | 旅を紡ぐ</title>
-<style>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoT1qD6z1fI4="
+  crossorigin=""
+>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""
+></script><style>
 :root{--bg:#f8f5ee;--sand:#e9dfcc;--brown:#493c30;--green:#59634a}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--brown);font-family:-apple-system,BlinkMacSystemFont,sans-serif}
@@ -141,7 +151,7 @@ if(page==="home"){
 app.innerHTML=`
 <small>EXPLORE JOURNEYS</small>
 <h2>次の旅のヒントを探そう。</h2>
-<p>誰かの旅が、次の誰かの旅になる。</p>
+<p>あなたの旅が、次の誰かの旅になる。</p>
 <div class="notice">以下は機能確認用のサンプル旅程です。実際の旅行記録ではありません。</div>
 ${samples.map(card).join("")}`;
 }
