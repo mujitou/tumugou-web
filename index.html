@@ -248,7 +248,102 @@ app.innerHTML=`
 }
 
 function results(){
-const r=all().filter(t=>
+const spotCoords = {
+  "清水寺":[34.9949,135.7850],
+  "祇園で昼食":[35.0030,135.7780],
+  "鴨川散歩":[35.0100,135.7710],
+  "嵐山":[35.0094,135.6668],
+  "竹林の小径":[35.0170,135.6710],
+  "京都駅":[34.9858,135.7588],
+  "迪化街":[25.0545,121.5090],
+  "寧夏夜市":[25.0567,121.5153],
+  "龍山寺":[25.0372,121.4999],
+  "中正紀念堂":[25.0345,121.5219],
+  "カフェ巡り":[25.0430,121.5250],
+  "空港へ移動":[25.0797,121.2342],
+  "札幌時計台":[43.0626,141.3535],
+  "大通公園":[43.0600,141.3500],
+  "小樽運河":[43.1990,141.0010],
+  "堺町通り":[43.1920,141.0060]
+};
+
+let tripMap = null;
+
+function drawMap(trip) {
+  const el = document.getElementById("trip-map");
+  if (!el || typeof L === "undefined") return;
+
+  if (tripMap) {
+    tripMap.remove();
+    tripMap = null;
+  }
+
+  tripMap = L.map(el);
+  L.tileLayer(
+    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }
+  ).addTo(tripMap);
+
+  const colors = [
+    "#59634a",
+    "#a66b4b",
+    "#607f9a",
+    "#b38b45"
+  ];
+
+  const bounds = [];
+
+  trip.schedule.forEach((day, dayIndex) => {
+    const color = colors[dayIndex % colors.length];
+    const points = [];
+
+    day.stops.forEach((stop, stopIndex) => {
+      const coord = spotCoords[stop.name];
+      if (!coord) return;
+
+      points.push(coord);
+      bounds.push(coord);
+
+      L.circleMarker(coord, {
+        radius: 11,
+        color: "#ffffff",
+        weight: 2,
+        fillColor: color,
+        fillOpacity: 1
+      })
+      .addTo(tripMap)
+      .bindPopup(
+        day.name + " / " +
+        (stopIndex + 1) + ". " +
+        stop.name
+      );
+    });
+
+    if (points.length > 1) {
+      L.polyline(points, {
+        color: color,
+        weight: 4,
+        opacity: 0.85
+      }).addTo(tripMap);
+    }
+  });
+
+  if (bounds.length) {
+    tripMap.fitBounds(bounds, {
+      padding: [30, 30],
+      maxZoom: 13
+    });
+  } else {
+    tripMap.setView([35.6812, 139.7671], 5);
+    el.insertAdjacentHTML(
+      "afterend",
+      '<p class="muted">この旅程には地図上の位置情報がまだ登録されていません。</p>'
+    );
+  }
+}const r=all().filter(t=>
 (t.place+t.title).toLowerCase().includes(query.toLowerCase())&&
 (!duration||t.days===Number(duration))
 );
