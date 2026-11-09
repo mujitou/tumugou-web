@@ -122,6 +122,12 @@ function go(p,id=""){
 page=p;selected=id;
 window.scrollTo(0,0);
 render();
+
+if (p === "detail") {
+  const trip = find(id);
+  if (trip) {
+    setTimeout(() => drawMap(trip), 0);
+  }
 }
 function card(t){
 return `<article class="card">
