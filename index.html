@@ -1,46 +1,333 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TUMUGOU | 旅を紡ぐ</title>
-  <style>
-    body {
-      margin: 0;
-      background: #F8F5EE;
-      color: #443B32;
-      font-family: sans-serif;
-      text-align: center;
-    }
-    header {
-      background: #59634A;
-      color: white;
-      padding: 30px 15px;
-    }
-    h1 { letter-spacing: 4px; }
-    main { padding: 50px 20px; }
-    button {
-      background: #59634A;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TUMUGOU | 旅を紡ぐ</title>
+<style>
+:root{--bg:#f8f5ee;--sand:#e9dfcc;--brown:#493c30;--green:#59634a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--brown);font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+header{background:var(--green);color:white;text-align:center;padding:24px 12px}
+header h1{font-family:Georgia,serif;letter-spacing:5px;margin:0}
+header p{font-size:12px;margin:8px 0 0}
+main{max-width:750px;margin:auto;padding:22px 16px 100px}
+h2{font-size:25px}
+h3{font-size:18px}
+p{line-height:1.6}
+small,.muted{color:#817768}
+.card,.box{background:white;border-radius:16px;padding:18px;margin:15px 0;border:1px solid #e8dfd1}
+.cover{background:linear-gradient(120deg,#a6b4a0,#e5cba9);border-radius:12px;text-align:center;padding:30px;font-size:55px}
+.tag{display:inline-block;background:#edf0e7;color:var(--green);padding:6px 10px;border-radius:20px;margin:8px 5px 0 0;font-size:12px}
+button{cursor:pointer;touch-action:manipulation}
+.btn{background:var(--green);color:white;border:0;border-radius:9px;padding:12px 15px;margin:5px 5px 5px 0;font-size:14px}
+.secondary{background:var(--sand);color:var(--brown)}
+input,textarea,select{width:100%;padding:12px;border:1px solid #d5c9b8;border-radius:9px;font:inherit;margin:7px 0 15px;background:white}
+textarea{min-height:100px}
+label{font-weight:bold;font-size:13px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:white;border-top:1px solid #ddd;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:white;border:0;padding:13px 2px;font-size:11px;color:var(--brown)}
+nav button.active{background:#edf0e7;color:var(--green);font-weight:bold}
+.day{border-left:5px solid var(--green)}
+.stop{padding:10px 0;border-bottom:1px solid #eee}
+.route{background:#eee9da;padding:15px;border-radius:12px;line-height:2}
+.notice{background:#eee9da;padding:12px;border-radius:10px;font-size:13px}
+</style>
 </head>
 <body>
-  <header>
-    <h1>TUMUGOU</h1>
-    <p>誰かの旅が、次の誰かの旅になる。</p>
-  </header>
+<header>
+<h1>TUMUGOU</h1>
+<p>誰かの旅が、次の誰かの旅になる。</p>
+</header>
+<main id="app"></main>
+<nav id="nav"></nav>
 
-  <main>
-    <h2>旅を紡ぎ、人生を豊かに。</h2>
-    <p>あなたの次の旅を、ここから。</p>
-    <button onclick="alert('TUMUGOUへようこそ！')">
-      旅を探す
-    </button>
-  </main>
+<script>
+const KEY="tumugou_v02";
+const samples=[
+{
+id:"kyoto",title:"京都、街歩きと喫茶の2日間",
+place:"京都",days:2,icon:"🍵",
+description:"寺社と喫茶をゆっくり巡る旅。",
+schedule:[
+{name:"Day 1",stops:[
+{time:"09:30",name:"清水寺"},
+{time:"12:00",name:"祇園で昼食"},
+{time:"15:00",name:"鴨川散歩"}]},
+{name:"Day 2",stops:[
+{time:"10:00",name:"嵐山"},
+{time:"13:00",name:"竹林の小径"},
+{time:"16:00",name:"京都駅"}]}
+]},
+{
+id:"taipei",title:"台北の街と夜市を楽しむ3日間",
+place:"台北",days:3,icon:"🏮",
+description:"ローカルグルメと街歩き。",
+schedule:[
+{name:"Day 1",stops:[
+{time:"11:00",name:"迪化街"},
+{time:"18:00",name:"寧夏夜市"}]},
+{name:"Day 2",stops:[
+{time:"09:00",name:"龍山寺"},
+{time:"14:00",name:"中正紀念堂"}]},
+{name:"Day 3",stops:[
+{time:"10:00",name:"カフェ巡り"},
+{time:"15:00",name:"空港へ移動"}]}
+]},
+{
+id:"hokkaido",title:"札幌・小樽を巡る2日間",
+place:"北海道",days:2,icon:"🌲",
+description:"海辺の街と北海道グルメ。",
+schedule:[
+{name:"Day 1",stops:[
+{time:"10:00",name:"札幌時計台"},
+{time:"13:00",name:"大通公園"}]},
+{name:"Day 2",stops:[
+{time:"10:00",name:"小樽運河"},
+{time:"14:00",name:"堺町通り"}]}
+]}
+];
+
+let state;
+try{
+state=JSON.parse(localStorage.getItem(KEY))||{saved:[],plans:[]};
+}catch(e){state={saved:[],plans:[]}}
+let page="home",selected="",query="",duration="",editId="";
+const app=document.getElementById("app");
+const nav=document.getElementById("nav");
+
+function esc(s){
+return String(s??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",
+'"':"&quot;","'":"&#39;"
+}[c]));
+}
+function persist(){
+try{localStorage.setItem(KEY,JSON.stringify(state))}
+catch(e){alert("保存できませんでした")}
+}
+function all(){return [...samples,...state.plans]}
+function find(id){return all().find(t=>t.id===id)}
+function go(p,id=""){
+page=p;selected=id;
+window.scrollTo(0,0);
+render();
+}
+function card(t){
+return `<article class="card">
+<div class="cover">${esc(t.icon||"🧳")}</div>
+<span class="tag">${esc(t.place)}</span>
+<span class="tag">${t.days}日間</span>
+<h3>${esc(t.title)}</h3>
+<p class="muted">${esc(t.description)}</p>
+<button class="btn" onclick="go('detail','${t.id}')">旅程を見る →</button>
+</article>`;
+}
+function menu(){
+const items=[
+["home","HOME","⌂"],
+["search","SEARCH","⌕"],
+["my","MY TRIP","♡"],
+["post","POST","＋"]
+];
+nav.innerHTML=items.map(([id,name,icon])=>
+`<button class="${page===id?'active':''}" onclick="go('${id}')">${icon}<br>${name}</button>`
+).join("");
+}
+function render(){
+menu();
+
+if(page==="home"){
+app.innerHTML=`
+<small>EXPLORE JOURNEYS</small>
+<h2>次の旅のヒントを探そう。</h2>
+<p>誰かの旅が、次の誰かの旅になる。</p>
+<div class="notice">以下は機能確認用のサンプル旅程です。実際の旅行記録ではありません。</div>
+${samples.map(card).join("")}`;
+}
+
+else if(page==="search"){
+app.innerHTML=`
+<h2>旅程を探す</h2>
+<label>目的地・キーワード
+<input id="query" value="${esc(query)}" placeholder="例：京都" oninput="query=this.value;results()">
+</label>
+<label>旅行日数
+<select onchange="duration=this.value;results()">
+<option value="">すべて</option>
+${[1,2,3,4,5,6,7].map(n=>
+`<option value="${n}" ${duration==n?'selected':''}>${n}日間</option>`
+).join("")}
+</select>
+</label>
+<div id="results"></div>`;
+results();
+}
+
+else if(page==="detail"){
+const t=find(selected);
+if(!t){go("home");return}
+const own=state.plans.some(p=>p.id===t.id);
+app.innerHTML=`
+<button class="btn secondary" onclick="go('home')">← HOME</button>
+<div class="cover">${esc(t.icon||"🧳")}</div>
+<h2>${esc(t.title)}</h2>
+<span class="tag">${esc(t.place)}</span>
+<span class="tag">${t.days}日間</span>
+<p>${esc(t.description)}</p>
+<button class="btn secondary" onclick="bookmark('${t.id}')">
+${state.saved.includes(t.id)?"♥ 保存済み":"♡ 保存する"}
+</button>
+<button class="btn" onclick="copyTrip('${t.id}')">この旅程をコピー</button>
+${own?`<button class="btn secondary" onclick="editTrip('${t.id}')">編集する</button>`:""}
+<h3>全体ルート</h3>
+<div class="route">
+${t.schedule.map(d=>
+`<b>${esc(d.name)}</b><br>${d.stops.map(s=>esc(s.name)).join(" → ")}`
+).join("<br>")}
+</div>
+<h3>DAY別スケジュール</h3>
+${t.schedule.map(d=>`
+<div class="box day">
+<h3>${esc(d.name)}</h3>
+${d.stops.map(s=>`
+<div class="stop"><b>${esc(s.time)}</b>　${esc(s.name)}</div>
+`).join("")}
+</div>`).join("")}
+<p class="muted">※本格的な地図・写真・移動時間は今後追加予定です。</p>`;
+}
+
+else if(page==="my"){
+const saved=state.saved.map(find).filter(Boolean);
+app.innerHTML=`
+<h2>MY TRIP</h2>
+<h3>PLANNING｜自分の旅程</h3>
+${state.plans.length?state.plans.map(card).join(""):"<p>まだ旅程がありません。</p>"}
+<h3>SAVED｜保存した旅程</h3>
+${saved.length?saved.map(card).join(""):"<p>まだ保存した旅程がありません。</p>"}`;
+}
+
+else if(page==="post"||page==="edit"){
+const t=page==="edit"?find(editId):null;
+const stops=t?t.schedule.map(d=>
+d.name+"\n"+d.stops.map(s=>s.time+","+s.name).join("\n")
+).join("\n"):"Day 1\n09:00,最初のスポット\n12:00,ランチ\nDay 2\n10:00,次のスポット";
+
+app.innerHTML=`
+<h2>${t?"旅程を編集":"新しい旅程を作成"}</h2>
+<form class="box" onsubmit="submitTrip(event)">
+<label>旅程タイトル
+<input name="title" required maxlength="100" value="${esc(t?.title||"")}" placeholder="京都の週末旅行">
+</label>
+<label>目的地
+<input name="place" required maxlength="60" value="${esc(t?.place||"")}" placeholder="京都">
+</label>
+<label>旅行日数
+<input name="days" type="number" min="1" max="14" required value="${t?.days||2}">
+</label>
+<label>旅の説明
+<textarea name="description">${esc(t?.description||"")}</textarea>
+</label>
+<label>訪問スポット</label>
+<p class="muted">Day 1のように区切り、各行に「時間,スポット名」を入力してください。</p>
+<textarea name="stops" style="min-height:230px" required>${esc(stops)}</textarea>
+<button class="btn" type="submit">${t?"変更を保存":"旅程を作成"}</button>
+</form>
+<div class="notice">作成した旅程は、このブラウザ内だけに保存されます。他のユーザーには公開されません。</div>`;
+}
+}
+
+function results(){
+const r=all().filter(t=>
+(t.place+t.title).toLowerCase().includes(query.toLowerCase())&&
+(!duration||t.days===Number(duration))
+);
+document.getElementById("results").innerHTML=
+r.length?r.map(card).join(""):"<p>該当する旅程がありません。</p>";
+}
+function bookmark(id){
+state.saved=state.saved.includes(id)?
+state.saved.filter(x=>x!==id):[...state.saved,id];
+persist();render();
+}
+function copyTrip(id){
+const t=find(id);
+if(!t)return;
+const c=JSON.parse(JSON.stringify(t));
+c.id="plan-"+Date.now()+"-"+Math.random().toString(36).slice(2,7);
+c.title=t.title+"（コピー）";
+state.plans.unshift(c);
+persist();
+editTrip(c.id);
+}
+function editTrip(id){
+editId=id;
+go("edit");
+}
+function submitTrip(e){
+e.preventDefault();
+const f=new FormData(e.target);
+const days=Number(f.get("days"));
+const schedule=[];
+let current=null;
+
+for(const line of String(f.get("stops")).split("\n")){
+const s=line.trim();
+if(!s)continue;
+
+if(/^Day\s*\d+$/i.test(s)){
+current={name:s,stops:[]};
+schedule.push(current);
+}else{
+if(!current){
+current={name:"Day 1",stops:[]};
+schedule.push(current);
+}
+let at=s.indexOf(",");
+if(at<0)at=s.indexOf("、");
+const time=at>=0?s.slice(0,at).trim():"--:--";
+const name=at>=0?s.slice(at+1).trim():s;
+if(name)current.stops.push({time,name});
+}
+}
+
+if(!schedule.length){
+alert("スポットを入力してください");
+return;
+}
+if(schedule.length>days){
+alert("Dayの数が旅行日数を超えています");
+return;
+}
+
+const id=page==="edit"?editId:"plan-"+Date.now();
+const old=find(id);
+const t={
+id,
+title:String(f.get("title")).trim(),
+place:String(f.get("place")).trim(),
+days,
+icon:old?.icon||"🧳",
+description:String(f.get("description")).trim(),
+schedule
+};
+
+if(!t.title||!t.place){
+alert("タイトルと目的地を入力してください");
+return;
+}
+
+if(page==="edit"){
+const i=state.plans.findIndex(x=>x.id===id);
+if(i<0){alert("編集対象が見つかりません");return}
+state.plans[i]=t;
+}else{
+state.plans.unshift(t);
+}
+persist();
+go("detail",id);
+}
+render();
+</script>
 </body>
 </html>
