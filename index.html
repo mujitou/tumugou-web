@@ -191,7 +191,7 @@ ${state.saved.includes(t.id)?"♥ 保存済み":"♡ 保存する"}
 <button class="btn" onclick="copyTrip('${t.id}')">この旅程をコピー</button>
 ${own?`<button class="btn secondary" onclick="editTrip('${t.id}')">編集する</button>`:""}
 <h3>全体ルート</h3>
-<div class="route">
+<div id="trip-map" style="height:350px;width:100%;border-radius:12px;margin:15px 0"></div>　<div class="route">
 ${t.schedule.map(d=>
 `<b>${esc(d.name)}</b><br>${d.stops.map(s=>esc(s.name)).join(" → ")}`
 ).join("<br>")}
