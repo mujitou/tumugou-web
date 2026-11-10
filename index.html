@@ -3,229 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TUMUGOU | 旅を紡ぐ</title>
-
+<title>TUMUGOU ver.0.8</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <style>
-:root{
-  --bg:#f8f5ee;
-  --sand:#e9dfcc;
-  --brown:#493c30;
-  --green:#59634a;
-}
+:root{--bg:#f8f5ee;--sand:#e9dfcc;--brown:#493c30;--green:#59634a}
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--brown);
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-}
-header{
-  background:var(--green);
-  color:white;
-  text-align:center;
-  padding:24px 12px;
-}
-header h1{
-  font:bold 36px Georgia,serif;
-  letter-spacing:5px;
-  margin:0;
-}
+body{margin:0;background:var(--bg);color:var(--brown);font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+header{background:var(--green);color:white;text-align:center;padding:22px 12px}
+header h1{font:bold 35px Georgia,serif;letter-spacing:5px;margin:0}
 header p{font-size:12px;margin:8px 0 0}
-main{max-width:760px;margin:auto;padding:20px 15px 110px}
-h2{font-size:24px}
-h3{font-size:18px}
-p{line-height:1.6}
-.muted{color:#817768;font-size:13px}
-.card,.box{
-  background:white;
-  border:1px solid #e8dfd1;
-  border-radius:15px;
-  padding:16px;
-  margin:14px 0;
-}
-.cover{
-  background:linear-gradient(120deg,#a6b4a0,#e5cba9);
-  text-align:center;
-  border-radius:12px;
-  padding:25px;
-  font-size:45px;
-}
-.tag{
-  display:inline-block;
-  background:#edf0e7;
-  color:var(--green);
-  padding:5px 9px;
-  border-radius:15px;
-  font-size:12px;
-  margin:7px 5px 0 0;
-}
+main{max-width:760px;margin:auto;padding:18px 14px 110px}
+h2{font-size:23px}h3{font-size:18px}p{line-height:1.6}
+.muted,.hint{color:#817768;font-size:13px}
+.card,.box{background:white;border:1px solid #e8dfd1;border-radius:15px;padding:15px;margin:14px 0}
+.cover{background:linear-gradient(120deg,#a6b4a0,#e5cba9);text-align:center;border-radius:12px;padding:23px;font-size:40px}
+.tag{display:inline-block;background:#edf0e7;color:var(--green);padding:5px 9px;border-radius:15px;font-size:12px;margin:7px 5px 0 0}
 button{cursor:pointer;touch-action:manipulation}
-.btn{
-  background:var(--green);
-  color:white;
-  border:0;
-  border-radius:9px;
-  padding:11px 13px;
-  margin:5px 5px 5px 0;
-  font-size:14px;
-}
+.btn{background:var(--green);color:white;border:0;border-radius:9px;padding:10px 12px;margin:5px 5px 5px 0;font-size:14px}
 .secondary{background:var(--sand);color:var(--brown)}
 .danger{background:#f3e4e0;color:#8d4238}
-button:disabled{opacity:.5}
-input,textarea,select{
-  width:100%;
-  padding:11px;
-  border:1px solid #d5c9b8;
-  border-radius:8px;
-  font:inherit;
-  background:white;
-  margin:6px 0 12px;
-}
+button:disabled{opacity:.45}
+input,textarea,select{width:100%;padding:10px;border:1px solid #d5c9b8;border-radius:8px;font:inherit;background:white;margin:6px 0 12px}
 label{display:block;font-size:13px;font-weight:600}
 textarea{min-height:70px}
-nav{
-  position:fixed;
-  z-index:1000;
-  bottom:0;
-  left:0;
-  right:0;
-  display:flex;
-  background:white;
-  border-top:1px solid #ddd;
-  padding-bottom:env(safe-area-inset-bottom);
-}
-nav button{
-  flex:1;
-  border:0;
-  background:white;
-  padding:12px 0;
-  font-size:11px;
-  color:var(--brown);
-}
+nav{position:fixed;z-index:1000;bottom:0;left:0;right:0;display:flex;background:white;border-top:1px solid #ddd;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:white;padding:12px 0;font-size:11px;color:var(--brown)}
 nav button.active{background:#edf0e7;font-weight:bold}
-.notice{
-  background:#eee9da;
-  border-radius:10px;
-  padding:12px;
-  font-size:13px;
-  line-height:1.6;
-}
-.map{height:360px;border-radius:12px;margin:15px 0;z-index:0}
+.notice{background:#eee9da;border-radius:10px;padding:12px;font-size:13px;line-height:1.6;margin:10px 0}
+.map{height:350px;border-radius:12px;margin:15px 0;z-index:0}
 .day{border-left:5px solid var(--green)}
-.stop{border-bottom:1px solid #eee;padding:9px 0}
+.spot{background:#f8f5ee;border-radius:12px;padding:12px;margin:10px 0}
 .row{display:flex;gap:9px;align-items:flex-start}
-.row .time{width:110px;flex-shrink:0}
+.row .time{width:115px;flex-shrink:0}
 .row .place{flex:1;min-width:0}
-.spot{
-  background:#f8f5ee;
-  border-radius:12px;
-  padding:12px;
-  margin:10px 0;
-}
-.spot-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-}
-.spot-head .btn{padding:8px 11px}
-.status{font-size:12px;margin:5px 0;color:#956239}
+.actions{display:flex;flex-wrap:wrap;gap:5px}
+.status{font-size:12px;margin:6px 0;color:#956239}
 .ok{color:#466846}
-.results{max-height:280px;overflow:auto}
-.result{
-  padding:11px;
-  border:1px solid #ddd;
-  border-radius:8px;
-  margin:7px 0;
-  background:white;
-}
-.result p{font-size:12px;margin:5px 0;overflow-wrap:anywhere}
+.results{max-height:260px;overflow:auto}
+.result{padding:10px;border:1px solid #ddd;border-radius:8px;margin:7px 0;background:white}
+.result p{font-size:12px;overflow-wrap:anywhere}
 .legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px}
-.dot{
-  display:inline-block;
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  margin-right:5px;
-}
-.number{
-  display:inline-flex;
-  background:var(--green);
-  color:white;
-  border-radius:50%;
-  width:24px;
-  height:24px;
-  align-items:center;
-  justify-content:center;
-  margin-right:6px;
-  font-size:12px;
-}
-.travel-info{
-  margin:10px 0 10px 12px;
-  padding:9px 12px;
-  background:#f1eee6;
-  border-left:3px solid #b8a990;
-  border-radius:6px;
-  font-size:13px;
-}
-.transport-box{
-  border-top:1px dashed #c8bda9;
-  margin-top:12px;
-  padding-top:12px;
-}
-.transport-row{display:flex;gap:10px}
-.transport-row label{flex:1;min-width:0}
-.hint{font-size:12px;color:#756d61}
-.plan-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:-7px;margin-bottom:20px}
-.plan-actions .btn{margin:0}
-.map-pin{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:29px;
-  height:29px;
-  border:2px solid white;
-  border-radius:50%;
-  color:white;
-  font-weight:bold;
-  font-size:13px;
-  box-shadow:0 2px 5px #0005;
-}
-.route-arrow{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:24px;
-  height:24px;
-  background:white;
-  border:1px solid #ddd;
-  border-radius:50%;
-  font-size:20px;
-  font-weight:bold;
-}
-.time-check{
-  padding:11px;
-  border-radius:9px;
-  margin:9px 0;
-  font-size:13px;
-  line-height:1.6;
-}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.number{display:inline-flex;color:white;border-radius:50%;width:24px;height:24px;align-items:center;justify-content:center;margin-right:6px;font-size:12px}
+.travel-info{margin:10px 0 10px 12px;padding:9px 12px;background:#f1eee6;border-left:3px solid #b8a990;border-radius:6px;font-size:13px}
+.time-check{padding:10px;border-radius:8px;margin:8px 0;font-size:13px}
 .time-ok{background:#eaf1e7;color:#3d633d}
 .time-warn{background:#fff0e7;color:#975333}
 .time-unknown{background:#f1eee6;color:#756d61}
+.map-pin{display:flex;justify-content:center;align-items:center;width:29px;height:29px;border:2px solid white;border-radius:50%;color:white;font-weight:bold;font-size:13px;box-shadow:0 2px 5px #0005}
+.route-arrow{display:flex;align-items:center;justify-content:center;width:24px;height:24px;background:white;border:1px solid #ddd;border-radius:50%;font-size:20px}
+.stop{border-bottom:1px solid #eee;padding:9px 0}
+.tabs{display:flex;gap:5px;overflow:auto}
+.tabs button{white-space:nowrap}
+.tabs .selected{background:var(--green);color:white}
 </style>
 </head>
-
 <body>
-
 <header>
 <h1>TUMUGOU</h1>
 <p>あなたの旅が、次の誰かの旅になる。</p>
 </header>
-
 <main id="app"></main>
 <nav id="nav"></nav>
 
@@ -233,14 +71,7 @@ nav button.active{background:#edf0e7;font-weight:bold}
 'use strict';
 
 const KEY='tumugou_v02';
-
-const COLORS=[
-  '#59634a',
-  '#a66b4b',
-  '#607f9a',
-  '#b38b45',
-  '#9872a0'
-];
+const COLORS=['#59634a','#a66b4b','#607f9a','#b38b45','#9872a0'];
 
 const MODES={
   '':'未設定',
@@ -254,15 +85,14 @@ const MODES={
   other:'🚩 その他'
 };
 
-const aliases={
+const ALIASES={
   'コロッセオ':'Colosseo, Roma, Italia',
   'トレビの泉':'Fontana di Trevi, Roma, Italia',
   'スペイン広場':'Piazza di Spagna, Roma, Italia',
-  'パンテオン':'Pantheon, Roma, Italia',
-  'ナヴォーナ広場':'Piazza Navona, Roma, Italia'
+  'パンテオン':'Pantheon, Roma, Italia'
 };
 
-const known={
+const KNOWN={
   '清水寺':[34.9949,135.785],
   '祇園で昼食':[35.003,135.778],
   '鴨川散歩':[35.01,135.771],
@@ -273,15 +103,13 @@ const known={
   '寧夏夜市':[25.0567,121.5153],
   '龍山寺':[25.0372,121.4999],
   '中正紀念堂':[25.0345,121.5219],
-  'カフェ巡り':[25.043,121.525],
-  '空港へ移動':[25.0797,121.2342],
   '札幌時計台':[43.0626,141.3535],
   '大通公園':[43.06,141.35],
   '小樽運河':[43.199,141.001],
   '堺町通り':[43.192,141.006]
 };
 
-const samples=[
+const SAMPLES=[
   {
     id:'kyoto',
     title:'京都、街歩きと喫茶の2日間',
@@ -290,53 +118,34 @@ const samples=[
     icon:'🍵',
     description:'寺社と喫茶をゆっくり巡る旅。',
     schedule:[
-      {
-        name:'Day 1',
-        stops:[
-          {time:'09:30',name:'清水寺'},
-          {time:'12:00',name:'祇園で昼食',transport:'walk',travelMinutes:25},
-          {time:'15:00',name:'鴨川散歩',transport:'walk',travelMinutes:15}
-        ]
-      },
-      {
-        name:'Day 2',
-        stops:[
-          {time:'10:00',name:'嵐山'},
-          {time:'13:00',name:'竹林の小径',transport:'walk',travelMinutes:15},
-          {time:'16:00',name:'京都駅',transport:'train',travelMinutes:35}
-        ]
-      }
+      {name:'Day 1',stops:[
+        {time:'09:30',name:'清水寺'},
+        {time:'12:00',name:'祇園で昼食',transport:'walk',travelMinutes:25},
+        {time:'15:00',name:'鴨川散歩',transport:'walk',travelMinutes:15}
+      ]},
+      {name:'Day 2',stops:[
+        {time:'10:00',name:'嵐山'},
+        {time:'13:00',name:'竹林の小径',transport:'walk',travelMinutes:15},
+        {time:'16:00',name:'京都駅',transport:'train',travelMinutes:35}
+      ]}
     ]
   },
   {
     id:'taipei',
-    title:'台北の街と夜市を楽しむ3日間',
+    title:'台北の街と夜市を楽しむ2日間',
     place:'台北',
-    days:3,
+    days:2,
     icon:'🏮',
     description:'ローカルグルメと街歩き。',
     schedule:[
-      {
-        name:'Day 1',
-        stops:[
-          {time:'11:00',name:'迪化街'},
-          {time:'18:00',name:'寧夏夜市'}
-        ]
-      },
-      {
-        name:'Day 2',
-        stops:[
-          {time:'09:00',name:'龍山寺'},
-          {time:'14:00',name:'中正紀念堂'}
-        ]
-      },
-      {
-        name:'Day 3',
-        stops:[
-          {time:'10:00',name:'カフェ巡り'},
-          {time:'15:00',name:'空港へ移動'}
-        ]
-      }
+      {name:'Day 1',stops:[
+        {time:'11:00',name:'迪化街'},
+        {time:'18:00',name:'寧夏夜市'}
+      ]},
+      {name:'Day 2',stops:[
+        {time:'09:00',name:'龍山寺'},
+        {time:'14:00',name:'中正紀念堂'}
+      ]}
     ]
   },
   {
@@ -347,20 +156,14 @@ const samples=[
     icon:'🌲',
     description:'海辺の街と北海道グルメ。',
     schedule:[
-      {
-        name:'Day 1',
-        stops:[
-          {time:'10:00',name:'札幌時計台'},
-          {time:'13:00',name:'大通公園'}
-        ]
-      },
-      {
-        name:'Day 2',
-        stops:[
-          {time:'10:00',name:'小樽運河'},
-          {time:'14:00',name:'堺町通り'}
-        ]
-      }
+      {name:'Day 1',stops:[
+        {time:'10:00',name:'札幌時計台'},
+        {time:'13:00',name:'大通公園'}
+      ]},
+      {name:'Day 2',stops:[
+        {time:'10:00',name:'小樽運河'},
+        {time:'14:00',name:'堺町通り'}
+      ]}
     ]
   }
 ];
@@ -368,9 +171,9 @@ const samples=[
 let state={saved:[],plans:[]};
 
 try{
-  const x=JSON.parse(localStorage.getItem(KEY));
-  if(x&&Array.isArray(x.saved)&&Array.isArray(x.plans)){
-    state=x;
+  const v=JSON.parse(localStorage.getItem(KEY));
+  if(v&&Array.isArray(v.plans)&&Array.isArray(v.saved)){
+    state=v;
   }
 }catch(e){}
 
@@ -379,20 +182,20 @@ const nav=document.getElementById('nav');
 
 let page='home';
 let selected='';
+let myTab='planning';
 let query='';
 let duration='';
 let draft=null;
 let editing='';
 let map=null;
-let searchContext=null;
-let searchResults=[];
 let searchBusy=false;
 let lastSearch=0;
+let searchContext=null;
+let searchResults=[];
 let reorderNotice='';
 
 function uid(){
-  return 's'+Date.now().toString(36)+
-    Math.random().toString(36).slice(2,8);
+  return 's'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 }
 
 function esc(v){
@@ -405,31 +208,56 @@ function esc(v){
   }[c]));
 }
 
-function save(){
+function clone(x){
+  return JSON.parse(JSON.stringify(x));
+}
+
+function persist(){
   try{
     localStorage.setItem(KEY,JSON.stringify(state));
     return true;
   }catch(e){
-    alert('保存できませんでした。ブラウザの空き容量を確認してください。');
+    alert('保存に失敗しました。ブラウザの容量を確認してください。');
     return false;
   }
 }
 
+function update(mutator){
+  const old=clone(state);
+  mutator();
+  if(!persist()){
+    state=old;
+    return false;
+  }
+  return true;
+}
+
 function all(){
-  return [...samples,...state.plans];
+  return [...SAMPLES,...state.plans];
 }
 
 function find(id){
   return all().find(t=>t.id===id);
 }
 
-function validCoords(p){
-  return Array.isArray(p)&&p.length===2&&
-    p.every(n=>Number.isFinite(Number(n)));
+function own(id){
+  return state.plans.some(t=>t.id===id);
 }
 
-function normalizeTrip(t){
-  const x=JSON.parse(JSON.stringify(t));
+function coords(p){
+  return Array.isArray(p)&&p.length===2&&
+    p.every(v=>Number.isFinite(Number(v)));
+}
+
+function hasNum(v){
+  return v!==''&&v!==null&&v!==undefined&&
+    Number.isFinite(Number(v));
+}
+
+function norm(t){
+  const x=clone(t);
+  x.status=x.status==='completed'?'completed':'planning';
+  x.published=!!x.published;
 
   x.schedule=(x.schedule||[]).map((d,i)=>({
     name:d.name||'Day '+(i+1),
@@ -442,7 +270,81 @@ function normalizeTrip(t){
     }))
   }));
 
+  x.days=x.schedule.length;
   return x;
+}
+
+function badge(t){
+  if(SAMPLES.includes(t))return 'サンプル';
+  return t.status==='completed'
+    ?'実際に行った旅'
+    :'旅行計画';
+}
+
+function transport(s){
+  return [
+    MODES[s.transport]||'',
+    hasNum(s.travelMinutes)
+      ?Number(s.travelMinutes)+'分'
+      :''
+  ].filter(v=>v&&v!=='未設定').join('・')||'移動情報未設定';
+}
+
+function minutes(t){
+  if(!/^\d\d:\d\d$/.test(t||''))return null;
+  const [h,m]=t.split(':').map(Number);
+  return h<24&&m<60?h*60+m:null;
+}
+
+function clock(n){
+  return String(Math.floor(n/60)).padStart(2,'0')+
+    ':'+String(n%60).padStart(2,'0');
+}
+
+function timeCheck(a,b){
+  const start=minutes(a.time);
+  const end=minutes(b.time);
+
+  if(start===null||end===null){
+    return ['unknown','時刻未設定'];
+  }
+
+  if(end<start){
+    return ['warn','⚠ 訪問時刻が前後しています'];
+  }
+
+  if(!hasNum(a.stayMinutes)||!hasNum(b.travelMinutes)){
+    return ['unknown','滞在時間または移動時間が未設定'];
+  }
+
+  const earliest=start+
+    Number(a.stayMinutes)+Number(b.travelMinutes);
+  const gap=end-earliest;
+
+  return gap<0
+    ?['warn','⚠ '+(-gap)+'分不足（最短到着：'+
+      (earliest<1440?clock(earliest):'翌日以降')+'）']
+    :['ok','✓ '+gap+'分の余裕があります'];
+}
+
+function checkHTML(a,b){
+  const [type,msg]=timeCheck(a,b);
+  return `<div class="time-check time-${type}">${esc(msg)}</div>`;
+}
+
+function menu(){
+  nav.innerHTML=[
+    ['home','HOME','⌂'],
+    ['search','SEARCH','⌕'],
+    ['my','MY TRIP','♡'],
+    ['post','POST','＋']
+  ].map(([id,label,icon])=>`
+    <button data-action="page"
+      data-id="${id}"
+      class="${page===id?'active':''}">
+      ${icon}<br>${label}
+    </button>
+  `).join('');
 }
 
 function go(p,id=''){
@@ -461,7 +363,7 @@ function go(p,id=''){
       if(page==='detail'&&selected===id){
         drawMap(find(id));
       }
-    },50);
+    },60);
   }
 }
 
@@ -471,121 +373,18 @@ function card(t){
       <div class="cover">${esc(t.icon||'🧳')}</div>
       <span class="tag">${esc(t.place)}</span>
       <span class="tag">${esc(t.days)}日間</span>
+      <span class="tag">${badge(t)}</span>
+      ${t.published
+        ?'<span class="tag">🌐 公開中（この端末のみ）</span>'
+        :''}
       <h3>${esc(t.title)}</h3>
-      <p class="muted">${esc(t.description)}</p>
+      <p class="muted">${esc(t.description||'')}</p>
       <button class="btn"
         data-action="detail"
         data-id="${esc(t.id)}">
         旅程を見る →
       </button>
     </article>
-  `;
-}
-
-function menu(){
-  nav.innerHTML=[
-    ['home','HOME','⌂'],
-    ['search','SEARCH','⌕'],
-    ['my','MY TRIP','♡'],
-    ['post','POST','＋']
-  ].map(([id,name,icon])=>`
-    <button data-action="page"
-      data-id="${id}"
-      class="${page===id?'active':''}">
-      ${icon}<br>${name}
-    </button>
-  `).join('');
-}
-
-function hasNumber(v){
-  return v!==''&&v!==null&&v!==undefined&&
-    Number.isFinite(Number(v));
-}
-
-function transportText(s){
-  const mode=MODES[s.transport]||'';
-
-  const minutes=hasNumber(s.travelMinutes)
-    ?Number(s.travelMinutes)+'分'
-    :'';
-
-  return [mode==='未設定'?'':mode,minutes]
-    .filter(Boolean)
-    .join('・')||'移動情報未設定';
-}
-
-function minutesFromTime(t){
-  if(!/^\d\d:\d\d$/.test(t||''))return null;
-
-  const [h,m]=t.split(':').map(Number);
-
-  if(h>23||m>59)return null;
-
-  return h*60+m;
-}
-
-function formatMinutes(n){
-  const h=Math.floor(n/60);
-  const m=n%60;
-
-  return String(h).padStart(2,'0')+':'+
-    String(m).padStart(2,'0');
-}
-
-function timeCheck(previous,current){
-  const start=minutesFromTime(previous.time);
-  const next=minutesFromTime(current.time);
-
-  if(start===null||next===null){
-    return {
-      type:'unknown',
-      text:'訪問時間が未設定のため計算できません。'
-    };
-  }
-
-  if(next<start){
-    return {
-      type:'warn',
-      text:'⚠ 訪問時間が前のスポットより早くなっています。'
-    };
-  }
-
-  if(!hasNumber(previous.stayMinutes)||
-     !hasNumber(current.travelMinutes)){
-    return {
-      type:'unknown',
-      text:'滞在時間または移動時間が未設定です。'
-    };
-  }
-
-  const stay=Number(previous.stayMinutes);
-  const travel=Number(current.travelMinutes);
-  const earliest=start+stay+travel;
-  const difference=next-earliest;
-
-  if(difference<0){
-    return {
-      type:'warn',
-      text:'⚠ '+Math.abs(difference)+
-        '分不足しています。最短到着目安は'+
-        (earliest<1440?formatMinutes(earliest):'翌日以降')+
-        'です。'
-    };
-  }
-
-  return {
-    type:'ok',
-    text:'✓ '+difference+'分の余裕があります。'
-  };
-}
-
-function checkHTML(previous,current){
-  const c=timeCheck(previous,current);
-
-  return `
-    <div class="time-check time-${c.type}">
-      ${esc(c.text)}
-    </div>
   `;
 }
 
@@ -598,16 +397,27 @@ function render(){
       <h2>次の旅のヒントを探そう。</h2>
       <p>あなたの旅が、次の誰かの旅になる。</p>
       <div class="notice">
-        以下は動作確認用のサンプル旅程です。
-        実際の旅行記録ではありません。
+        現在はローカル試作版です。
+        公開旅程は同じブラウザでのみ検索できます。
+        サンプルは実際の旅行記録ではありません。
       </div>
-      ${samples.map(card).join('')}
+
+      <h3>公開した旅程</h3>
+      ${state.plans.filter(t=>t.published).map(card).join('')||
+        '<p class="muted">まだ公開旅程がありません。</p>'}
+
+      <h3>サンプル旅程</h3>
+      ${SAMPLES.map(card).join('')}
     `;
   }
 
   else if(page==='search'){
     app.innerHTML=`
       <h2>旅程を探す</h2>
+      <div class="notice">
+        検索対象はサンプルと、このブラウザで公開した旅程です。
+        他のユーザーの投稿はまだ表示されません。
+      </div>
 
       <label>目的地・キーワード
         <input id="query"
@@ -629,45 +439,95 @@ function render(){
 
       <div id="results"></div>
     `;
-
     results();
   }
 
   else if(page==='my'){
+    const entries=state.plans.filter(t=>
+      myTab==='post'?t.published:t.status===myTab
+    );
     const saved=state.saved.map(find).filter(Boolean);
 
     app.innerHTML=`
       <h2>MY TRIP</h2>
 
-      <h3>PLANNING｜自分の旅程</h3>
+      <div class="tabs">
+        ${[
+          ['planning','PLANNING'],
+          ['completed','COMPLETED'],
+          ['post','POST'],
+          ['saved','SAVED']
+        ].map(([id,label])=>`
+          <button class="btn ${myTab===id?'selected':'secondary'}"
+            data-action="tab"
+            data-id="${id}">
+            ${label}
+          </button>
+        `).join('')}
+      </div>
 
-      ${state.plans.length
-        ?state.plans.map(t=>`
-          <div>
+      ${myTab==='saved'
+        ?(
+          saved.map(t=>`
             ${card(t)}
+            <button class="btn secondary"
+              data-action="copy"
+              data-id="${esc(t.id)}">
+              コピーして編集
+            </button>
+          `).join('')||
+          '<p>保存した旅程はありません。</p>'
+        )
+        :(
+          entries.map(t=>`
+            <div>
+              ${card(t)}
 
-            <div class="plan-actions">
-              <button class="btn secondary"
-                data-action="edit"
-                data-id="${esc(t.id)}">
-                ✎ 編集
-              </button>
+              <div class="actions">
+                <button class="btn secondary"
+                  data-action="edit"
+                  data-id="${esc(t.id)}">
+                  ✎ 編集
+                </button>
 
-              <button class="btn danger"
-                data-action="delete-trip"
-                data-id="${esc(t.id)}">
-                🗑 この旅程を削除
-              </button>
+                ${myTab==='planning'?`
+                  <button class="btn secondary"
+                    data-action="complete"
+                    data-id="${esc(t.id)}">
+                    ✓ 旅行を完了
+                  </button>
+                `:''}
+
+                ${myTab==='completed'?`
+                  <button class="btn secondary"
+                    data-action="planning"
+                    data-id="${esc(t.id)}">
+                    PLANNINGに戻す
+                  </button>
+                `:''}
+
+                <button class="btn secondary"
+                  data-action="${t.published?'unpublish':'publish'}"
+                  data-id="${esc(t.id)}">
+                  ${t.published?'公開を取り消す':'🌐 POSTに公開'}
+                </button>
+
+                <button class="btn danger"
+                  data-action="delete"
+                  data-id="${esc(t.id)}">
+                  削除
+                </button>
+              </div>
             </div>
-          </div>
-        `).join('')
-        :'<p>まだ旅程がありません。</p>'}
+          `).join('')||
+          '<p>この分類の旅程はまだありません。</p>'
+        )
+      }
 
-      <h3>SAVED｜保存した旅程</h3>
-
-      ${saved.length
-        ?saved.map(card).join('')
-        :'<p>まだ保存した旅程がありません。</p>'}
+      <div class="notice">
+        POSTは公開済みの旅程を一覧表示します。
+        公開しても元のPLANNING / COMPLETEDからは消えません。
+      </div>
     `;
   }
 
@@ -679,11 +539,10 @@ function render(){
       return;
     }
 
-    const own=state.plans.some(x=>x.id===t.id);
-
     app.innerHTML=`
       <button class="btn secondary"
-        data-action="page" data-id="home">
+        data-action="page"
+        data-id="home">
         ← HOME
       </button>
 
@@ -692,28 +551,41 @@ function render(){
 
       <span class="tag">${esc(t.place)}</span>
       <span class="tag">${esc(t.days)}日間</span>
+      <span class="tag">${badge(t)}</span>
 
-      <p>${esc(t.description)}</p>
+      ${t.published
+        ?'<span class="tag">🌐 公開中（この端末のみ）</span>'
+        :''}
 
-      <button class="btn secondary"
-        data-action="bookmark"
-        data-id="${esc(t.id)}">
-        ${state.saved.includes(t.id)?'♥ 保存済み':'♡ 保存する'}
-      </button>
+      <p>${esc(t.description||'')}</p>
 
-      <button class="btn"
-        data-action="copy"
-        data-id="${esc(t.id)}">
-        この旅程をコピー
-      </button>
-
-      ${own?`
+      <div class="actions">
         <button class="btn secondary"
-          data-action="edit"
+          data-action="bookmark"
           data-id="${esc(t.id)}">
-          編集する
+          ${state.saved.includes(t.id)?'♥ 保存済み':'♡ 保存する'}
         </button>
-      `:''}
+
+        <button class="btn"
+          data-action="copy"
+          data-id="${esc(t.id)}">
+          この旅程をコピー
+        </button>
+
+        ${own(t.id)?`
+          <button class="btn secondary"
+            data-action="edit"
+            data-id="${esc(t.id)}">
+            編集
+          </button>
+
+          <button class="btn secondary"
+            data-action="${t.published?'unpublish':'publish'}"
+            data-id="${esc(t.id)}">
+            ${t.published?'公開を取り消す':'🌐 POSTに公開'}
+          </button>
+        `:''}
+      </div>
 
       <h3>全体ルートマップ</h3>
       <div id="trip-map" class="map"></div>
@@ -729,8 +601,9 @@ function render(){
       </div>
 
       <p class="muted">
-        地図の番号は訪問順、矢印は移動方向です。
-        線は直線であり、実際の道路・鉄道経路ではありません。
+        番号は訪問順。
+        矢印付きの線は地点間の直線であり、
+        道路・鉄道経路ではありません。
       </p>
 
       <h3>DAY別スケジュール</h3>
@@ -738,15 +611,13 @@ function render(){
       ${t.schedule.map((d,di)=>`
         <div class="box day"
           style="border-left-color:${COLORS[di%COLORS.length]}">
-
           <h3>${esc(d.name)}</h3>
 
           ${d.stops.map((s,si)=>`
-            ${si>0?`
+            ${si?`
               <div class="travel-info">
-                ↓ ${esc(transportText(s))}
+                ↓ ${esc(transport(s))}
               </div>
-
               ${checkHTML(d.stops[si-1],s)}
             `:''}
 
@@ -755,15 +626,11 @@ function render(){
                 style="background:${COLORS[di%COLORS.length]}">
                 ${si+1}
               </span>
-
-              <b>${esc(s.time)}</b>
+              <b>${esc(s.time||'--:--')}</b>
               ${esc(s.name)}
+              ${coords(s.coords)?' 📍':''}
 
-              ${validCoords(s.coords)
-                ?'<span class="ok">📍</span>'
-                :''}
-
-              ${hasNumber(s.stayMinutes)?`
+              ${hasNum(s.stayMinutes)?`
                 <div class="muted">
                   滞在時間：${esc(s.stayMinutes)}分
                 </div>
@@ -775,7 +642,47 @@ function render(){
     `;
   }
 
-  else if(page==='post'||page==='edit'){
+  else if(page==='post'){
+    app.innerHTML=`
+      <h2>POST｜旅程を投稿</h2>
+
+      <div class="notice">
+        既存のPLANNING / COMPLETEDを公開するか、
+        新しい旅程を作成して公開できます。
+        現在は同じブラウザ内だけでの公開です。
+      </div>
+
+      <button class="btn" data-action="new-publish">
+        ＋ 新規作成して投稿
+      </button>
+
+      <h3>既存の旅程から投稿</h3>
+
+      ${state.plans.map(t=>`
+        <div class="card">
+          <h3>${esc(t.title)}</h3>
+          <span class="tag">${badge(t)}</span>
+          <span class="tag">${t.published?'公開中':'非公開'}</span>
+
+          <div>
+            <button class="btn secondary"
+              data-action="edit"
+              data-id="${esc(t.id)}">
+              最終編集
+            </button>
+
+            <button class="btn"
+              data-action="${t.published?'unpublish':'publish'}"
+              data-id="${esc(t.id)}">
+              ${t.published?'公開を取り消す':'🌐 公開する'}
+            </button>
+          </div>
+        </div>
+      `).join('')||'<p>まだ旅程がありません。</p>'}
+    `;
+  }
+
+  else if(page==='edit'){
     renderEditor();
   }
 }
@@ -784,15 +691,17 @@ function results(){
   const el=document.getElementById('results');
   if(!el)return;
 
-  const r=all().filter(t=>
+  const list=[
+    ...SAMPLES,
+    ...state.plans.filter(t=>t.published)
+  ].filter(t=>
     (t.place+' '+t.title).toLowerCase()
       .includes(query.toLowerCase())&&
     (!duration||t.days===Number(duration))
   );
 
-  el.innerHTML=r.length
-    ?r.map(card).join('')
-    :'<p>該当する旅程がありません。</p>';
+  el.innerHTML=list.map(card).join('')||
+    '<p>該当する旅程がありません。</p>';
 }
 
 function newSpot(){
@@ -808,13 +717,14 @@ function newSpot(){
 
 function newDraft(){
   return {
-    id:'plan-'+Date.now()+'-'+
-      Math.random().toString(36).slice(2,6),
+    id:'plan-'+uid(),
     title:'',
     place:'',
     days:2,
     icon:'🧳',
     description:'',
+    status:'planning',
+    published:false,
     schedule:[
       {name:'Day 1',stops:[newSpot()]},
       {name:'Day 2',stops:[newSpot()]}
@@ -822,20 +732,21 @@ function newDraft(){
   };
 }
 
-function openNew(){
+function openNew(publish=false){
   editing='';
-  reorderNotice='';
   draft=newDraft();
-  go('post');
+  draft.publishAfterSave=publish;
+  reorderNotice='';
+  go('edit');
 }
 
 function openEdit(id){
   const t=find(id);
-  if(!t)return;
+  if(!t||!own(id))return;
 
   editing=id;
+  draft=norm(t);
   reorderNotice='';
-  draft=normalizeTrip(t);
   go('edit');
 }
 
@@ -846,8 +757,8 @@ function renderEditor(){
     <h2>${editing?'旅程を編集':'新しい旅程を作成'}</h2>
 
     <div class="notice">
-      DAYごとに訪問場所・時間・滞在時間・移動手段を入力。
-      ▲ ▼ ボタンで訪問順を変更できます。
+      DAY別の訪問場所・滞在時間・移動情報を入力します。
+      ▲ ▼ で訪問順を変更できます。
     </div>
 
     <div class="box">
@@ -867,6 +778,19 @@ function renderEditor(){
         <textarea id="trip-description">${esc(draft.description)}</textarea>
       </label>
 
+      <label>旅行の状態
+        <select id="trip-status">
+          <option value="planning"
+            ${draft.status!=='completed'?'selected':''}>
+            PLANNING｜旅行計画
+          </option>
+          <option value="completed"
+            ${draft.status==='completed'?'selected':''}>
+            COMPLETED｜実際に行った旅
+          </option>
+        </select>
+      </label>
+
       <label>旅行日数
         <select id="trip-days">
           ${Array.from({length:14},(_,i)=>i+1).map(n=>`
@@ -881,13 +805,15 @@ function renderEditor(){
       <div id="day-editor"></div>
 
       <button class="btn" data-action="save-trip">
-        旅程を保存
+        ${draft.publishAfterSave
+          ?'保存してPOSTに公開'
+          :'旅程を保存'}
       </button>
     </div>
 
     <div class="notice">
-      データはこのブラウザ内に保存されます。
-      他の端末とは同期されません。
+      このブラウザ内に保存されます。
+      端末間同期や他ユーザーへの公開はまだできません。
     </div>
   `;
 
@@ -896,7 +822,7 @@ function renderEditor(){
 
 function renderDays(){
   const el=document.getElementById('day-editor');
-  if(!el||!draft)return;
+  if(!el)return;
 
   el.innerHTML=`
     ${reorderNotice?`
@@ -914,26 +840,26 @@ function renderDays(){
         ${d.stops.map((s,si)=>`
           <div class="spot">
 
-            <div class="spot-head">
-              <b>スポット ${si+1}</b>
+            <div class="actions">
+              <b style="margin-right:auto">
+                スポット ${si+1}
+              </b>
 
-              <div>
-                <button class="btn secondary"
-                  data-action="move-up"
-                  data-day="${di}"
-                  data-spot="${si}"
-                  ${si===0?'disabled':''}>
-                  ▲
-                </button>
+              <button class="btn secondary"
+                data-action="up"
+                data-day="${di}"
+                data-spot="${si}"
+                ${si===0?'disabled':''}>
+                ▲
+              </button>
 
-                <button class="btn secondary"
-                  data-action="move-down"
-                  data-day="${di}"
-                  data-spot="${si}"
-                  ${si===d.stops.length-1?'disabled':''}>
-                  ▼
-                </button>
-              </div>
+              <button class="btn secondary"
+                data-action="down"
+                data-day="${di}"
+                data-spot="${si}"
+                ${si===d.stops.length-1?'disabled':''}>
+                ▼
+              </button>
             </div>
 
             <div class="row">
@@ -942,9 +868,7 @@ function renderDays(){
                   data-field="time"
                   data-day="${di}"
                   data-spot="${si}"
-                  value="${esc(
-                    /^\d\d:\d\d$/.test(s.time)?s.time:'09:00'
-                  )}">
+                  value="${esc(s.time||'09:00')}">
               </label>
 
               <label class="place">訪問場所
@@ -965,66 +889,63 @@ function renderDays(){
                 data-day="${di}"
                 data-spot="${si}"
                 value="${esc(s.stayMinutes??'')}"
-                placeholder="例：90">
+                placeholder="90">
             </label>
 
-            ${si>0?`
-              <div class="transport-box">
+            ${si?`
+              <div class="box">
                 <b>前のスポットからの移動</b>
 
-                <div class="transport-row">
-                  <label>移動手段
-                    <select
-                      data-field="transport"
-                      data-day="${di}"
-                      data-spot="${si}">
-                      ${Object.entries(MODES).map(([value,label])=>`
-                        <option value="${esc(value)}"
-                          ${(s.transport||'')===value?'selected':''}>
-                          ${esc(label)}
-                        </option>
-                      `).join('')}
-                    </select>
-                  </label>
+                <label>移動手段
+                  <select
+                    data-field="transport"
+                    data-day="${di}"
+                    data-spot="${si}">
+                    ${Object.entries(MODES).map(([v,label])=>`
+                      <option value="${esc(v)}"
+                        ${(s.transport||'')===v?'selected':''}>
+                        ${esc(label)}
+                      </option>
+                    `).join('')}
+                  </select>
+                </label>
 
-                  <label>移動時間（分）
-                    <input type="number"
-                      min="0"
-                      step="1"
-                      data-field="travelMinutes"
-                      data-day="${di}"
-                      data-spot="${si}"
-                      value="${esc(s.travelMinutes??'')}"
-                      placeholder="例：25">
-                  </label>
-                </div>
+                <label>移動時間（分）
+                  <input type="number"
+                    min="0"
+                    step="1"
+                    data-field="travelMinutes"
+                    data-day="${di}"
+                    data-spot="${si}"
+                    value="${esc(s.travelMinutes??'')}">
+                </label>
               </div>
             `:''}
 
-            <div class="status ${validCoords(s.coords)?'ok':''}">
-              ${validCoords(s.coords)
+            <p class="status ${coords(s.coords)?'ok':''}">
+              ${coords(s.coords)
                 ?'✓ 位置登録済み：'+esc(s.locationLabel||s.name)
                 :'位置未登録'}
-            </div>
+            </p>
 
-            <label>検索キーワード
+            <label>場所の検索キーワード
               <input
                 data-field="lookup"
                 data-day="${di}"
                 data-spot="${si}"
-                value="${esc(s.lookup||aliases[s.name]||s.name)}"
+                value="${esc(s.lookup||ALIASES[s.name]||s.name)}"
                 placeholder="例：Colosseo, Roma, Italia">
             </label>
 
             <button class="btn secondary"
-              data-action="find-place"
+              data-action="lookup"
               data-day="${di}"
               data-spot="${si}">
-              🔎 この場所を検索
+              🔎 場所を検索
             </button>
 
             <button class="btn danger"
-              data-action="remove-spot"
+              data-action="remove"
               data-day="${di}"
               data-spot="${si}">
               削除
@@ -1035,15 +956,15 @@ function renderDays(){
         `).join('')}
 
         <button class="btn secondary"
-          data-action="add-spot"
+          data-action="add"
           data-day="${di}">
-          ＋ スポットを追加
+          ＋ スポット追加
         </button>
 
         <button class="btn secondary"
-          data-action="check-times"
+          data-action="check"
           data-day="${di}">
-          🕒 時間をチェック
+          🕒 時間チェック
         </button>
 
         <div id="check-${di}"></div>
@@ -1052,57 +973,41 @@ function renderDays(){
   `;
 }
 
-function syncDraft(){
+function sync(){
   if(!draft)return;
 
-  const t=document.getElementById('trip-title');
-  const p=document.getElementById('trip-place');
-  const desc=document.getElementById('trip-description');
-
-  if(t)draft.title=t.value;
-  if(p)draft.place=p.value;
-  if(desc)draft.description=desc.value;
+  for(const [id,key] of [
+    ['trip-title','title'],
+    ['trip-place','place'],
+    ['trip-description','description'],
+    ['trip-status','status']
+  ]){
+    const e=document.getElementById(id);
+    if(e)draft[key]=e.value;
+  }
 
   document.querySelectorAll('[data-field]').forEach(el=>{
-    const d=draft.schedule[Number(el.dataset.day)];
-    const s=d?.stops[Number(el.dataset.spot)];
+    const s=draft.schedule[+el.dataset.day]
+      ?.stops[+el.dataset.spot];
 
     if(!s)return;
 
-    const field=el.dataset.field;
+    const f=el.dataset.field;
 
-    if(field==='time'){
-      s.time=el.value;
-    }
-
-    if(field==='lookup'){
-      s.lookup=el.value;
-    }
-
-    if(field==='transport'){
-      s.transport=el.value;
-    }
-
-    if(field==='travelMinutes'){
-      s.travelMinutes=el.value;
-    }
-
-    if(field==='stayMinutes'){
-      s.stayMinutes=el.value;
-    }
-
-    if(field==='name'&&s.name!==el.value){
+    if(f==='name'&&s.name!==el.value){
       s.name=el.value;
       s.lookup='';
       delete s.coords;
       delete s.locationLabel;
+    }else if(f!=='name'){
+      s[f]=el.value;
     }
   });
 }
 
 function changeDays(n){
-  syncDraft();
-  n=Number(n);
+  sync();
+  n=+n;
 
   if(!Number.isInteger(n)||n<1||n>14)return;
 
@@ -1118,92 +1023,72 @@ function changeDays(n){
   renderDays();
 }
 
-function addSpot(di){
-  syncDraft();
+function add(di){
+  sync();
   draft.schedule[di].stops.push(newSpot());
   renderDays();
 }
 
-function removeSpot(di,si){
-  syncDraft();
+function remove(di,si){
+  sync();
 
-  const stops=draft.schedule[di].stops;
-  stops.splice(si,1);
+  const a=draft.schedule[di].stops;
+  a.splice(si,1);
 
-  if(si===0&&stops.length){
-    stops[0].transport='';
-    stops[0].travelMinutes='';
+  if(a.length){
+    a[0].transport='';
+    a[0].travelMinutes='';
+
+    if(si<a.length){
+      a[si].transport='';
+      a[si].travelMinutes='';
+    }
   }
 
   renderDays();
 }
 
-function moveSpot(di,si,direction){
-  syncDraft();
+function move(di,si,delta){
+  sync();
 
-  const stops=draft?.schedule[di]?.stops;
-  if(!stops)return;
+  const a=draft.schedule[di].stops;
+  const to=si+delta;
 
-  const target=si+direction;
+  if(to<0||to>=a.length)return;
 
-  if(target<0||target>=stops.length)return;
+  [a[si],a[to]]=[a[to],a[si]];
 
-  [stops[si],stops[target]]=
-    [stops[target],stops[si]];
-
-  // 移動情報はスポットではなく区間に関する情報。
-  // 並べ替えで影響を受ける区間は未設定へ戻す。
-  const affected=new Set([
-    si,
-    si+1,
-    target,
-    target+1
-  ]);
-
-  affected.forEach(index=>{
-    if(stops[index]){
-      stops[index].transport='';
-      stops[index].travelMinutes='';
+  new Set([si,si+1,to,to+1]).forEach(i=>{
+    if(a[i]){
+      a[i].transport='';
+      a[i].travelMinutes='';
     }
   });
 
-  if(stops.length){
-    stops[0].transport='';
-    stops[0].travelMinutes='';
-  }
+  a[0].transport='';
+  a[0].travelMinutes='';
 
   reorderNotice=
-    '訪問順を変更しました。影響する区間の移動手段・移動時間を未設定に戻しました。再入力してください。';
+    '並べ替えにより、影響する区間の移動情報を未設定にしました。再入力してください。';
 
   renderDays();
 }
 
-function checkTimes(di){
-  syncDraft();
+function check(di){
+  sync();
 
-  const d=draft?.schedule[di];
+  const a=draft.schedule[di].stops;
   const el=document.getElementById('check-'+di);
 
-  if(!d||!el)return;
-
-  if(d.stops.length<2){
-    el.innerHTML=`
-      <div class="time-check time-unknown">
-        スポットを2つ以上登録すると時間をチェックできます。
-      </div>
-    `;
-    return;
-  }
-
-  el.innerHTML=d.stops.slice(1).map((s,i)=>`
-    <div>
+  el.innerHTML=a.length<2
+    ?'<p class="hint">スポットが2件以上必要です。</p>'
+    :a.slice(1).map((s,i)=>`
       <b>${i+1} → ${i+2}</b>
-      ${checkHTML(d.stops[i],s)}
-    </div>
-  `).join('');
+      ${checkHTML(a[i],s)}
+    `).join('');
 }
 
-function getSpotByUid(id){
+function spotByUid(id){
   for(const d of draft?.schedule||[]){
     for(const s of d.stops){
       if(s.uid===id)return s;
@@ -1213,140 +1098,102 @@ function getSpotByUid(id){
 }
 
 async function lookup(di,si){
-  syncDraft();
+  sync();
 
   const s=draft?.schedule[di]?.stops[si];
-  const destination=draft?.place.trim();
   const el=document.getElementById('lookup-'+di+'-'+si);
 
   if(!s||!el)return;
 
-  if(!s.name.trim()){
-    el.innerHTML='<p class="status">先に訪問場所を入力してください。</p>';
+  if(!s.name.trim()||!draft.place.trim()){
+    el.textContent='訪問場所と目的地を入力してください。';
     return;
   }
 
-  if(!destination){
-    el.innerHTML='<p class="status">先に目的地を入力してください。</p>';
+  if(searchBusy||Date.now()-lastSearch<1300){
+    el.textContent='少し時間を空けて再検索してください。';
     return;
   }
 
-  if(searchBusy){
-    el.innerHTML='<p class="status">前の検索が完了してからお試しください。</p>';
-    return;
-  }
-
-  if(Date.now()-lastSearch<1300){
-    el.innerHTML='<p class="status">少し時間を空けて再検索してください。</p>';
-    return;
-  }
-
-  lastSearch=Date.now();
   searchBusy=true;
+  lastSearch=Date.now();
   searchContext={uid:s.uid,di,si};
-
-  el.innerHTML='<p class="muted">検索中...</p>';
-
-  const button=document.querySelector(
-    `[data-action="find-place"][data-day="${di}"][data-spot="${si}"]`
-  );
-
-  if(button)button.disabled=true;
+  el.textContent='検索中...';
 
   try{
-    const searchText=(
-      s.lookup||aliases[s.name]||s.name
-    ).trim();
+    const q=(s.lookup||ALIASES[s.name]||s.name).trim();
 
     const params=new URLSearchParams({
       format:'jsonv2',
-      q:searchText,
+      q,
       limit:'10',
       addressdetails:'1',
       accept_language:'ja,en'
     });
 
-    if(/イタリア|italy|italia/i.test(destination)){
+    if(/イタリア|italy|italia/i.test(draft.place)){
       params.set('countrycodes','it');
     }
 
-    const response=await fetch(
+    const res=await fetch(
       'https://nominatim.openstreetmap.org/search?'+params.toString(),
       {headers:{Accept:'application/json'}}
     );
 
-    if(!response.ok){
-      throw new Error('HTTP '+response.status);
-    }
+    if(!res.ok)throw Error(res.status);
 
-    const data=await response.json();
+    const data=await res.json();
 
-    if(!getSpotByUid(s.uid))return;
+    if(!spotByUid(s.uid)||searchContext?.uid!==s.uid)return;
 
     searchResults=data.map(x=>({
       name:x.display_name,
-      coords:[Number(x.lat),Number(x.lon)]
-    })).filter(x=>validCoords(x.coords));
+      coords:[+x.lat,+x.lon]
+    })).filter(x=>coords(x.coords));
 
-    const current=document.getElementById('lookup-'+di+'-'+si);
-    if(!current)return;
+    const target=document.getElementById('lookup-'+di+'-'+si);
 
-    current.innerHTML=searchResults.length
-      ?`
-        <p class="hint">
-          所在地を確認し、正しい候補を選択してください。
-        </p>
+    if(target){
+      target.innerHTML=searchResults.length
+        ?`
+          <p class="hint">
+            正しい所在地の候補を選んでください。
+          </p>
 
-        <div class="results">
-          ${searchResults.map((r,i)=>`
-            <div class="result">
-              <p>${esc(r.name)}</p>
-
-              <button class="btn secondary"
-                data-action="choose-place"
-                data-index="${i}"
-                data-uid="${esc(s.uid)}">
-                この場所を選択
-              </button>
-            </div>
-          `).join('')}
-        </div>
-      `
-      :`
-        <p class="status">
-          候補が見つかりません。
-          施設名を英語・現地語で入力して再検索してください。
-        </p>
-      `;
+          <div class="results">
+            ${searchResults.map((r,i)=>`
+              <div class="result">
+                <p>${esc(r.name)}</p>
+                <button class="btn secondary"
+                  data-action="choose"
+                  data-index="${i}"
+                  data-uid="${esc(s.uid)}">
+                  この場所を選択
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        `
+        :'<p class="status">候補がありません。現地語や英語で再検索してください。</p>';
+    }
 
   }catch(e){
-    const current=document.getElementById('lookup-'+di+'-'+si);
+    const target=document.getElementById('lookup-'+di+'-'+si);
 
-    if(current){
-      current.innerHTML=`
-        <p class="status">
-          検索できませんでした。
-          時間を空けて再試行してください。
-        </p>
-      `;
+    if(target){
+      target.textContent=
+        '検索に失敗しました。時間を空けて再試行してください。';
     }
-
-    console.error(e);
-
   }finally{
     searchBusy=false;
-
-    if(button&&document.contains(button)){
-      button.disabled=false;
-    }
   }
 }
 
-function choosePlace(index,id){
+function choose(i,id){
   if(searchContext?.uid!==id)return;
 
-  const s=getSpotByUid(id);
-  const r=searchResults[index];
+  const s=spotByUid(id);
+  const r=searchResults[i];
 
   if(!s||!r)return;
 
@@ -1356,75 +1203,58 @@ function choosePlace(index,id){
   searchResults=[];
   searchContext=null;
 
+  sync();
   renderDays();
 }
 
-function submitTrip(){
-  syncDraft();
+function saveTrip(){
+  sync();
 
   if(!draft.title.trim()||!draft.place.trim()){
     alert('タイトルと目的地を入力してください。');
     return;
   }
 
-  if(draft.schedule.some(d=>d.stops.some(s=>!s.name.trim()))){
-    alert('空欄の訪問場所があります。入力するか削除してください。');
-    return;
-  }
-
-  if(!draft.schedule.some(d=>d.stops.length)){
-    alert('スポットを1つ以上登録してください。');
+  if(
+    !draft.schedule.some(d=>d.stops.length)||
+    draft.schedule.some(d=>d.stops.some(s=>!s.name.trim()))
+  ){
+    alert('スポットを1つ以上入力し、空欄をなくしてください。');
     return;
   }
 
   for(const d of draft.schedule){
     for(const s of d.stops){
-      for(const value of [s.travelMinutes,s.stayMinutes]){
+      for(const v of [s.travelMinutes,s.stayMinutes]){
         if(
-          hasNumber(value)&&
-          (!Number.isInteger(Number(value))||Number(value)<0)
+          v!==''&&v!==null&&v!==undefined&&
+          (!Number.isInteger(Number(v))||Number(v)<0)
         ){
-          alert('移動時間・滞在時間は0以上の整数で入力してください。');
-          return;
-        }
-
-        if(
-          value!==''&&value!==null&&value!==undefined&&
-          !hasNumber(value)
-        ){
-          alert('移動時間・滞在時間を確認してください。');
+          alert('移動・滞在時間は0以上の整数で入力してください。');
           return;
         }
       }
     }
   }
 
-  const t=normalizeTrip(draft);
+  const t=norm(draft);
 
-  if(editing){
-    const i=state.plans.findIndex(p=>p.id===editing);
-
-    if(i<0){
-      alert('編集対象が見つかりません。');
-      return;
-    }
-
-    const prev=state.plans[i];
-    state.plans[i]=t;
-
-    if(!save()){
-      state.plans[i]=prev;
-      return;
-    }
-
-  }else{
-    state.plans.unshift(t);
-
-    if(!save()){
-      state.plans.shift();
-      return;
-    }
+  if(draft.publishAfterSave){
+    t.published=true;
   }
+
+  delete t.publishAfterSave;
+
+  const ok=update(()=>{
+    if(editing){
+      const i=state.plans.findIndex(x=>x.id===editing);
+      if(i>=0)state.plans[i]=t;
+    }else{
+      state.plans.unshift(t);
+    }
+  });
+
+  if(!ok)return;
 
   draft=null;
   editing='';
@@ -1433,83 +1263,98 @@ function submitTrip(){
 }
 
 function deleteTrip(id){
-  const trip=state.plans.find(t=>t.id===id);
+  const t=state.plans.find(x=>x.id===id);
 
-  if(!trip){
-    alert('削除対象の旅程が見つかりません。');
-    return;
+  if(
+    !t||
+    !confirm(
+      '「'+t.title+'」を削除しますか？\n'+
+      'この操作は取り消せません。'
+    )
+  )return;
+
+  if(update(()=>{
+    state.plans=state.plans.filter(x=>x.id!==id);
+    state.saved=state.saved.filter(x=>x!==id);
+  })){
+    go('my');
   }
+}
 
-  const confirmed=window.confirm(
-    '「'+trip.title+'」を削除しますか？\n\n'+
-    'この操作は取り消せません。'
-  );
+function setStatus(id,status){
+  const t=state.plans.find(x=>x.id===id);
+  if(!t)return;
 
-  if(!confirmed)return;
+  if(
+    status==='completed'&&
+    !confirm('この旅程を「実際に行った旅」に変更しますか？')
+  )return;
 
-  const previousPlans=[...state.plans];
-  const previousSaved=[...state.saved];
-
-  state.plans=state.plans.filter(t=>t.id!==id);
-  state.saved=state.saved.filter(x=>x!==id);
-
-  if(!save()){
-    state.plans=previousPlans;
-    state.saved=previousSaved;
-    return;
+  if(update(()=>{
+    t.status=status;
+  })){
+    myTab=status;
+    go('my');
   }
+}
 
-  if(editing===id){
-    draft=null;
-    editing='';
+function publish(id,value){
+  const t=state.plans.find(x=>x.id===id);
+  if(!t)return;
+
+  if(
+    value&&
+    !confirm(
+      'この旅程をPOSTとして公開しますか？\n'+
+      '現在はこのブラウザ内のみの公開です。'
+    )
+  )return;
+
+  if(update(()=>{
+    t.published=value;
+  })){
+    if(page==='detail'){
+      go('detail',id);
+    }else{
+      render();
+    }
   }
-
-  go('my');
 }
 
 function bookmark(id){
-  const previous=[...state.saved];
-
-  state.saved=state.saved.includes(id)
-    ?state.saved.filter(x=>x!==id)
-    :[...state.saved,id];
-
-  if(!save()){
-    state.saved=previous;
-    return;
+  if(update(()=>{
+    state.saved=state.saved.includes(id)
+      ?state.saved.filter(x=>x!==id)
+      :[...state.saved,id];
+  })){
+    go('detail',id);
   }
-
-  go('detail',id);
 }
 
 function copyTrip(id){
   const t=find(id);
   if(!t)return;
 
-  const c=normalizeTrip(t);
+  const c=norm(t);
 
-  c.id='plan-'+Date.now()+'-'+
-    Math.random().toString(36).slice(2,6);
-
+  c.id='plan-'+uid();
   c.title+='（コピー）';
+  c.published=false;
+  c.status='planning';
 
-  state.plans.unshift(c);
-
-  if(!save()){
-    state.plans.shift();
-    return;
+  if(update(()=>{
+    state.plans.unshift(c);
+  })){
+    openEdit(c.id);
   }
-
-  openEdit(c.id);
 }
 
 function drawMap(t){
   const el=document.getElementById('trip-map');
-
   if(!el||!t)return;
 
   if(typeof L==='undefined'){
-    el.innerHTML='<div class="notice">地図を読み込めません。</div>';
+    el.textContent='地図ライブラリを読み込めませんでした。';
     return;
   }
 
@@ -1530,27 +1375,24 @@ function drawMap(t){
 
     t.schedule.forEach((d,di)=>{
       const color=COLORS[di%COLORS.length];
-      let previous=null;
+      let prev=null;
 
       d.stops.forEach((s,si)=>{
-        const p=validCoords(s.coords)
-          ?s.coords
-          :known[s.name];
+        const p=coords(s.coords)?s.coords:KNOWN[s.name];
 
-        if(!validCoords(p)){
+        if(!coords(p)){
           missing++;
-          previous=null;
+          prev=null;
           return;
         }
 
         const pos=p.map(Number);
         bounds.push(pos);
 
-        const pin=L.divIcon({
+        const icon=L.divIcon({
           className:'',
           html:`
-            <div class="map-pin"
-              style="background:${color}">
+            <div class="map-pin" style="background:${color}">
               ${si+1}
             </div>
           `,
@@ -1558,36 +1400,24 @@ function drawMap(t){
           iconAnchor:[14,14]
         });
 
-        L.marker(pos,{icon:pin})
+        L.marker(pos,{icon})
           .addTo(map)
-          .bindPopup(
-            '<b>'+esc(d.name)+' / '+(si+1)+'. '+
-            esc(s.name)+'</b><br>'+
-            esc(s.time)+
-            (si>0?'<br>'+esc(transportText(s)):'')+
-            (hasNumber(s.stayMinutes)
-              ?'<br>滞在 '+esc(s.stayMinutes)+'分'
-              :'')
-          );
+          .bindPopup(`
+            <b>${esc(d.name)} / ${si+1}. ${esc(s.name)}</b>
+            <br>${esc(s.time||'')}
+            ${si?'<br>'+esc(transport(s)):''}
+          `);
 
-        if(previous){
+        if(prev){
           L.polyline(
-            [previous,pos],
-            {
-              color,
-              weight:4,
-              opacity:.85
-            }
+            [prev,pos],
+            {color,weight:4,opacity:.85}
           ).addTo(map);
 
-          arrows.push({
-            from:previous,
-            to:pos,
-            color
-          });
+          arrows.push({from:prev,to:pos,color});
         }
 
-        previous=pos;
+        prev=pos;
       });
     });
 
@@ -1600,24 +1430,24 @@ function drawMap(t){
       map.setView([35.6812,139.7671],5);
     }
 
-    let arrowMarkers=[];
+    let markers=[];
 
-    function updateArrows(){
-      arrowMarkers.forEach(m=>map.removeLayer(m));
-      arrowMarkers=[];
+    function drawArrows(){
+      markers.forEach(m=>map.removeLayer(m));
+      markers=[];
 
       arrows.forEach(a=>{
-        const from=map.latLngToLayerPoint(a.from);
-        const to=map.latLngToLayerPoint(a.to);
+        const f=map.latLngToLayerPoint(a.from);
+        const t=map.latLngToLayerPoint(a.to);
 
-        const dx=to.x-from.x;
-        const dy=to.y-from.y;
+        const dx=t.x-f.x;
+        const dy=t.y-f.y;
 
         if(Math.hypot(dx,dy)<12)return;
 
         const angle=Math.atan2(dy,dx)*180/Math.PI;
 
-        const midpoint=[
+        const center=[
           (a.from[0]+a.to[0])/2,
           (a.from[1]+a.to[1])/2
         ];
@@ -1625,11 +1455,10 @@ function drawMap(t){
         const icon=L.divIcon({
           className:'',
           html:`
-            <div class="route-arrow"
-              style="color:${a.color}">
+            <div class="route-arrow" style="color:${a.color}">
               <span style="
                 display:inline-block;
-                transform:rotate(${angle}deg);
+                transform:rotate(${angle}deg)
               ">➜</span>
             </div>
           `,
@@ -1637,25 +1466,25 @@ function drawMap(t){
           iconAnchor:[12,12]
         });
 
-        const marker=L.marker(midpoint,{
-          icon,
-          interactive:false,
-          keyboard:false
-        }).addTo(map);
-
-        arrowMarkers.push(marker);
+        markers.push(
+          L.marker(center,{
+            icon,
+            interactive:false,
+            keyboard:false
+          }).addTo(map)
+        );
       });
     }
 
-    map.on('zoomend',updateArrows);
-    updateArrows();
+    map.on('zoomend',drawArrows);
+    drawArrows();
 
     if(missing){
       el.insertAdjacentHTML(
         'afterend',
         `<p class="status">
           位置未登録：${missing}件。
-          編集画面から場所を検索・選択してください。
+          編集画面で場所を検索してください。
         </p>`
       );
     }
@@ -1666,7 +1495,7 @@ function drawMap(t){
 
   }catch(e){
     console.error(e);
-    el.innerHTML='<div class="notice">地図の表示に失敗しました。</div>';
+    el.textContent='地図の表示に失敗しました。';
   }
 }
 
@@ -1676,19 +1505,84 @@ document.addEventListener('click',e=>{
 
   const a=b.dataset.action;
   const id=b.dataset.id;
-  const di=Number(b.dataset.day);
-  const si=Number(b.dataset.spot);
+  const di=+b.dataset.day;
+  const si=+b.dataset.spot;
 
   if(a==='page'){
     if(id==='post'){
-      openNew();
+      go('post');
     }else{
       go(id);
     }
   }
 
+  else if(a==='tab'){
+    myTab=id;
+    render();
+  }
+
   else if(a==='detail'){
     go('detail',id);
+  }
+
+  else if(a==='new-publish'){
+    openNew(true);
+  }
+
+  else if(a==='edit'){
+    openEdit(id);
+  }
+
+  else if(a==='add'){
+    add(di);
+  }
+
+  else if(a==='remove'){
+    remove(di,si);
+  }
+
+  else if(a==='up'){
+    move(di,si,-1);
+  }
+
+  else if(a==='down'){
+    move(di,si,1);
+  }
+
+  else if(a==='check'){
+    check(di);
+  }
+
+  else if(a==='lookup'){
+    lookup(di,si);
+  }
+
+  else if(a==='choose'){
+    choose(+b.dataset.index,b.dataset.uid);
+  }
+
+  else if(a==='save-trip'){
+    saveTrip();
+  }
+
+  else if(a==='delete'){
+    deleteTrip(id);
+  }
+
+  else if(a==='complete'){
+    setStatus(id,'completed');
+  }
+
+  else if(a==='planning'){
+    setStatus(id,'planning');
+  }
+
+  else if(a==='publish'){
+    publish(id,true);
+  }
+
+  else if(a==='unpublish'){
+    publish(id,false);
   }
 
   else if(a==='bookmark'){
@@ -1697,46 +1591,6 @@ document.addEventListener('click',e=>{
 
   else if(a==='copy'){
     copyTrip(id);
-  }
-
-  else if(a==='edit'){
-    openEdit(id);
-  }
-
-  else if(a==='add-spot'){
-    addSpot(di);
-  }
-
-  else if(a==='remove-spot'){
-    removeSpot(di,si);
-  }
-
-  else if(a==='move-up'){
-    moveSpot(di,si,-1);
-  }
-
-  else if(a==='move-down'){
-    moveSpot(di,si,1);
-  }
-
-  else if(a==='check-times'){
-    checkTimes(di);
-  }
-
-  else if(a==='find-place'){
-    lookup(di,si);
-  }
-
-  else if(a==='choose-place'){
-    choosePlace(Number(b.dataset.index),b.dataset.uid);
-  }
-
-  else if(a==='save-trip'){
-    submitTrip();
-  }
-
-  else if(a==='delete-trip'){
-    deleteTrip(id);
   }
 });
 
@@ -1747,8 +1601,8 @@ document.addEventListener('input',e=>{
   }
 
   else if(e.target.dataset.field==='name'){
-    const d=draft?.schedule[Number(e.target.dataset.day)];
-    const s=d?.stops[Number(e.target.dataset.spot)];
+    const s=draft?.schedule[+e.target.dataset.day]
+      ?.stops[+e.target.dataset.spot];
 
     if(s&&s.name!==e.target.value){
       s.name=e.target.value;
@@ -1756,18 +1610,25 @@ document.addEventListener('input',e=>{
       delete s.coords;
       delete s.locationLabel;
 
-      const spot=e.target.closest('.spot');
-      const status=spot?.querySelector('.status');
+      const box=e.target.closest('.spot');
+      const status=box?.querySelector('.status');
+      const lookupField=box?.querySelector(
+        '[data-field="lookup"]'
+      );
 
       if(status){
         status.textContent='位置未登録';
         status.classList.remove('ok');
       }
 
-      const lookupEl=spot?.querySelector('[id^="lookup-"]');
+      if(lookupField){
+        lookupField.value=ALIASES[s.name]||s.name;
+      }
 
-      if(lookupEl){
-        lookupEl.innerHTML='';
+      const res=box?.querySelector('[id^="lookup-"]');
+
+      if(res){
+        res.innerHTML='';
       }
     }
   }
