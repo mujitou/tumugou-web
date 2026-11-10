@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TUMUGOU | 旅を紡ぐ</title>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <style>
 :root{
   --bg:#f8f5ee;
@@ -123,6 +125,13 @@ nav button.active{background:#edf0e7;font-weight:bold}
   padding:12px;
   margin:10px 0;
 }
+.spot-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.spot-head .btn{padding:8px 11px}
 .status{font-size:12px;margin:5px 0;color:#956239}
 .ok{color:#466846}
 .results{max-height:280px;overflow:auto}
@@ -154,26 +163,6 @@ nav button.active{background:#edf0e7;font-weight:bold}
   margin-right:6px;
   font-size:12px;
 }
-.route{
-  background:#eee9da;
-  border-radius:12px;
-  padding:13px;
-  line-height:1.8;
-}
-.route-day{margin:8px 0}
-.hint{font-size:12px;color:#756d61}
-.plan-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:-7px;margin-bottom:20px}
-.plan-actions .btn{margin:0}
-.transport-box{
-  border-top:1px dashed #c8bda9;
-  margin-top:12px;
-  padding-top:12px;
-}
-.transport-row{
-  display:flex;
-  gap:10px;
-}
-.transport-row label{flex:1;min-width:0}
 .travel-info{
   margin:10px 0 10px 12px;
   padding:9px 12px;
@@ -182,6 +171,16 @@ nav button.active{background:#edf0e7;font-weight:bold}
   border-radius:6px;
   font-size:13px;
 }
+.transport-box{
+  border-top:1px dashed #c8bda9;
+  margin-top:12px;
+  padding-top:12px;
+}
+.transport-row{display:flex;gap:10px}
+.transport-row label{flex:1;min-width:0}
+.hint{font-size:12px;color:#756d61}
+.plan-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:-7px;margin-bottom:20px}
+.plan-actions .btn{margin:0}
 .map-pin{
   display:flex;
   justify-content:center;
@@ -207,8 +206,19 @@ nav button.active{background:#edf0e7;font-weight:bold}
   font-size:20px;
   font-weight:bold;
 }
+.time-check{
+  padding:11px;
+  border-radius:9px;
+  margin:9px 0;
+  font-size:13px;
+  line-height:1.6;
+}
+.time-ok{background:#eaf1e7;color:#3d633d}
+.time-warn{background:#fff0e7;color:#975333}
+.time-unknown{background:#f1eee6;color:#756d61}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -374,11 +384,11 @@ let duration='';
 let draft=null;
 let editing='';
 let map=null;
-
 let searchContext=null;
 let searchResults=[];
 let searchBusy=false;
 let lastSearch=0;
+let reorderNotice='';
 
 function uid(){
   return 's'+Date.now().toString(36)+
@@ -427,7 +437,8 @@ function normalizeTrip(t){
       ...s,
       uid:s.uid||uid(),
       transport:s.transport||'',
-      travelMinutes:s.travelMinutes??''
+      travelMinutes:s.travelMinutes??'',
+      stayMinutes:s.stayMinutes??''
     }))
   }));
 
@@ -456,16 +467,19 @@ function go(p,id=''){
 
 function card(t){
   return `
-  <article class="card">
-    <div class="cover">${esc(t.icon||'🧳')}</div>
-    <span class="tag">${esc(t.place)}</span>
-    <span class="tag">${esc(t.days)}日間</span>
-    <h3>${esc(t.title)}</h3>
-    <p class="muted">${esc(t.description)}</p>
-    <button class="btn" data-action="detail" data-id="${esc(t.id)}">
-      旅程を見る →
-    </button>
-  </article>`;
+    <article class="card">
+      <div class="cover">${esc(t.icon||'🧳')}</div>
+      <span class="tag">${esc(t.place)}</span>
+      <span class="tag">${esc(t.days)}日間</span>
+      <h3>${esc(t.title)}</h3>
+      <p class="muted">${esc(t.description)}</p>
+      <button class="btn"
+        data-action="detail"
+        data-id="${esc(t.id)}">
+        旅程を見る →
+      </button>
+    </article>
+  `;
 }
 
 function menu(){
@@ -475,29 +489,104 @@ function menu(){
     ['my','MY TRIP','♡'],
     ['post','POST','＋']
   ].map(([id,name,icon])=>`
-    <button data-action="page" data-id="${id}"
+    <button data-action="page"
+      data-id="${id}"
       class="${page===id?'active':''}">
       ${icon}<br>${name}
     </button>
   `).join('');
 }
 
+function hasNumber(v){
+  return v!==''&&v!==null&&v!==undefined&&
+    Number.isFinite(Number(v));
+}
+
 function transportText(s){
   const mode=MODES[s.transport]||'';
 
-  const hasMinutes=
-    s.travelMinutes!==''&&
-    s.travelMinutes!==undefined&&
-    s.travelMinutes!==null&&
-    Number.isFinite(Number(s.travelMinutes));
-
-  const minutes=hasMinutes
+  const minutes=hasNumber(s.travelMinutes)
     ?Number(s.travelMinutes)+'分'
     :'';
 
   return [mode==='未設定'?'':mode,minutes]
     .filter(Boolean)
     .join('・')||'移動情報未設定';
+}
+
+function minutesFromTime(t){
+  if(!/^\d\d:\d\d$/.test(t||''))return null;
+
+  const [h,m]=t.split(':').map(Number);
+
+  if(h>23||m>59)return null;
+
+  return h*60+m;
+}
+
+function formatMinutes(n){
+  const h=Math.floor(n/60);
+  const m=n%60;
+
+  return String(h).padStart(2,'0')+':'+
+    String(m).padStart(2,'0');
+}
+
+function timeCheck(previous,current){
+  const start=minutesFromTime(previous.time);
+  const next=minutesFromTime(current.time);
+
+  if(start===null||next===null){
+    return {
+      type:'unknown',
+      text:'訪問時間が未設定のため計算できません。'
+    };
+  }
+
+  if(next<start){
+    return {
+      type:'warn',
+      text:'⚠ 訪問時間が前のスポットより早くなっています。'
+    };
+  }
+
+  if(!hasNumber(previous.stayMinutes)||
+     !hasNumber(current.travelMinutes)){
+    return {
+      type:'unknown',
+      text:'滞在時間または移動時間が未設定です。'
+    };
+  }
+
+  const stay=Number(previous.stayMinutes);
+  const travel=Number(current.travelMinutes);
+  const earliest=start+stay+travel;
+  const difference=next-earliest;
+
+  if(difference<0){
+    return {
+      type:'warn',
+      text:'⚠ '+Math.abs(difference)+
+        '分不足しています。最短到着目安は'+
+        (earliest<1440?formatMinutes(earliest):'翌日以降')+
+        'です。'
+    };
+  }
+
+  return {
+    type:'ok',
+    text:'✓ '+difference+'分の余裕があります。'
+  };
+}
+
+function checkHTML(previous,current){
+  const c=timeCheck(previous,current);
+
+  return `
+    <div class="time-check time-${c.type}">
+      ${esc(c.text)}
+    </div>
+  `;
 }
 
 function render(){
@@ -521,7 +610,8 @@ function render(){
       <h2>旅程を探す</h2>
 
       <label>目的地・キーワード
-        <input id="query" value="${esc(query)}"
+        <input id="query"
+          value="${esc(query)}"
           placeholder="例：京都">
       </label>
 
@@ -539,6 +629,7 @@ function render(){
 
       <div id="results"></div>
     `;
+
     results();
   }
 
@@ -554,6 +645,7 @@ function render(){
         ?state.plans.map(t=>`
           <div>
             ${card(t)}
+
             <div class="plan-actions">
               <button class="btn secondary"
                 data-action="edit"
@@ -572,6 +664,7 @@ function render(){
         :'<p>まだ旅程がありません。</p>'}
 
       <h3>SAVED｜保存した旅程</h3>
+
       ${saved.length
         ?saved.map(card).join('')
         :'<p>まだ保存した旅程がありません。</p>'}
@@ -603,18 +696,21 @@ function render(){
       <p>${esc(t.description)}</p>
 
       <button class="btn secondary"
-        data-action="bookmark" data-id="${esc(t.id)}">
+        data-action="bookmark"
+        data-id="${esc(t.id)}">
         ${state.saved.includes(t.id)?'♥ 保存済み':'♡ 保存する'}
       </button>
 
       <button class="btn"
-        data-action="copy" data-id="${esc(t.id)}">
+        data-action="copy"
+        data-id="${esc(t.id)}">
         この旅程をコピー
       </button>
 
       ${own?`
         <button class="btn secondary"
-          data-action="edit" data-id="${esc(t.id)}">
+          data-action="edit"
+          data-id="${esc(t.id)}">
           編集する
         </button>
       `:''}
@@ -633,8 +729,8 @@ function render(){
       </div>
 
       <p class="muted">
-        地図上の番号は訪問順、矢印は移動方向を示します。
-        地点間は直線であり、実際の道路・鉄道経路ではありません。
+        地図の番号は訪問順、矢印は移動方向です。
+        線は直線であり、実際の道路・鉄道経路ではありません。
       </p>
 
       <h3>DAY別スケジュール</h3>
@@ -650,6 +746,8 @@ function render(){
               <div class="travel-info">
                 ↓ ${esc(transportText(s))}
               </div>
+
+              ${checkHTML(d.stops[si-1],s)}
             `:''}
 
             <div class="stop">
@@ -664,6 +762,12 @@ function render(){
               ${validCoords(s.coords)
                 ?'<span class="ok">📍</span>'
                 :''}
+
+              ${hasNumber(s.stayMinutes)?`
+                <div class="muted">
+                  滞在時間：${esc(s.stayMinutes)}分
+                </div>
+              `:''}
             </div>
           `).join('')}
         </div>
@@ -691,6 +795,17 @@ function results(){
     :'<p>該当する旅程がありません。</p>';
 }
 
+function newSpot(){
+  return {
+    uid:uid(),
+    time:'09:00',
+    name:'',
+    transport:'',
+    travelMinutes:'',
+    stayMinutes:''
+  };
+}
+
 function newDraft(){
   return {
     id:'plan-'+Date.now()+'-'+
@@ -701,32 +816,15 @@ function newDraft(){
     icon:'🧳',
     description:'',
     schedule:[
-      {
-        name:'Day 1',
-        stops:[{
-          uid:uid(),
-          time:'09:00',
-          name:'',
-          transport:'',
-          travelMinutes:''
-        }]
-      },
-      {
-        name:'Day 2',
-        stops:[{
-          uid:uid(),
-          time:'09:00',
-          name:'',
-          transport:'',
-          travelMinutes:''
-        }]
-      }
+      {name:'Day 1',stops:[newSpot()]},
+      {name:'Day 2',stops:[newSpot()]}
     ]
   };
 }
 
 function openNew(){
   editing='';
+  reorderNotice='';
   draft=newDraft();
   go('post');
 }
@@ -736,6 +834,7 @@ function openEdit(id){
   if(!t)return;
 
   editing=id;
+  reorderNotice='';
   draft=normalizeTrip(t);
   go('edit');
 }
@@ -747,9 +846,8 @@ function renderEditor(){
     <h2>${editing?'旅程を編集':'新しい旅程を作成'}</h2>
 
     <div class="notice">
-      DAYごとに訪問時間・場所・移動手段・移動時間を入力します。
-      「場所を検索」から位置を登録すると、
-      地図に訪問順のルートが表示されます。
+      DAYごとに訪問場所・時間・滞在時間・移動手段を入力。
+      ▲ ▼ ボタンで訪問順を変更できます。
     </div>
 
     <div class="box">
@@ -759,7 +857,7 @@ function renderEditor(){
           placeholder="ローマを巡る2日間">
       </label>
 
-      <label>目的地（都市・国名まで入力）
+      <label>目的地
         <input id="trip-place"
           value="${esc(draft.place)}"
           placeholder="ローマ, イタリア">
@@ -800,110 +898,158 @@ function renderDays(){
   const el=document.getElementById('day-editor');
   if(!el||!draft)return;
 
-  el.innerHTML=draft.schedule.map((d,di)=>`
-    <section class="box day"
-      style="border-left-color:${COLORS[di%COLORS.length]}">
+  el.innerHTML=`
+    ${reorderNotice?`
+      <div class="time-check time-warn">
+        ${esc(reorderNotice)}
+      </div>
+    `:''}
 
-      <h3>${esc(d.name)}</h3>
+    ${draft.schedule.map((d,di)=>`
+      <section class="box day"
+        style="border-left-color:${COLORS[di%COLORS.length]}">
 
-      ${d.stops.map((s,si)=>`
-        <div class="spot">
-          <b>スポット ${si+1}</b>
+        <h3>${esc(d.name)}</h3>
 
-          <div class="row">
-            <label class="time">訪問時間
-              <input type="time"
-                data-field="time"
-                data-day="${di}"
-                data-spot="${si}"
-                value="${esc(
-                  /^\d\d:\d\d$/.test(s.time)?s.time:'09:00'
-                )}">
-            </label>
+        ${d.stops.map((s,si)=>`
+          <div class="spot">
 
-            <label class="place">訪問場所
-              <input
-                data-field="name"
-                data-day="${di}"
-                data-spot="${si}"
-                value="${esc(s.name)}"
-                placeholder="例：コロッセオ">
-            </label>
-          </div>
+            <div class="spot-head">
+              <b>スポット ${si+1}</b>
 
-          ${si>0?`
-            <div class="transport-box">
-              <b>前のスポットからの移動</b>
+              <div>
+                <button class="btn secondary"
+                  data-action="move-up"
+                  data-day="${di}"
+                  data-spot="${si}"
+                  ${si===0?'disabled':''}>
+                  ▲
+                </button>
 
-              <div class="transport-row">
-                <label>移動手段
-                  <select
-                    data-field="transport"
-                    data-day="${di}"
-                    data-spot="${si}">
-                    ${Object.entries(MODES).map(([value,label])=>`
-                      <option value="${esc(value)}"
-                        ${s.transport===value?'selected':''}>
-                        ${esc(label)}
-                      </option>
-                    `).join('')}
-                  </select>
-                </label>
-
-                <label>移動時間（分）
-                  <input type="number"
-                    min="0"
-                    step="1"
-                    data-field="travelMinutes"
-                    data-day="${di}"
-                    data-spot="${si}"
-                    value="${esc(s.travelMinutes??'')}"
-                    placeholder="例：25">
-                </label>
+                <button class="btn secondary"
+                  data-action="move-down"
+                  data-day="${di}"
+                  data-spot="${si}"
+                  ${si===d.stops.length-1?'disabled':''}>
+                  ▼
+                </button>
               </div>
             </div>
-          `:''}
 
-          <div class="status ${validCoords(s.coords)?'ok':''}">
-            ${validCoords(s.coords)
-              ?'✓ 位置登録済み：'+esc(s.locationLabel||s.name)
-              :'位置未登録'}
-          </div>
+            <div class="row">
+              <label class="time">訪問時間
+                <input type="time"
+                  data-field="time"
+                  data-day="${di}"
+                  data-spot="${si}"
+                  value="${esc(
+                    /^\d\d:\d\d$/.test(s.time)?s.time:'09:00'
+                  )}">
+              </label>
 
-          <label>検索キーワード（必要なら英語・現地語に変更）
-            <input
-              data-field="lookup"
+              <label class="place">訪問場所
+                <input
+                  data-field="name"
+                  data-day="${di}"
+                  data-spot="${si}"
+                  value="${esc(s.name)}"
+                  placeholder="例：コロッセオ">
+              </label>
+            </div>
+
+            <label>滞在時間（分）
+              <input type="number"
+                min="0"
+                step="1"
+                data-field="stayMinutes"
+                data-day="${di}"
+                data-spot="${si}"
+                value="${esc(s.stayMinutes??'')}"
+                placeholder="例：90">
+            </label>
+
+            ${si>0?`
+              <div class="transport-box">
+                <b>前のスポットからの移動</b>
+
+                <div class="transport-row">
+                  <label>移動手段
+                    <select
+                      data-field="transport"
+                      data-day="${di}"
+                      data-spot="${si}">
+                      ${Object.entries(MODES).map(([value,label])=>`
+                        <option value="${esc(value)}"
+                          ${(s.transport||'')===value?'selected':''}>
+                          ${esc(label)}
+                        </option>
+                      `).join('')}
+                    </select>
+                  </label>
+
+                  <label>移動時間（分）
+                    <input type="number"
+                      min="0"
+                      step="1"
+                      data-field="travelMinutes"
+                      data-day="${di}"
+                      data-spot="${si}"
+                      value="${esc(s.travelMinutes??'')}"
+                      placeholder="例：25">
+                  </label>
+                </div>
+              </div>
+            `:''}
+
+            <div class="status ${validCoords(s.coords)?'ok':''}">
+              ${validCoords(s.coords)
+                ?'✓ 位置登録済み：'+esc(s.locationLabel||s.name)
+                :'位置未登録'}
+            </div>
+
+            <label>検索キーワード
+              <input
+                data-field="lookup"
+                data-day="${di}"
+                data-spot="${si}"
+                value="${esc(s.lookup||aliases[s.name]||s.name)}"
+                placeholder="例：Colosseo, Roma, Italia">
+            </label>
+
+            <button class="btn secondary"
+              data-action="find-place"
               data-day="${di}"
-              data-spot="${si}"
-              value="${esc(s.lookup||aliases[s.name]||s.name)}"
-              placeholder="例：Colosseo, Roma, Italia">
-          </label>
+              data-spot="${si}">
+              🔎 この場所を検索
+            </button>
 
-          <button class="btn secondary"
-            data-action="find-place"
-            data-day="${di}"
-            data-spot="${si}">
-            🔎 この場所を検索
-          </button>
+            <button class="btn danger"
+              data-action="remove-spot"
+              data-day="${di}"
+              data-spot="${si}">
+              削除
+            </button>
 
-          <button class="btn danger"
-            data-action="remove-spot"
-            data-day="${di}"
-            data-spot="${si}">
-            削除
-          </button>
+            <div id="lookup-${di}-${si}"></div>
+          </div>
+        `).join('')}
 
-          <div id="lookup-${di}-${si}"></div>
-        </div>
-      `).join('')}
+        <button class="btn secondary"
+          data-action="add-spot"
+          data-day="${di}">
+          ＋ スポットを追加
+        </button>
 
-      <button class="btn secondary"
-        data-action="add-spot"
-        data-day="${di}">
-        ＋ スポットを追加
-      </button>
-    </section>
-  `).join('');
+        <button class="btn secondary"
+          data-action="check-times"
+          data-day="${di}">
+          🕒 時間をチェック
+        </button>
+
+        <div id="check-${di}"></div>
+      </section>
+    `).join('')}
+  `;
 }
 
 function syncDraft(){
@@ -941,6 +1087,10 @@ function syncDraft(){
       s.travelMinutes=el.value;
     }
 
+    if(field==='stayMinutes'){
+      s.stayMinutes=el.value;
+    }
+
     if(field==='name'&&s.name!==el.value){
       s.name=el.value;
       s.lookup='';
@@ -959,13 +1109,7 @@ function changeDays(n){
   while(draft.schedule.length<n){
     draft.schedule.push({
       name:'Day '+(draft.schedule.length+1),
-      stops:[{
-        uid:uid(),
-        time:'09:00',
-        name:'',
-        transport:'',
-        travelMinutes:''
-      }]
+      stops:[newSpot()]
     });
   }
 
@@ -976,22 +1120,87 @@ function changeDays(n){
 
 function addSpot(di){
   syncDraft();
-
-  draft.schedule[di].stops.push({
-    uid:uid(),
-    time:'09:00',
-    name:'',
-    transport:'',
-    travelMinutes:''
-  });
-
+  draft.schedule[di].stops.push(newSpot());
   renderDays();
 }
 
 function removeSpot(di,si){
   syncDraft();
-  draft.schedule[di].stops.splice(si,1);
+
+  const stops=draft.schedule[di].stops;
+  stops.splice(si,1);
+
+  if(si===0&&stops.length){
+    stops[0].transport='';
+    stops[0].travelMinutes='';
+  }
+
   renderDays();
+}
+
+function moveSpot(di,si,direction){
+  syncDraft();
+
+  const stops=draft?.schedule[di]?.stops;
+  if(!stops)return;
+
+  const target=si+direction;
+
+  if(target<0||target>=stops.length)return;
+
+  [stops[si],stops[target]]=
+    [stops[target],stops[si]];
+
+  // 移動情報はスポットではなく区間に関する情報。
+  // 並べ替えで影響を受ける区間は未設定へ戻す。
+  const affected=new Set([
+    si,
+    si+1,
+    target,
+    target+1
+  ]);
+
+  affected.forEach(index=>{
+    if(stops[index]){
+      stops[index].transport='';
+      stops[index].travelMinutes='';
+    }
+  });
+
+  if(stops.length){
+    stops[0].transport='';
+    stops[0].travelMinutes='';
+  }
+
+  reorderNotice=
+    '訪問順を変更しました。影響する区間の移動手段・移動時間を未設定に戻しました。再入力してください。';
+
+  renderDays();
+}
+
+function checkTimes(di){
+  syncDraft();
+
+  const d=draft?.schedule[di];
+  const el=document.getElementById('check-'+di);
+
+  if(!d||!el)return;
+
+  if(d.stops.length<2){
+    el.innerHTML=`
+      <div class="time-check time-unknown">
+        スポットを2つ以上登録すると時間をチェックできます。
+      </div>
+    `;
+    return;
+  }
+
+  el.innerHTML=d.stops.slice(1).map((s,i)=>`
+    <div>
+      <b>${i+1} → ${i+2}</b>
+      ${checkHTML(d.stops[i],s)}
+    </div>
+  `).join('');
 }
 
 function getSpotByUid(id){
@@ -1170,14 +1379,22 @@ function submitTrip(){
 
   for(const d of draft.schedule){
     for(const s of d.stops){
-      const m=s.travelMinutes;
+      for(const value of [s.travelMinutes,s.stayMinutes]){
+        if(
+          hasNumber(value)&&
+          (!Number.isInteger(Number(value))||Number(value)<0)
+        ){
+          alert('移動時間・滞在時間は0以上の整数で入力してください。');
+          return;
+        }
 
-      if(
-        m!==''&&m!==null&&m!==undefined&&
-        (!Number.isInteger(Number(m))||Number(m)<0)
-      ){
-        alert('移動時間は0以上の整数で入力してください。');
-        return;
+        if(
+          value!==''&&value!==null&&value!==undefined&&
+          !hasNumber(value)
+        ){
+          alert('移動時間・滞在時間を確認してください。');
+          return;
+        }
       }
     }
   }
@@ -1211,6 +1428,7 @@ function submitTrip(){
 
   draft=null;
   editing='';
+  reorderNotice='';
   go('detail',t.id);
 }
 
@@ -1346,7 +1564,10 @@ function drawMap(t){
             '<b>'+esc(d.name)+' / '+(si+1)+'. '+
             esc(s.name)+'</b><br>'+
             esc(s.time)+
-            (si>0?'<br>'+esc(transportText(s)):'')
+            (si>0?'<br>'+esc(transportText(s)):'')+
+            (hasNumber(s.stayMinutes)
+              ?'<br>滞在 '+esc(s.stayMinutes)+'分'
+              :'')
           );
 
         if(previous){
@@ -1488,6 +1709,18 @@ document.addEventListener('click',e=>{
 
   else if(a==='remove-spot'){
     removeSpot(di,si);
+  }
+
+  else if(a==='move-up'){
+    moveSpot(di,si,-1);
+  }
+
+  else if(a==='move-down'){
+    moveSpot(di,si,1);
+  }
+
+  else if(a==='check-times'){
+    checkTimes(di);
   }
 
   else if(a==='find-place'){
