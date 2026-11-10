@@ -4,377 +4,309 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#59634a">
-<title>TUMUGOU ver.1.2</title>
+<title>TUMUGOU ver.1.5</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 :root{
- --ivory:#f8f5ee;
- --sand:#e9dfcc;
- --brown:#493c30;
- --olive:#59634a;
- --light:#f0ece3;
- --line:#ddd3c4;
- --white:#fffefa;
+  --ivory:#f8f5ee;
+  --sand:#e9dfcc;
+  --brown:#493c30;
+  --olive:#59634a;
+  --line:#ddd3c4;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
 body{
- margin:0;
- background:var(--ivory);
- color:var(--brown);
- font-family:-apple-system,BlinkMacSystemFont,
- "Hiragino Kaku Gothic ProN",sans-serif;
+  margin:0;
+  background:var(--ivory);
+  color:var(--brown);
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Kaku Gothic ProN",sans-serif;
 }
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;touch-action:manipulation}
 header{
- background:var(--ivory);
- text-align:center;
- padding:23px 12px 17px;
- border-bottom:1px solid var(--line);
+  text-align:center;
+  padding:23px 10px;
+  border-bottom:1px solid var(--line);
 }
-.logo{
- font-family:Georgia,serif;
- font-size:34px;
- letter-spacing:5px;
- font-weight:bold;
+header strong{
+  font:bold 34px Georgia,serif;
+  letter-spacing:5px;
 }
-.slogan{
- font-size:11px;
- letter-spacing:1px;
- margin-top:8px;
- color:#81796d;
+header small{
+  display:block;
+  color:#82776a;
+  margin-top:7px;
 }
 main{
- max-width:780px;
- margin:auto;
- padding:20px 15px 120px;
+  max-width:760px;
+  margin:auto;
+  padding:20px 15px 115px;
 }
-h1,h2,h3{line-height:1.35}
 h2{font-size:25px}
 h3{font-size:18px}
-p{line-height:1.7}
+p{line-height:1.65}
+.muted{color:#817768;font-size:13px}
 .eyebrow{
- font-size:11px;
- letter-spacing:3px;
- color:var(--olive);
- font-weight:bold;
-}
-.muted{
- color:#857b6e;
- font-size:13px;
+  font-size:11px;
+  letter-spacing:2px;
+  color:var(--olive);
+  font-weight:bold;
 }
 .card,.panel{
- background:var(--white);
- border:1px solid var(--line);
- border-radius:17px;
- padding:17px;
- margin:15px 0;
- box-shadow:0 3px 15px #493c3008;
+  background:#fffefa;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:16px;
+  margin:14px 0;
+  overflow:hidden;
 }
-.card{overflow:hidden}
 .hero{
- background:linear-gradient(135deg,#c3c9b6,#e6d6bb);
- min-height:175px;
- border-radius:12px;
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:62px;
- overflow:hidden;
+  height:180px;
+  border-radius:10px;
+  background:linear-gradient(125deg,#bac6b4,#ead4b7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:60px;
+  overflow:hidden;
 }
 .hero img{
- width:100%;
- height:210px;
- object-fit:cover;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 .btn{
- background:var(--olive);
- color:white;
- border:0;
- border-radius:10px;
- padding:11px 15px;
- margin:5px 5px 5px 0;
- font-size:13px;
+  border:0;
+  border-radius:9px;
+  background:var(--olive);
+  color:white;
+  padding:11px 13px;
+  margin:4px 4px 4px 0;
+  font-size:13px;
+  cursor:pointer;
+  touch-action:manipulation;
 }
-.btn.alt{
- background:var(--sand);
- color:var(--brown);
-}
-.btn.danger{
- background:#f3e4e0;
- color:#91483b;
-}
+.alt{background:var(--sand);color:var(--brown)}
+.danger{background:#f4e2df;color:#88493c}
 .btn:disabled{opacity:.4}
 .actions{
- display:flex;
- flex-wrap:wrap;
- gap:4px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:3px;
 }
-.badge{
- display:inline-block;
- background:#e9ede4;
- color:var(--olive);
- border-radius:20px;
- padding:5px 10px;
- font-size:11px;
- margin:6px 5px 4px 0;
+.tag{
+  display:inline-block;
+  background:#e9eee3;
+  color:var(--olive);
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:11px;
+  margin:7px 4px 3px 0;
 }
 label{
- display:block;
- font-size:13px;
- font-weight:600;
- margin:13px 0;
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin:11px 0;
 }
 input,select,textarea{
- display:block;
- width:100%;
- margin-top:7px;
- padding:11px;
- border:1px solid #d5cabb;
- border-radius:9px;
- background:white;
- color:var(--brown);
+  display:block;
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border:1px solid #d3c8b8;
+  border-radius:8px;
+  background:white;
+  color:var(--brown);
+  font:inherit;
 }
-textarea{min-height:85px}
+textarea{min-height:75px}
 .notice{
- background:#eee9dc;
- padding:13px;
- border-radius:11px;
- font-size:13px;
- line-height:1.7;
- margin:14px 0;
+  background:#eee9dc;
+  border-radius:10px;
+  padding:12px;
+  font-size:13px;
+  line-height:1.6;
+  margin:12px 0;
 }
-.warning{
- background:#fff0e6;
- color:#8e5034;
- padding:12px;
- border-radius:9px;
- font-size:13px;
+.warn{
+  background:#fff0e6;
+  color:#925333;
+  padding:10px;
+  border-radius:8px;
+  font-size:12px;
 }
-.success{
- background:#e7efe3;
- color:#486444;
- padding:12px;
- border-radius:9px;
- font-size:13px;
+.ok{
+  background:#e8efe4;
+  color:#42613e;
+  padding:10px;
+  border-radius:8px;
+  font-size:12px;
 }
 nav{
- position:fixed;
- bottom:0;
- left:0;
- right:0;
- z-index:1000;
- background:var(--white);
- border-top:1px solid var(--line);
- display:flex;
- padding-bottom:env(safe-area-inset-bottom);
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  display:flex;
+  background:#fffefa;
+  border-top:1px solid var(--line);
+  z-index:1000;
+  padding-bottom:env(safe-area-inset-bottom);
 }
 nav button{
- flex:1;
- border:0;
- background:transparent;
- color:var(--brown);
- padding:13px 2px;
- font-size:11px;
+  flex:1;
+  border:0;
+  background:transparent;
+  padding:12px 0;
+  font-size:11px;
+  color:var(--brown);
 }
 nav button.active{
- background:#e8eddf;
- color:var(--olive);
- font-weight:bold;
+  background:#e8ede0;
+  font-weight:bold;
 }
 .tabs{
- display:flex;
- gap:7px;
- overflow-x:auto;
- padding:8px 0;
+  display:flex;
+  gap:5px;
+  overflow:auto;
 }
-.tabs button{white-space:nowrap}
+.tabs .btn{white-space:nowrap}
 .stats{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:7px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
 }
 .stat{
- background:white;
- border:1px solid var(--line);
- padding:13px 5px;
- text-align:center;
- border-radius:11px;
+  text-align:center;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 2px;
 }
-.stat strong{
- display:block;
- font-size:22px;
- color:var(--olive);
+.stat b{
+  display:block;
+  font-size:23px;
+  color:var(--olive);
 }
 .stat small{font-size:9px}
-.day{
- border-left:5px solid var(--olive);
-}
+.day{border-left:5px solid var(--olive)}
 .spot{
- background:#f7f3eb;
- padding:13px;
- border-radius:12px;
- margin:12px 0;
+  background:#f6f2e9;
+  padding:12px;
+  border-radius:11px;
+  margin:10px 0;
 }
-.spot-photo{
- width:100%;
- max-height:260px;
- object-fit:cover;
- border-radius:11px;
- margin:8px 0;
+.photo{
+  width:100%;
+  max-height:240px;
+  object-fit:cover;
+  border-radius:9px;
+  margin:7px 0;
 }
-.photo-thumb{
- width:100%;
- max-height:190px;
- object-fit:cover;
- border-radius:9px;
+.row{display:flex;gap:9px}
+.row>*{flex:1;min-width:0}
+.row .short{flex:0 0 110px}
+.travel{
+  background:#eee9dc;
+  padding:9px;
+  border-left:3px solid #b5a48d;
+  font-size:12px;
+  margin:8px 0;
 }
-.time{
- color:var(--olive);
- font-weight:bold;
-}
-.transport{
- background:#f0ece3;
- padding:10px;
- margin:10px 0;
- border-left:3px solid #b2a48f;
- border-radius:5px;
- font-size:12px;
-}
-.check{
- font-size:12px;
- padding:8px;
- border-radius:7px;
- margin:5px 0;
- background:#edf0e7;
-}
-.check.bad{background:#fff0e6;color:#975333}
 .map{
- height:340px;
- border-radius:12px;
- margin:14px 0;
- z-index:0;
+  height:350px;
+  border-radius:12px;
+  margin:14px 0;
+  z-index:0;
 }
-.map-pin{
- width:29px;
- height:29px;
- border:2px solid white;
- border-radius:50%;
- color:white;
- display:flex;
- align-items:center;
- justify-content:center;
- font-weight:bold;
- box-shadow:0 2px 5px #0005;
+.pin{
+  width:29px;
+  height:29px;
+  border:2px solid white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:bold;
+  box-shadow:0 2px 5px #0004;
 }
-.route-arrow{
- width:24px;
- height:24px;
- background:white;
- border-radius:50%;
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:20px;
+.arrow{
+  background:white;
+  border-radius:50%;
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
 }
 .legend{
- display:flex;
- gap:10px;
- flex-wrap:wrap;
- font-size:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  font-size:12px;
 }
 .dot{
- display:inline-block;
- width:10px;
- height:10px;
- border-radius:50%;
- margin-right:4px;
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  margin-right:5px;
 }
-.magazine-title{
- font-family:Georgia,serif;
- font-size:31px;
- line-height:1.3;
-}
-.template-scrap .day{
- background:#fffdf6;
- border-radius:3px 16px 9px 18px;
- transform:rotate(-.25deg);
- box-shadow:3px 5px 0 #e9dfcc;
-}
-.template-scrap .spot-photo{
- border:7px solid white;
- box-shadow:0 3px 12px #0002;
+.template-scrapbook .day{
+  box-shadow:4px 4px 0 #e9dfcc;
+  border-radius:3px 15px 8px 15px;
 }
 .template-minimal .day{
- border-left:2px solid #9b978b;
- border-radius:3px;
- box-shadow:none;
+  border-left-width:2px;
+  border-radius:3px;
 }
-.template-minimal .hero{
- background:#e9e7e1;
+.template-magazine h2{
+  font-family:Georgia,serif;
 }
-.template-magazine .day{
- border-left:7px solid var(--olive);
-}
-.template-magazine .magazine-title{
- text-transform:uppercase;
-}
-.export-preview{
- background:#e7e0d4;
- padding:12px;
- border-radius:13px;
- margin:15px 0;
-}
-.export-preview canvas{
- width:100%;
- max-width:420px;
- display:block;
- margin:auto;
- border-radius:4px;
- box-shadow:0 5px 20px #0002;
-}
-.result{
- border-bottom:1px solid var(--line);
- padding:11px 0;
- font-size:13px;
-}
-.row{
- display:flex;
- gap:9px;
- align-items:flex-start;
-}
-.row>*{flex:1;min-width:0}
-.row .short{flex:0 0 115px}
 .file-label{
- display:block;
- border:1px dashed #a7a08f;
- background:#f0ece3;
- border-radius:9px;
- padding:13px;
- text-align:center;
- cursor:pointer;
+  display:block;
+  border:1px dashed #9c9487;
+  padding:12px;
+  text-align:center;
+  border-radius:9px;
+  background:#eee9dc;
+  cursor:pointer;
 }
 .file-label input{display:none}
-hr{
- border:0;
- border-top:1px solid var(--line);
- margin:20px 0;
+.result{
+  border-bottom:1px solid var(--line);
+  padding:9px 0;
+  font-size:12px;
+}
+.preview img{
+  width:100%;
+  max-width:420px;
+  display:block;
+  margin:10px auto;
+  box-shadow:0 5px 15px #0002;
+}
+.backup-text{
+  font-size:11px;
+  min-height:170px;
+  font-family:monospace;
+}
+.divider{
+  border:0;
+  border-top:1px solid var(--line);
+  margin:20px 0;
 }
 </style>
 </head>
 
 <body>
 <header>
-<div class="logo">TUMUGOU</div>
-<div class="slogan">
-あなたの旅が、次の誰かの旅になる。
-</div>
+  <strong>TUMUGOU</strong>
+  <small>あなたの旅が、次の誰かの旅になる。</small>
 </header>
 
 <main id="app"></main>
@@ -383,133 +315,175 @@ hr{
 <script>
 'use strict';
 
-/* =========================
-   基本設定
-========================= */
-
 const KEY='tumugou_v02';
 
 const COLORS=[
- '#59634a',
- '#b47b59',
- '#66869a',
- '#b49a55',
- '#977d9d'
+  '#59634a',
+  '#b47b59',
+  '#66869a',
+  '#b49a55',
+  '#977d9d'
 ];
 
 const MODES={
- '':'未設定',
- walk:'🚶 徒歩',
- train:'🚃 電車',
- bus:'🚌 バス',
- car:'🚗 車',
- taxi:'🚕 タクシー',
- bike:'🚲 自転車',
- ferry:'⛴️ 船',
- other:'🚩 その他'
+  '':'未設定',
+  walk:'🚶 徒歩',
+  train:'🚃 電車',
+  bus:'🚌 バス',
+  car:'🚗 車',
+  taxi:'🚕 タクシー',
+  bike:'🚲 自転車',
+  ferry:'⛴️ 船',
+  other:'その他'
+};
+
+const STYLES={
+  '':'未設定',
+  culture:'歴史・文化',
+  food:'グルメ',
+  nature:'自然・絶景',
+  relax:'のんびり',
+  active:'アクティブ',
+  city:'街歩き'
 };
 
 const TEMPLATES={
- scrapbook:'手描きスクラップ',
- magazine:'トラベルマガジン',
- minimal:'シンプル'
+  scrapbook:'手描きスクラップ',
+  magazine:'トラベルマガジン',
+  minimal:'シンプル'
 };
 
 const KNOWN={
- '清水寺':[34.9949,135.785],
- '祇園で昼食':[35.003,135.778],
- '鴨川散歩':[35.01,135.771],
- '嵐山':[35.0094,135.6668],
- '竹林の小径':[35.017,135.671],
- '京都駅':[34.9858,135.7588],
- '迪化街':[25.0545,121.509],
- '寧夏夜市':[25.0567,121.5153],
- '龍山寺':[25.0372,121.4999],
- '中正紀念堂':[25.0345,121.5219],
- '札幌時計台':[43.0626,141.3535],
- '大通公園':[43.06,141.35],
- '小樽運河':[43.199,141.001],
- '堺町通り':[43.192,141.006]
-};
-
-const ALIASES={
- 'コロッセオ':'Colosseo Roma Italia',
- 'トレビの泉':'Fontana di Trevi Roma Italia',
- 'スペイン広場':'Piazza di Spagna Roma Italia',
- 'パンテオン':'Pantheon Roma Italia'
+  '清水寺':[34.9949,135.785],
+  '祇園で昼食':[35.003,135.778],
+  '鴨川散歩':[35.01,135.771],
+  '嵐山':[35.0094,135.6668],
+  '竹林の小径':[35.017,135.671],
+  '京都駅':[34.9858,135.7588],
+  '迪化街':[25.0545,121.509],
+  '寧夏夜市':[25.0567,121.5153],
+  '龍山寺':[25.0372,121.4999],
+  '中正紀念堂':[25.0345,121.5219],
+  '札幌時計台':[43.0626,141.3535],
+  '大通公園':[43.06,141.35],
+  '小樽運河':[43.199,141.001],
+  '堺町通り':[43.192,141.006]
 };
 
 const SAMPLES=[
- {
-  id:'kyoto',
-  title:'京都、街歩きと喫茶の2日間',
-  place:'京都',
-  icon:'🍵',
-  description:'寺社と喫茶をゆっくり巡る旅。',
-  template:'scrapbook',
-  schedule:[
-   {name:'Day 1',stops:[
-    {time:'09:30',name:'清水寺'},
-    {time:'12:00',name:'祇園で昼食',
-     transport:'walk',travelMinutes:25},
-    {time:'15:00',name:'鴨川散歩',
-     transport:'walk',travelMinutes:15}
-   ]},
-   {name:'Day 2',stops:[
-    {time:'10:00',name:'嵐山'},
-    {time:'13:00',name:'竹林の小径',
-     transport:'walk',travelMinutes:15},
-    {time:'16:00',name:'京都駅',
-     transport:'train',travelMinutes:35}
-   ]}
-  ]
- },
- {
-  id:'taipei',
-  title:'台北の街と夜市を楽しむ2日間',
-  place:'台北',
-  icon:'🏮',
-  description:'ローカルグルメと街歩き。',
-  template:'magazine',
-  schedule:[
-   {name:'Day 1',stops:[
-    {time:'11:00',name:'迪化街'},
-    {time:'18:00',name:'寧夏夜市'}
-   ]},
-   {name:'Day 2',stops:[
-    {time:'09:00',name:'龍山寺'},
-    {time:'14:00',name:'中正紀念堂'}
-   ]}
-  ]
- },
- {
-  id:'hokkaido',
-  title:'札幌・小樽を巡る2日間',
-  place:'北海道',
-  icon:'🌲',
-  description:'海辺の街と北海道グルメ。',
-  template:'minimal',
-  schedule:[
-   {name:'Day 1',stops:[
-    {time:'10:00',name:'札幌時計台'},
-    {time:'13:00',name:'大通公園'}
-   ]},
-   {name:'Day 2',stops:[
-    {time:'10:00',name:'小樽運河'},
-    {time:'14:00',name:'堺町通り'}
-   ]}
-  ]
- }
+  {
+    id:'kyoto',
+    title:'京都、街歩きと喫茶の2日間',
+    place:'京都',
+    icon:'🍵',
+    description:'寺社と喫茶をゆっくり巡る旅。',
+    style:'culture',
+    schedule:[
+      {
+        name:'Day 1',
+        stops:[
+          {time:'09:30',name:'清水寺'},
+          {
+            time:'12:00',
+            name:'祇園で昼食',
+            transport:'walk',
+            travelMinutes:25
+          },
+          {
+            time:'15:00',
+            name:'鴨川散歩',
+            transport:'walk',
+            travelMinutes:15
+          }
+        ]
+      },
+      {
+        name:'Day 2',
+        stops:[
+          {time:'10:00',name:'嵐山'},
+          {
+            time:'13:00',
+            name:'竹林の小径',
+            transport:'walk',
+            travelMinutes:15
+          },
+          {
+            time:'16:00',
+            name:'京都駅',
+            transport:'train',
+            travelMinutes:35
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id:'taipei',
+    title:'台北の街と夜市を楽しむ2日間',
+    place:'台北',
+    icon:'🏮',
+    description:'ローカルグルメと街歩き。',
+    style:'food',
+    schedule:[
+      {
+        name:'Day 1',
+        stops:[
+          {time:'11:00',name:'迪化街'},
+          {time:'18:00',name:'寧夏夜市'}
+        ]
+      },
+      {
+        name:'Day 2',
+        stops:[
+          {time:'09:00',name:'龍山寺'},
+          {time:'14:00',name:'中正紀念堂'}
+        ]
+      }
+    ]
+  },
+  {
+    id:'hokkaido',
+    title:'札幌・小樽を巡る2日間',
+    place:'北海道',
+    icon:'🌲',
+    description:'海辺の街と北海道グルメ。',
+    style:'nature',
+    schedule:[
+      {
+        name:'Day 1',
+        stops:[
+          {time:'10:00',name:'札幌時計台'},
+          {time:'13:00',name:'大通公園'}
+        ]
+      },
+      {
+        name:'Day 2',
+        stops:[
+          {time:'10:00',name:'小樽運河'},
+          {time:'14:00',name:'堺町通り'}
+        ]
+      }
+    ]
+  }
 ];
 
-let state={plans:[],saved:[]};
+let state={
+  plans:[],
+  saved:[]
+};
 
 try{
- const v=JSON.parse(localStorage.getItem(KEY));
- if(v&&Array.isArray(v.plans)&&Array.isArray(v.saved)){
-  state=v;
- }
-}catch(e){console.error(e)}
+  const v=JSON.parse(localStorage.getItem(KEY));
+  if(
+    v &&
+    Array.isArray(v.plans) &&
+    Array.isArray(v.saved)
+  ){
+    state=v;
+  }
+}catch(e){
+  console.error(e);
+}
 
 const app=document.getElementById('app');
 const nav=document.getElementById('nav');
@@ -517,2280 +491,3113 @@ const nav=document.getElementById('nav');
 let page='home';
 let selected='';
 let myTab='planning';
-let query='';
-let duration='';
 let draft=null;
 let editing='';
 let map=null;
+
 let searchBusy=false;
 let lastSearch=0;
-let searchContext=null;
+let searchToken='';
 let searchResults=[];
+
 let exportTrip=null;
 let exportIndex=0;
+
 let restoreCandidate=null;
 let backupText='';
 
-/* =========================
-   共通関数
-========================= */
+let search={
+  q:'',
+  days:'',
+  style:'',
+  status:''
+};
 
 function uid(){
- return 't'+Date.now().toString(36)+
- Math.random().toString(36).slice(2,9);
+  return 't'+Date.now().toString(36)
+    +Math.random().toString(36).slice(2,9);
 }
 
 function esc(v){
- return String(v??'').replace(/[&<>"']/g,c=>({
-  '&':'&amp;',
-  '<':'&lt;',
-  '>':'&gt;',
-  '"':'&quot;',
-  "'":'&#39;'
- }[c]));
+  return String(v??'').replace(
+    /[&<>"']/g,
+    c=>({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c])
+  );
 }
 
-function clone(x){
- return JSON.parse(JSON.stringify(x));
+function clone(v){
+  return JSON.parse(JSON.stringify(v));
 }
 
 function persist(){
- try{
-  localStorage.setItem(KEY,JSON.stringify(state));
-  return true;
- }catch(e){
-  alert(
-   '保存容量が不足している可能性があります。\n'+
-   '写真を減らすか、バックアップを取ってください。'
-  );
-  return false;
- }
+  try{
+    localStorage.setItem(KEY,JSON.stringify(state));
+    return true;
+  }catch(e){
+    alert(
+      '保存に失敗しました。写真の保存容量などを確認してください。'
+    );
+    return false;
+  }
 }
 
 function update(fn){
- const before=clone(state);
- fn();
- if(!persist()){
-  state=before;
-  return false;
- }
- return true;
+  const old=clone(state);
+  fn();
+
+  if(!persist()){
+    state=old;
+    return false;
+  }
+
+  return true;
+}
+
+function all(){
+  return [...SAMPLES,...state.plans];
 }
 
 function find(id){
- return [...SAMPLES,...state.plans]
-  .find(t=>t.id===id);
+  return all().find(t=>t.id===id);
 }
 
 function own(id){
- return state.plans.some(t=>t.id===id);
-}
-
-function norm(t){
- const x=clone(t);
- x.status=x.status==='completed'
-  ?'completed':'planning';
- x.published=!!x.published;
- x.template=TEMPLATES[x.template]
-  ?x.template:'scrapbook';
- x.schedule=(x.schedule||[]).map((d,i)=>({
-  name:d.name||'Day '+(i+1),
-  stops:(d.stops||[]).map(s=>({
-   ...s,
-   uid:s.uid||uid(),
-   transport:s.transport||'',
-   travelMinutes:s.travelMinutes??'',
-   stayMinutes:s.stayMinutes??'',
-   photo:s.photo||''
-  }))
- }));
- x.days=x.schedule.length;
- return x;
-}
-
-function days(t){
- return (t.schedule||[]).length;
+  return state.plans.some(t=>t.id===id);
 }
 
 function coords(p){
- return Array.isArray(p)&&p.length===2&&
- p.every(v=>Number.isFinite(Number(v)))&&
- Math.abs(Number(p[0]))<=90&&
- Math.abs(Number(p[1]))<=180;
+  return Array.isArray(p)
+    &&p.length===2
+    &&p.every(n=>Number.isFinite(+n))
+    &&Math.abs(+p[0])<=90
+    &&Math.abs(+p[1])<=180;
 }
 
 function hasNum(v){
- return v!==''&&v!==null&&
- v!==undefined&&Number.isFinite(Number(v));
+  return v!==''&&v!=null&&Number.isFinite(+v);
 }
 
-function label(t){
- if(SAMPLES.includes(t))return 'サンプル';
- return t.status==='completed'
-  ?'実際に行った旅':'旅行計画';
+function norm(t){
+  const x=clone(t);
+
+  x.status=x.status==='completed'
+    ?'completed':'planning';
+
+  x.published=!!x.published;
+
+  x.template=TEMPLATES[x.template]
+    ?x.template:'scrapbook';
+
+  x.style=STYLES[x.style]
+    ?x.style:'';
+
+  x.schedule=(x.schedule||[]).map((d,i)=>({
+    name:d.name||'Day '+(i+1),
+    stops:(d.stops||[]).map(s=>({
+      ...s,
+      uid:s.uid||uid(),
+      time:s.time||'09:00',
+      transport:s.transport||'',
+      travelMinutes:s.travelMinutes??'',
+      stayMinutes:s.stayMinutes??'',
+      comment:s.comment||'',
+      photo:s.photo||''
+    }))
+  }));
+
+  x.days=x.schedule.length;
+
+  return x;
 }
 
-function travel(s){
- return [
-  MODES[s.transport]||'',
-  hasNum(s.travelMinutes)
-   ?s.travelMinutes+'分':''
- ].filter(x=>x&&x!=='未設定')
- .join('・')||'移動情報未設定';
+function statusLabel(t){
+  return SAMPLES.includes(t)
+    ?'サンプル'
+    :t.status==='completed'
+      ?'実際に行った旅'
+      :'旅行計画';
 }
 
 function firstPhoto(t){
- for(const d of t.schedule||[]){
-  for(const s of d.stops||[]){
-   if(s.photo)return s.photo;
+  for(const d of t.schedule||[]){
+    for(const s of d.stops||[]){
+      if(s.photo)return s.photo;
+    }
   }
- }
- return '';
+  return '';
 }
 
-function hero(t){
- const p=firstPhoto(t);
- return `<div class="hero">${
-  p?`<img src="${p}" alt="">`:esc(t.icon||'🧳')
- }</div>`;
-}
-
-function card(t){
- return `
- <article class="card">
-  ${hero(t)}
-  <div>
-   <span class="badge">${esc(t.place)}</span>
-   <span class="badge">${days(t)}日間</span>
-   <span class="badge">${label(t)}</span>
-  </div>
-  <h3>${esc(t.title)}</h3>
-  <p class="muted">${esc(t.description||'')}</p>
-  <button class="btn"
-   data-action="detail" data-id="${esc(t.id)}">
-   旅程を見る →
-  </button>
- </article>`;
-}
-
-function counts(){
- return {
-  planning:state.plans.filter(
-   t=>t.status!=='completed').length,
-  completed:state.plans.filter(
-   t=>t.status==='completed').length,
-  post:state.plans.filter(t=>t.published).length,
-  saved:state.saved.length
- };
-}
-
-function stats(){
- const c=counts();
- return `<div class="stats">${
-  Object.entries(c).map(([k,v])=>`
-  <div class="stat">
-   <strong>${v}</strong>
-   <small>${k.toUpperCase()}</small>
-  </div>`).join('')
- }</div>`;
+function travel(s){
+  return [
+    MODES[s.transport]||'',
+    hasNum(s.travelMinutes)
+      ?s.travelMinutes+'分':''
+  ].filter(x=>x&&x!=='未設定').join('・')
+  ||'移動情報未設定';
 }
 
 function menu(){
- nav.innerHTML=[
-  ['home','HOME','⌂'],
-  ['search','SEARCH','⌕'],
-  ['my','MY TRIP','♡'],
-  ['post','POST','＋']
- ].map(([id,name,icon])=>`
- <button class="${page===id?'active':''}"
-  data-action="page" data-id="${id}">
-  ${icon}<br>${name}
- </button>`).join('');
+  nav.innerHTML=[
+    ['home','HOME','⌂'],
+    ['search','SEARCH','⌕'],
+    ['my','MY TRIP','♡'],
+    ['post','POST','＋']
+  ].map(([id,n,icon])=>`
+    <button
+      class="${page===id?'active':''}"
+      data-a="page"
+      data-id="${id}">
+      ${icon}<br>${n}
+    </button>
+  `).join('');
 }
 
 function go(p,id=''){
- if(map){
-  map.remove();
-  map=null;
- }
- page=p;
- selected=id;
- window.scrollTo(0,0);
- render();
- if(p==='detail'){
-  setTimeout(()=>{
-   if(page==='detail'&&selected===id){
-    drawMap(find(id));
-   }
-  },100);
- }
+  if(map){
+    map.remove();
+    map=null;
+  }
+
+  page=p;
+  selected=id;
+
+  window.scrollTo(0,0);
+  render();
+
+  if(p==='detail'){
+    setTimeout(()=>{
+      if(page==='detail'&&selected===id){
+        drawMap(find(id));
+      }
+    },80);
+  }
+}
+
+function hero(t){
+  const p=firstPhoto(t);
+
+  return `
+    <div class="hero">
+      ${p
+        ?`<img src="${p}" alt="">`
+        :esc(t.icon||'🧳')
+      }
+    </div>
+  `;
+}
+
+function card(t){
+  return `
+    <article class="card">
+      ${hero(t)}
+
+      <span class="tag">${esc(t.place)}</span>
+      <span class="tag">${t.schedule.length}日間</span>
+      <span class="tag">${statusLabel(t)}</span>
+
+      ${t.style?`
+        <span class="tag">
+          ${esc(STYLES[t.style])}
+        </span>
+      `:''}
+
+      <h3>${esc(t.title)}</h3>
+
+      <p class="muted">
+        ${esc(t.description||'')}
+      </p>
+
+      <button
+        class="btn"
+        data-a="detail"
+        data-id="${esc(t.id)}">
+        旅程を見る →
+      </button>
+    </article>
+  `;
+}
+
+function stats(){
+  const c={
+    PLANNING:state.plans.filter(
+      t=>t.status!=='completed'
+    ).length,
+
+    COMPLETED:state.plans.filter(
+      t=>t.status==='completed'
+    ).length,
+
+    POST:state.plans.filter(
+      t=>t.published
+    ).length,
+
+    SAVED:state.saved.length
+  };
+
+  return `
+    <div class="stats">
+      ${Object.entries(c).map(([k,v])=>`
+        <div class="stat">
+          <b>${v}</b>
+          <small>${k}</small>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function render(){
+  menu();
+
+  ({
+    home:renderHome,
+    search:renderSearch,
+    my:renderMy,
+    post:renderPost,
+    detail:renderDetail,
+    edit:renderEditor,
+    backup:renderBackup,
+    export:renderExport,
+    copy:renderCopy
+  })[page]?.();
 }
 
 /* =========================
-   画面表示
+   HOME
 ========================= */
 
-function render(){
- menu();
-
- if(page==='home')renderHome();
- if(page==='search')renderSearch();
- if(page==='my')renderMy();
- if(page==='post')renderPost();
- if(page==='detail')renderDetail();
- if(page==='edit')renderEditor();
- if(page==='backup')renderBackup();
- if(page==='export')renderExport();
-}
-
 function renderHome(){
- app.innerHTML=`
- <div class="eyebrow">YOUR JOURNEY, OUR STORY</div>
- <h2 class="magazine-title">
-  誰かの旅から、<br>次の旅がはじまる。
- </h2>
- <p>
-  実際の旅程を参考に、<br>
-  自分だけの旅を紡いでいこう。
- </p>
+  app.innerHTML=`
+    <div class="eyebrow">
+      YOUR JOURNEY, OUR STORY
+    </div>
 
- <button class="btn" data-action="new">
-  ＋ 新しい旅を計画
- </button>
+    <h2>
+      誰かの旅から、<br>
+      次の旅がはじまる。
+    </h2>
 
- <button class="btn alt"
-  data-action="page" data-id="search">
-  旅程を探す
- </button>
+    <p>
+      実際の旅程を参考に、
+      自分だけの旅を紡いでいこう。
+    </p>
 
- <div class="notice">
-  現在は試作版です。
-  公開した旅程は同じブラウザ内でのみ表示されます。
-  サンプルは実体験を保証するものではありません。
- </div>
+    <button class="btn" data-a="new">
+      ＋ 新しい旅を計画
+    </button>
 
- <div class="eyebrow">DISCOVER</div>
- <h2>公開した旅程</h2>
- ${
-  state.plans.filter(t=>t.published)
-  .map(card).join('')||
-  '<p class="muted">公開した旅程はまだありません。</p>'
- }
+    <button
+      class="btn alt"
+      data-a="page"
+      data-id="search">
+      旅程を探す
+    </button>
 
- <h2>旅程サンプル</h2>
- ${SAMPLES.map(card).join('')}
- `;
+    <div class="notice">
+      試作版です。
+      公開した旅程は同じブラウザ内だけで表示されます。
+      サンプルは実体験を保証するものではありません。
+    </div>
+
+    <h2>公開した旅程</h2>
+
+    ${state.plans.filter(t=>t.published)
+      .map(card).join('')
+      ||'<p class="muted">まだ公開旅程がありません。</p>'}
+
+    <h2>サンプル旅程</h2>
+
+    ${SAMPLES.map(card).join('')}
+  `;
 }
+
+/* =========================
+   SEARCH ver.1.5
+========================= */
 
 function renderSearch(){
- app.innerHTML=`
- <div class="eyebrow">FIND YOUR NEXT TRIP</div>
- <h2>旅程を探す</h2>
+  app.innerHTML=`
+    <div class="eyebrow">
+      FIND YOUR NEXT TRIP
+    </div>
 
- <label>目的地・キーワード
-  <input id="query" value="${esc(query)}"
-   placeholder="例：京都、台北">
- </label>
+    <h2>旅程を探す</h2>
 
- <label>旅行日数
-  <select id="duration">
-   <option value="">すべて</option>
-   ${Array.from({length:14},(_,i)=>i+1)
-    .map(n=>`
-    <option value="${n}"
-     ${duration===String(n)?'selected':''}>
-     ${n}日間
-    </option>`).join('')}
-  </select>
- </label>
+    <label>
+      目的地・キーワード
+      <input
+        id="search-q"
+        value="${esc(search.q)}"
+        placeholder="例：京都、台北、夜市">
+    </label>
 
- <div id="results"></div>
- `;
- renderResults();
+    <div class="row">
+      <label>
+        旅行日数
+        <select id="search-days">
+          <option value="">すべて</option>
+
+          ${Array.from(
+            {length:14},
+            (_,i)=>i+1
+          ).map(n=>`
+            <option
+              value="${n}"
+              ${search.days===String(n)?'selected':''}>
+              ${n}日間
+            </option>
+          `).join('')}
+        </select>
+      </label>
+
+      <label>
+        旅行スタイル
+        <select id="search-style">
+          ${Object.entries(STYLES)
+            .map(([k,v])=>`
+              <option
+                value="${k}"
+                ${search.style===k?'selected':''}>
+                ${k?v:'すべて'}
+              </option>
+            `).join('')}
+        </select>
+      </label>
+    </div>
+
+    <label>
+      旅程の種類
+      <select id="search-status">
+        <option
+          value=""
+          ${!search.status?'selected':''}>
+          すべて
+        </option>
+
+        <option
+          value="completed"
+          ${search.status==='completed'?'selected':''}>
+          実際に行った旅
+        </option>
+
+        <option
+          value="planning"
+          ${search.status==='planning'?'selected':''}>
+          旅行計画
+        </option>
+
+        <option
+          value="sample"
+          ${search.status==='sample'?'selected':''}>
+          サンプル
+        </option>
+      </select>
+    </label>
+
+    <button
+      class="btn alt"
+      data-a="reset-search">
+      絞り込みを解除
+    </button>
+
+    <div id="search-results"></div>
+  `;
+
+  renderResults();
 }
 
 function renderResults(){
- const el=document.getElementById('results');
- if(!el)return;
+  const el=document.getElementById('search-results');
+  if(!el)return;
 
- const list=[
-  ...SAMPLES,
-  ...state.plans.filter(t=>t.published)
- ].filter(t=>
-  (t.title+' '+t.place).toLowerCase()
-  .includes(query.toLowerCase())&&
-  (!duration||days(t)===Number(duration))
- );
+  const list=[
+    ...SAMPLES,
+    ...state.plans.filter(t=>t.published)
+  ].filter(t=>{
+    const isSample=SAMPLES.includes(t);
 
- el.innerHTML=list.map(card).join('')||
- '<p class="muted">該当する旅程はありません。</p>';
+    const text=[
+      t.title,
+      t.place,
+      t.description,
+      ...t.schedule.flatMap(
+        d=>d.stops.map(s=>s.name)
+      )
+    ].join(' ').toLowerCase();
+
+    return text.includes(search.q.toLowerCase())
+      &&(!search.days
+        ||t.schedule.length===+search.days)
+      &&(!search.style
+        ||t.style===search.style)
+      &&(!search.status
+        ||(
+          search.status==='sample'
+            ?isSample
+            :!isSample
+              &&(t.status||'planning')===search.status
+        ));
+  });
+
+  el.innerHTML=`
+    <p class="muted">${list.length}件の旅程</p>
+
+    ${list.map(card).join('')
+      ||'<p>該当する旅程はありません。</p>'}
+  `;
 }
+
+/* =========================
+   MY TRIP
+========================= */
 
 function renderMy(){
- const c=counts();
- const tabs=[
-  ['planning','PLANNING'],
-  ['completed','COMPLETED'],
-  ['post','POST'],
-  ['saved','SAVED']
- ];
+  const list=myTab==='saved'
+    ?state.saved.map(find).filter(Boolean)
+    :myTab==='post'
+      ?state.plans.filter(t=>t.published)
+      :state.plans.filter(
+        t=>(t.status||'planning')===myTab
+      );
 
- let list=[];
+  app.innerHTML=`
+    <div class="eyebrow">MY JOURNEYS</div>
 
- if(myTab==='saved'){
-  list=state.saved.map(find).filter(Boolean);
- }else if(myTab==='post'){
-  list=state.plans.filter(t=>t.published);
- }else{
-  list=state.plans.filter(t=>
-   (t.status||'planning')===myTab);
- }
+    <h2>MY TRIP</h2>
 
- app.innerHTML=`
- <div class="eyebrow">MY JOURNEYS</div>
- <h2>MY TRIP</h2>
+    ${stats()}
 
- ${stats()}
-
- <button class="btn alt"
-  data-action="page" data-id="backup">
-  🛡 バックアップ・復元
- </button>
-
- <div class="tabs">
- ${tabs.map(([id,name])=>`
-  <button class="btn ${myTab===id?'':'alt'}"
-   data-action="tab" data-id="${id}">
-   ${name}
-  </button>`).join('')}
- </div>
-
- ${list.map(t=>`
-  ${card(t)}
-  <div class="actions">
-   ${own(t.id)?`
-    <button class="btn alt"
-     data-action="edit" data-id="${esc(t.id)}">
-     編集
+    <button class="btn" data-a="new">
+      ＋ 旅程を作成
     </button>
 
-    ${t.status==='completed'?`
-     <button class="btn alt"
-      data-action="planning" data-id="${esc(t.id)}">
-      PLANNINGに戻す
-     </button>`:`
-     <button class="btn alt"
-      data-action="complete" data-id="${esc(t.id)}">
-      旅行を完了
-     </button>`}
-
-    <button class="btn alt"
-     data-action="${t.published?'unpublish':'publish'}"
-     data-id="${esc(t.id)}">
-     ${t.published?'公開取り消し':'POSTに公開'}
+    <button
+      class="btn alt"
+      data-a="page"
+      data-id="backup">
+      🛡 バックアップ・復元
     </button>
 
-    <button class="btn danger"
-     data-action="delete" data-id="${esc(t.id)}">
-     削除
-    </button>
-   `:`
-    <button class="btn alt"
-     data-action="copy" data-id="${esc(t.id)}">
-     コピーして編集
-    </button>`}
-  </div>
- `).join('')||
- '<p class="muted">まだ旅程がありません。</p>'}
+    <div class="tabs">
+      ${['planning','completed','post','saved']
+        .map(k=>`
+          <button
+            class="btn ${myTab===k?'':'alt'}"
+            data-a="tab"
+            data-id="${k}">
+            ${k.toUpperCase()}
+          </button>
+        `).join('')}
+    </div>
 
- <div class="notice">
-  公開済みの旅程はPOSTに表示されます。
-  PLANNINGまたはCOMPLETEDからも編集できます。
- </div>
- `;
+    ${list.map(t=>`
+      ${card(t)}
+
+      <div class="actions">
+        ${own(t.id)?`
+          <button
+            class="btn alt"
+            data-a="edit"
+            data-id="${esc(t.id)}">
+            編集
+          </button>
+
+          <button
+            class="btn alt"
+            data-a="${t.status==='completed'
+              ?'planning':'complete'}"
+            data-id="${esc(t.id)}">
+            ${t.status==='completed'
+              ?'PLANNINGに戻す'
+              :'旅行を完了'}
+          </button>
+
+          <button
+            class="btn alt"
+            data-a="${t.published
+              ?'unpublish':'publish'}"
+            data-id="${esc(t.id)}">
+            ${t.published
+              ?'公開を取り消す'
+              :'POSTに公開'}
+          </button>
+
+          <button
+            class="btn danger"
+            data-a="delete"
+            data-id="${esc(t.id)}">
+            削除
+          </button>
+        `:`
+          <button
+            class="btn alt"
+            data-a="copy"
+            data-id="${esc(t.id)}">
+            コピーして編集
+          </button>
+        `}
+      </div>
+    `).join('')
+      ||'<p class="muted">まだ旅程がありません。</p>'}
+  `;
 }
+
+/* =========================
+   POST
+========================= */
 
 function renderPost(){
- app.innerHTML=`
- <div class="eyebrow">SHARE YOUR JOURNEY</div>
- <h2>あなたの旅を紡ぐ。</h2>
- <p>
-  誰かの次の旅につながる、
-  あなたの旅程を投稿しよう。
- </p>
+  app.innerHTML=`
+    <div class="eyebrow">
+      SHARE YOUR JOURNEY
+    </div>
 
- <button class="btn" data-action="new-publish">
-  ＋ 新しい旅程を作成して投稿
- </button>
+    <h2>あなたの旅を紡ぐ。</h2>
 
- <h3>既存の旅程から投稿</h3>
-
- ${state.plans.map(t=>`
-  <div class="card">
-   <h3>${esc(t.title)}</h3>
-   <span class="badge">${label(t)}</span>
-   <span class="badge">
-    ${t.published?'公開中':'非公開'}
-   </span>
-   <div>
-    <button class="btn alt"
-     data-action="edit" data-id="${esc(t.id)}">
-     最終編集
+    <button class="btn" data-a="new-publish">
+      ＋ 新規作成して投稿
     </button>
-    <button class="btn"
-     data-action="${t.published?'unpublish':'publish'}"
-     data-id="${esc(t.id)}">
-     ${t.published?'公開取り消し':'公開する'}
-    </button>
-   </div>
-  </div>
- `).join('')||
- '<p class="muted">まだ旅程がありません。</p>'}
 
- <div class="notice">
-  現在の「公開」はローカル試作機能です。
-  他のユーザーへの共有には、
-  今後データベースの導入が必要です。
- </div>
- `;
+    <h3>既存の旅程から投稿</h3>
+
+    ${state.plans.map(t=>`
+      <div class="card">
+        <h3>${esc(t.title)}</h3>
+
+        <span class="tag">
+          ${t.published?'公開中':'非公開'}
+        </span>
+
+        <button
+          class="btn alt"
+          data-a="edit"
+          data-id="${esc(t.id)}">
+          最終編集
+        </button>
+
+        <button
+          class="btn"
+          data-a="${t.published
+            ?'unpublish':'publish'}"
+          data-id="${esc(t.id)}">
+          ${t.published
+            ?'公開取り消し'
+            :'公開する'}
+        </button>
+      </div>
+    `).join('')
+      ||'<p>旅程がありません。</p>'}
+
+    <div class="notice">
+      POSTへの公開は同じブラウザ内のみです。
+    </div>
+  `;
 }
 
 /* =========================
-   旅程詳細 ver.1.0
+   DETAIL
 ========================= */
+
+function timeMin(v){
+  if(!/^\d\d:\d\d$/.test(v||''))return null;
+
+  const [h,m]=v.split(':').map(Number);
+
+  return h<24&&m<60
+    ?h*60+m
+    :null;
+}
+
+function checkHTML(a,b){
+  const x=timeMin(a.time);
+  const y=timeMin(b.time);
+
+  if(x===null||y===null){
+    return '<p class="muted">時刻未設定</p>';
+  }
+
+  if(y<x){
+    return '<p class="warn">⚠ 時刻が前後しています</p>';
+  }
+
+  if(
+    !hasNum(a.stayMinutes)
+    ||!hasNum(b.travelMinutes)
+  ){
+    return `
+      <p class="muted">
+        移動・滞在時間が未設定
+      </p>
+    `;
+  }
+
+  const gap=y-x
+    -(+a.stayMinutes)
+    -(+b.travelMinutes);
+
+  return `
+    <p class="${gap<0?'warn':'ok'}">
+      ${gap<0
+        ?'⚠ '+(-gap)+'分不足'
+        :'✓ '+gap+'分の余裕'}
+    </p>
+  `;
+}
 
 function renderDetail(){
- const original=find(selected);
- if(!original){go('home');return}
+  const original=find(selected);
 
- const t=norm(original);
- const template=t.template||'scrapbook';
+  if(!original){
+    go('home');
+    return;
+  }
 
- app.innerHTML=`
- <div class="template-${template}">
-  <div class="eyebrow">TRAVEL JOURNAL</div>
+  const t=norm(original);
 
-  ${hero(t)}
+  app.innerHTML=`
+    <div class="template-${t.template}">
+      <div class="eyebrow">TRAVEL JOURNAL</div>
 
-  <h2 class="magazine-title">${esc(t.title)}</h2>
+      ${hero(t)}
 
-  <span class="badge">${esc(t.place)}</span>
-  <span class="badge">${days(t)}日間</span>
-  <span class="badge">${label(original)}</span>
-  ${t.published?'<span class="badge">公開中</span>':''}
+      <h2>${esc(t.title)}</h2>
 
-  <p>${esc(t.description||'')}</p>
+      <span class="tag">${esc(t.place)}</span>
+      <span class="tag">${t.schedule.length}日間</span>
+      <span class="tag">${statusLabel(original)}</span>
 
-  <div class="actions">
-   <button class="btn alt"
-    data-action="bookmark" data-id="${esc(t.id)}">
-    ${state.saved.includes(t.id)?'♥ 保存済み':'♡ 保存'}
-   </button>
-
-   <button class="btn"
-    data-action="copy" data-id="${esc(t.id)}">
-    この旅程をコピー
-   </button>
-
-   <button class="btn alt"
-    data-action="export" data-id="${esc(t.id)}">
-    📸 Instagram画像
-   </button>
-
-   ${own(t.id)?`
-    <button class="btn alt"
-     data-action="edit" data-id="${esc(t.id)}">
-     編集
-    </button>`:''}
-  </div>
-
-  <hr>
-
-  <div class="eyebrow">THE ROUTE</div>
-  <h2>旅の全体ルート</h2>
-
-  <div id="trip-map" class="map"></div>
-
-  <div class="legend">
-   ${t.schedule.map((d,i)=>`
-    <span>
-     <span class="dot"
-      style="background:${COLORS[i%COLORS.length]}"></span>
-     ${esc(d.name)}
-    </span>`).join('')}
-  </div>
-
-  <p class="muted">
-   番号は訪問順です。
-   線は地点間の直線であり、
-   実際の道路・鉄道経路ではありません。
-  </p>
-
-  <hr>
-
-  <div class="eyebrow">DAY BY DAY</div>
-  <h2>旅のスケジュール</h2>
-
-  ${t.schedule.map((d,di)=>`
-   <section class="panel day"
-    style="border-left-color:${COLORS[di%COLORS.length]}">
-
-    <div class="eyebrow">DAY ${di+1}</div>
-    <h3>${esc(d.name)}</h3>
-
-    ${d.stops.map((s,si)=>`
-     ${si?`
-      <div class="transport">
-       ↓ ${esc(travel(s))}
-      </div>
-      ${timeCheckHTML(d.stops[si-1],s)}
-     `:''}
-
-     <div class="spot">
-      <div class="time">
-       ${esc(s.time||'--:--')}
-      </div>
-
-      <h3>
-       ${si+1}. ${esc(s.name)}
-      </h3>
-
-      ${s.photo?`
-       <img class="spot-photo"
-        src="${s.photo}" alt="">
+      ${t.style?`
+        <span class="tag">
+          ${esc(STYLES[t.style])}
+        </span>
       `:''}
 
-      ${hasNum(s.stayMinutes)?`
-       <p class="muted">
-        滞在時間：${s.stayMinutes}分
-       </p>`:''}
+      <p>${esc(t.description||'')}</p>
 
-      ${s.comment?`
-       <p>${esc(s.comment)}</p>`:''}
-     </div>
-    `).join('')}
-   </section>
-  `).join('')}
+      <div class="actions">
+        <button
+          class="btn alt"
+          data-a="bookmark"
+          data-id="${esc(t.id)}">
+          ${state.saved.includes(t.id)
+            ?'♥ 保存済み'
+            :'♡ 保存'}
+        </button>
 
-  <div class="panel">
-   <div class="eyebrow">DESIGN STYLE</div>
-   <h3>旅程デザイン</h3>
-   <p class="muted">
-    ${esc(TEMPLATES[template])}
-   </p>
-   ${own(t.id)?`
-    <button class="btn alt"
-     data-action="edit" data-id="${esc(t.id)}">
-     デザインを変更する
-    </button>`:''}
-  </div>
- </div>
- `;
+        <button
+          class="btn"
+          data-a="copy"
+          data-id="${esc(t.id)}">
+          この旅程をコピー
+        </button>
+
+        <button
+          class="btn alt"
+          data-a="export"
+          data-id="${esc(t.id)}">
+          📸 Instagram画像
+        </button>
+
+        ${own(t.id)?`
+          <button
+            class="btn alt"
+            data-a="edit"
+            data-id="${esc(t.id)}">
+            編集
+          </button>
+        `:''}
+      </div>
+
+      <hr class="divider">
+
+      <div class="eyebrow">THE ROUTE</div>
+      <h2>全体ルートマップ</h2>
+
+      <div id="trip-map" class="map"></div>
+
+      <div class="legend">
+        ${t.schedule.map((d,i)=>`
+          <span>
+            <span
+              class="dot"
+              style="background:
+                ${COLORS[i%COLORS.length]}">
+            </span>
+            ${esc(d.name)}
+          </span>
+        `).join('')}
+      </div>
+
+      <p class="muted">
+        地図上の線は地点間の直線で、
+        実際の道路・鉄道経路ではありません。
+      </p>
+
+      <hr class="divider">
+
+      <div class="eyebrow">DAY BY DAY</div>
+      <h2>旅のスケジュール</h2>
+
+      ${t.schedule.map((d,di)=>`
+        <section
+          class="panel day"
+          style="border-left-color:
+            ${COLORS[di%COLORS.length]}">
+
+          <div class="eyebrow">
+            DAY ${di+1}
+          </div>
+
+          <h3>${esc(d.name)}</h3>
+
+          ${d.stops.map((s,si)=>`
+            ${si?`
+              <div class="travel">
+                ↓ ${esc(travel(s))}
+              </div>
+
+              ${checkHTML(d.stops[si-1],s)}
+            `:''}
+
+            <div class="spot">
+              <b>
+                ${esc(s.time)}
+                ${si+1}. ${esc(s.name)}
+              </b>
+
+              ${s.photo?`
+                <img
+                  class="photo"
+                  src="${s.photo}"
+                  alt="">
+              `:''}
+
+              ${hasNum(s.stayMinutes)?`
+                <p class="muted">
+                  滞在：${s.stayMinutes}分
+                </p>
+              `:''}
+
+              ${s.comment?`
+                <p>${esc(s.comment)}</p>
+              `:''}
+            </div>
+          `).join('')}
+        </section>
+      `).join('')}
+    </div>
+  `;
 }
 
 /* =========================
-   時間チェック
-========================= */
-
-function minutes(v){
- if(!/^\d\d:\d\d$/.test(v||''))return null;
- const [h,m]=v.split(':').map(Number);
- return h<24&&m<60?h*60+m:null;
-}
-
-function timeCheckHTML(a,b){
- const x=minutes(a.time);
- const y=minutes(b.time);
-
- if(x===null||y===null){
-  return '<div class="check">時刻未設定</div>';
- }
-
- if(y<x){
-  return '<div class="check bad">⚠ 時刻が前後しています</div>';
- }
-
- if(!hasNum(a.stayMinutes)||
-    !hasNum(b.travelMinutes)){
-  return '<div class="check">移動・滞在時間が未設定</div>';
- }
-
- const gap=y-x-Number(a.stayMinutes)-
- Number(b.travelMinutes);
-
- return gap<0
-  ?`<div class="check bad">⚠ ${-gap}分不足</div>`
-  :`<div class="check">✓ ${gap}分の余裕</div>`;
-}
-
-/* =========================
-   地図
+   MAP
 ========================= */
 
 function drawMap(t){
- const el=document.getElementById('trip-map');
- if(!el||!t)return;
+  const el=document.getElementById('trip-map');
 
- if(typeof L==='undefined'){
-  el.textContent='地図を読み込めませんでした。';
-  return;
- }
+  if(!el||!t)return;
 
- try{
-  map=L.map(el,{scrollWheelZoom:false});
+  if(typeof L==='undefined'){
+    el.textContent='地図を読み込めませんでした。';
+    return;
+  }
 
-  L.tileLayer(
-   'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-   {
-    attribution:'&copy; OpenStreetMap contributors',
-    maxZoom:19
-   }
-  ).addTo(map);
-
-  const bounds=[];
-  const arrows=[];
-  let missing=0;
-
-  t.schedule.forEach((d,di)=>{
-   const color=COLORS[di%COLORS.length];
-   let prev=null;
-
-   d.stops.forEach((s,si)=>{
-    const p=coords(s.coords)
-     ?s.coords:KNOWN[s.name];
-
-    if(!coords(p)){
-     missing++;
-     prev=null;
-     return;
-    }
-
-    const pos=p.map(Number);
-    bounds.push(pos);
-
-    const icon=L.divIcon({
-     className:'',
-     html:`<div class="map-pin"
-      style="background:${color}">
-      ${si+1}</div>`,
-     iconSize:[29,29],
-     iconAnchor:[14,14]
+  try{
+    map=L.map(el,{
+      scrollWheelZoom:false
     });
 
-    L.marker(pos,{icon})
-     .addTo(map)
-     .bindPopup(
-      esc(d.name)+' / '+
-      (si+1)+'. '+esc(s.name)
-     );
+    L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution:'&copy; OpenStreetMap contributors',
+        maxZoom:19
+      }
+    ).addTo(map);
 
-    if(prev){
-     L.polyline([prev,pos],{
-      color,
-      weight:4,
-      opacity:.85
-     }).addTo(map);
+    const bounds=[];
+    const arrows=[];
+    let missing=0;
 
-     arrows.push({from:prev,to:pos,color});
-    }
+    t.schedule.forEach((d,di)=>{
+      const color=COLORS[di%COLORS.length];
+      let prev=null;
 
-    prev=pos;
-   });
-  });
+      d.stops.forEach((s,si)=>{
+        const p=coords(s.coords)
+          ?s.coords
+          :KNOWN[s.name];
 
-  if(bounds.length){
-   map.fitBounds(bounds,{
-    padding:[35,35],
-    maxZoom:13
-   });
-  }else{
-   map.setView([35.6812,139.7671],5);
-  }
+        if(!coords(p)){
+          missing++;
+          prev=null;
+          return;
+        }
 
-  let markers=[];
+        const pos=p.map(Number);
+        bounds.push(pos);
 
-  function drawArrows(){
-   markers.forEach(m=>map.removeLayer(m));
-   markers=[];
+        L.marker(pos,{
+          icon:L.divIcon({
+            className:'',
+            html:`
+              <div
+                class="pin"
+                style="background:${color}">
+                ${si+1}
+              </div>
+            `,
+            iconSize:[29,29],
+            iconAnchor:[14,14]
+          })
+        })
+        .addTo(map)
+        .bindPopup(
+          esc(d.name)+' / '+esc(s.name)
+        );
 
-   arrows.forEach(a=>{
-    const f=map.latLngToLayerPoint(a.from);
-    const t=map.latLngToLayerPoint(a.to);
-    const dx=t.x-f.x;
-    const dy=t.y-f.y;
+        if(prev){
+          L.polyline(
+            [prev,pos],
+            {
+              color,
+              weight:4,
+              opacity:.85
+            }
+          ).addTo(map);
 
-    if(Math.hypot(dx,dy)<12)return;
+          arrows.push({
+            from:prev,
+            to:pos,
+            color
+          });
+        }
 
-    const angle=Math.atan2(dy,dx)*180/Math.PI;
-
-    const center=[
-     (a.from[0]+a.to[0])/2,
-     (a.from[1]+a.to[1])/2
-    ];
-
-    const icon=L.divIcon({
-     className:'',
-     html:`<div class="route-arrow"
-      style="color:${a.color}">
-      <span style="
-       display:inline-block;
-       transform:rotate(${angle}deg)
-      ">➜</span></div>`,
-     iconSize:[24,24],
-     iconAnchor:[12,12]
+        prev=pos;
+      });
     });
 
-    markers.push(
-     L.marker(center,{
-      icon,
-      interactive:false
-     }).addTo(map)
-    );
-   });
+    if(bounds.length){
+      map.fitBounds(bounds,{
+        padding:[35,35],
+        maxZoom:13
+      });
+    }else{
+      map.setView([35.6812,139.7671],5);
+    }
+
+    let markers=[];
+
+    function redraw(){
+      markers.forEach(m=>map.removeLayer(m));
+      markers=[];
+
+      arrows.forEach(a=>{
+        const f=map.latLngToLayerPoint(a.from);
+        const t=map.latLngToLayerPoint(a.to);
+
+        const dx=t.x-f.x;
+        const dy=t.y-f.y;
+
+        if(Math.hypot(dx,dy)<12)return;
+
+        const angle=
+          Math.atan2(dy,dx)*180/Math.PI;
+
+        const mid=[
+          (a.from[0]+a.to[0])/2,
+          (a.from[1]+a.to[1])/2
+        ];
+
+        markers.push(
+          L.marker(mid,{
+            interactive:false,
+            icon:L.divIcon({
+              className:'',
+              html:`
+                <div
+                  class="arrow"
+                  style="color:${a.color}">
+                  <span
+                    style="transform:
+                      rotate(${angle}deg)">
+                    ➜
+                  </span>
+                </div>
+              `,
+              iconSize:[24,24],
+              iconAnchor:[12,12]
+            })
+          }).addTo(map)
+        );
+      });
+    }
+
+    map.on('zoomend',redraw);
+    redraw();
+
+    if(missing){
+      el.insertAdjacentHTML(
+        'afterend',
+        `
+          <p class="muted">
+            位置未登録：${missing}件。
+            編集画面で場所を検索してください。
+          </p>
+        `
+      );
+    }
+
+    setTimeout(()=>{
+      if(map)map.invalidateSize();
+    },150);
+
+  }catch(e){
+    console.error(e);
+    el.textContent='地図表示に失敗しました。';
   }
-
-  map.on('zoomend',drawArrows);
-  drawArrows();
-
-  if(missing){
-   el.insertAdjacentHTML('afterend',
-    `<p class="muted">
-     位置未登録：${missing}件。
-     編集画面から登録してください。
-    </p>`);
-  }
-
-  setTimeout(()=>{
-   if(map)map.invalidateSize();
-  },150);
-
- }catch(e){
-  console.error(e);
-  el.textContent='地図の表示に失敗しました。';
- }
 }
 
 /* =========================
-   旅程編集
+   NEW / EDIT / COPY
 ========================= */
 
 function newSpot(){
- return {
-  uid:uid(),
-  time:'09:00',
-  name:'',
-  transport:'',
-  travelMinutes:'',
-  stayMinutes:'',
-  comment:'',
-  photo:''
- };
+  return {
+    uid:uid(),
+    time:'09:00',
+    name:'',
+    transport:'',
+    travelMinutes:'',
+    stayMinutes:'',
+    comment:'',
+    photo:''
+  };
 }
 
 function newDraft(){
- return {
-  id:'plan-'+uid(),
-  title:'',
-  place:'',
-  icon:'🧳',
-  description:'',
-  status:'planning',
-  published:false,
-  template:'scrapbook',
-  schedule:[
-   {name:'Day 1',stops:[newSpot()]},
-   {name:'Day 2',stops:[newSpot()]}
-  ]
- };
+  return {
+    id:'plan-'+uid(),
+    title:'',
+    place:'',
+    description:'',
+    icon:'🧳',
+    style:'',
+    template:'scrapbook',
+    status:'planning',
+    published:false,
+    schedule:[
+      {
+        name:'Day 1',
+        stops:[newSpot()]
+      },
+      {
+        name:'Day 2',
+        stops:[newSpot()]
+      }
+    ]
+  };
 }
 
 function openNew(publish=false){
- editing='';
- draft=newDraft();
- draft.publishAfterSave=publish;
- go('edit');
+  editing='';
+  draft=newDraft();
+  draft.publishAfterSave=publish;
+  go('edit');
 }
 
 function openEdit(id){
- const t=find(id);
- if(!t||!own(id))return;
- editing=id;
- draft=norm(t);
- go('edit');
+  if(!own(id))return;
+
+  editing=id;
+  draft=norm(find(id));
+
+  go('edit');
 }
 
+function openCopy(id){
+  const t=find(id);
+  if(!t)return;
+
+  draft=norm(t);
+  draft.id='plan-'+uid();
+  draft.title=t.title+'（コピー）';
+  draft.status='planning';
+  draft.published=false;
+  draft.publishAfterSave=false;
+
+  editing='';
+
+  go('copy');
+}
+
+function renderCopy(){
+  app.innerHTML=`
+    <div class="eyebrow">MAKE IT YOURS</div>
+
+    <h2>旅程をコピーして計画</h2>
+
+    <div class="notice">
+      元の旅程は変更しません。
+      タイトル・日数を調整してから
+      編集画面に進みます。
+      日数を減らすと末尾のDAYが削除されます。
+    </div>
+
+    <label>
+      新しい旅程タイトル
+      <input
+        id="copy-title"
+        value="${esc(draft.title)}">
+    </label>
+
+    <label>
+      旅行日数
+      <select id="copy-days">
+        ${Array.from(
+          {length:14},
+          (_,i)=>i+1
+        ).map(n=>`
+          <option
+            value="${n}"
+            ${draft.schedule.length===n
+              ?'selected':''}>
+            ${n}日間
+          </option>
+        `).join('')}
+      </select>
+    </label>
+
+    <button
+      class="btn"
+      data-a="copy-next">
+      この内容で編集する →
+    </button>
+
+    <button
+      class="btn alt"
+      data-a="page"
+      data-id="home">
+      キャンセル
+    </button>
+  `;
+}
+
+function copyNext(){
+  const title=document
+    .getElementById('copy-title')
+    .value.trim();
+
+  const n=+document
+    .getElementById('copy-days')
+    .value;
+
+  if(!title){
+    alert('タイトルを入力してください。');
+    return;
+  }
+
+  if(
+    n<draft.schedule.length
+    &&!confirm(
+      '末尾のDAYが削除されます。続けますか？'
+    )
+  ){
+    return;
+  }
+
+  draft.title=title;
+  resizeDays(n);
+
+  go('edit');
+}
+
+/* =========================
+   EDITOR
+========================= */
+
 function renderEditor(){
- if(!draft)draft=newDraft();
+  if(!draft)draft=newDraft();
 
- app.innerHTML=`
- <div class="eyebrow">CREATE YOUR JOURNEY</div>
- <h2>${editing?'旅程を編集':'新しい旅程'}</h2>
+  app.innerHTML=`
+    <div class="eyebrow">
+      CREATE YOUR JOURNEY
+    </div>
 
- <div class="notice">
-  旅程の情報・写真・デザインを編集できます。
-  写真は縮小してブラウザに保存します。
- </div>
+    <h2>
+      ${editing?'旅程を編集':'旅程を作成'}
+    </h2>
 
- <div class="panel">
-  <label>旅程タイトル
-   <input id="trip-title"
-    value="${esc(draft.title)}"
-    placeholder="ローマを巡る3日間">
-  </label>
+    <div class="notice">
+      DAYの追加・削除・並べ替え、
+      スポットのDAY間移動ができます。
+      変更後は必ず「旅程を保存」を押してください。
+    </div>
 
-  <label>目的地
-   <input id="trip-place"
-    value="${esc(draft.place)}"
-    placeholder="ローマ、イタリア">
-  </label>
+    <div class="panel">
+      <label>
+        タイトル
+        <input
+          id="trip-title"
+          value="${esc(draft.title)}">
+      </label>
 
-  <label>旅の説明
-   <textarea id="trip-description">${esc(draft.description||'')}</textarea>
-  </label>
+      <label>
+        目的地
+        <input
+          id="trip-place"
+          value="${esc(draft.place)}"
+          placeholder="例：ローマ、イタリア">
+      </label>
 
-  <label>旅行の状態
-   <select id="trip-status">
-    <option value="planning"
-     ${draft.status!=='completed'?'selected':''}>
-     PLANNING｜旅行計画
-    </option>
-    <option value="completed"
-     ${draft.status==='completed'?'selected':''}>
-     COMPLETED｜実際に行った旅
-    </option>
-   </select>
-  </label>
+      <label>
+        旅の説明
+        <textarea id="trip-description">${esc(
+          draft.description
+        )}</textarea>
+      </label>
 
-  <label>デザインテンプレート
-   <select id="trip-template">
-    ${Object.entries(TEMPLATES)
-     .map(([k,v])=>`
-     <option value="${k}"
-      ${draft.template===k?'selected':''}>
-      ${v}
-     </option>`).join('')}
-   </select>
-  </label>
+      <label>
+        旅行スタイル
+        <select id="trip-style">
+          ${Object.entries(STYLES)
+            .map(([k,v])=>`
+              <option
+                value="${k}"
+                ${draft.style===k?'selected':''}>
+                ${k?v:'未設定'}
+              </option>
+            `).join('')}
+        </select>
+      </label>
 
-  <label>旅行日数
-   <select id="trip-days">
-    ${Array.from({length:14},(_,i)=>i+1)
-     .map(n=>`
-     <option value="${n}"
-      ${days(draft)===n?'selected':''}>
-      ${n}日間
-     </option>`).join('')}
-   </select>
-  </label>
- </div>
+      <label>
+        旅程デザイン
+        <select id="trip-template">
+          ${Object.entries(TEMPLATES)
+            .map(([k,v])=>`
+              <option
+                value="${k}"
+                ${draft.template===k?'selected':''}>
+                ${v}
+              </option>
+            `).join('')}
+        </select>
+      </label>
 
- <div id="day-editor"></div>
+      <label>
+        旅行状態
+        <select id="trip-status">
+          <option
+            value="planning"
+            ${draft.status!=='completed'
+              ?'selected':''}>
+            PLANNING｜旅行計画
+          </option>
 
- <button class="btn" data-action="save-trip">
-  ${draft.publishAfterSave
-   ?'保存してPOSTに公開':'旅程を保存'}
- </button>
- `;
- renderDays();
+          <option
+            value="completed"
+            ${draft.status==='completed'
+              ?'selected':''}>
+            COMPLETED｜実際に行った旅
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <div id="day-editor"></div>
+
+    <button
+      class="btn"
+      data-a="day-add"
+      ${draft.schedule.length>=14
+        ?'disabled':''}>
+      ＋ DAYを追加
+    </button>
+
+    <hr class="divider">
+
+    <button
+      class="btn"
+      data-a="save-trip">
+      ${draft.publishAfterSave
+        ?'保存してPOSTに公開'
+        :'旅程を保存'}
+    </button>
+  `;
+
+  renderDays();
 }
 
 function renderDays(){
- const el=document.getElementById('day-editor');
- if(!el)return;
+  const el=document.getElementById('day-editor');
+  if(!el)return;
 
- el.innerHTML=draft.schedule.map((d,di)=>`
- <section class="panel day"
-  style="border-left-color:${COLORS[di%COLORS.length]}">
+  el.innerHTML=draft.schedule.map((d,di)=>`
+    <section
+      class="panel day"
+      style="border-left-color:
+        ${COLORS[di%COLORS.length]}">
 
-  <h3>DAY ${di+1}</h3>
+      <div class="eyebrow">
+        DAY ${di+1}
+      </div>
 
-  ${d.stops.map((s,si)=>`
-   <div class="spot">
-    <div class="actions">
-     <strong>スポット ${si+1}</strong>
-
-     <button class="btn alt"
-      data-action="up"
-      data-day="${di}" data-spot="${si}"
-      ${si===0?'disabled':''}>▲</button>
-
-     <button class="btn alt"
-      data-action="down"
-      data-day="${di}" data-spot="${si}"
-      ${si===d.stops.length-1?'disabled':''}>▼</button>
-    </div>
-
-    <div class="row">
-     <label class="short">訪問時刻
-      <input type="time" data-field="time"
-       data-day="${di}" data-spot="${si}"
-       value="${esc(s.time||'09:00')}">
-     </label>
-
-     <label>訪問場所
-      <input data-field="name"
-       data-day="${di}" data-spot="${si}"
-       value="${esc(s.name)}"
-       placeholder="観光地・レストラン">
-     </label>
-    </div>
-
-    <label>滞在時間（分）
-     <input type="number" min="0"
-      data-field="stayMinutes"
-      data-day="${di}" data-spot="${si}"
-      value="${esc(s.stayMinutes??'')}">
-    </label>
-
-    ${si?`
-     <div class="panel">
-      <strong>前のスポットからの移動</strong>
-
-      <label>移動手段
-       <select data-field="transport"
-        data-day="${di}" data-spot="${si}">
-        ${Object.entries(MODES)
-         .map(([k,v])=>`
-         <option value="${k}"
-          ${s.transport===k?'selected':''}>
-          ${v}
-         </option>`).join('')}
-       </select>
+      <label>
+        DAY名
+        <input
+          data-dayname="${di}"
+          value="${esc(d.name)}">
       </label>
 
-      <label>移動時間（分）
-       <input type="number" min="0"
-        data-field="travelMinutes"
-        data-day="${di}" data-spot="${si}"
-        value="${esc(s.travelMinutes??'')}">
-      </label>
-     </div>`:''}
+      <div class="actions">
+        <button
+          class="btn alt"
+          data-a="day-up"
+          data-day="${di}"
+          ${di===0?'disabled':''}>
+          DAY ▲
+        </button>
 
-    <label>コメント・旅のメモ
-     <textarea data-field="comment"
-      data-day="${di}" data-spot="${si}"
-      placeholder="おすすめポイントなど">${esc(s.comment||'')}</textarea>
-    </label>
+        <button
+          class="btn alt"
+          data-a="day-down"
+          data-day="${di}"
+          ${di===draft.schedule.length-1
+            ?'disabled':''}>
+          DAY ▼
+        </button>
 
-    <div class="panel">
-     <strong>📷 スポットの写真</strong>
+        <button
+          class="btn danger"
+          data-a="day-delete"
+          data-day="${di}"
+          ${draft.schedule.length===1
+            ?'disabled':''}>
+          DAYを削除
+        </button>
+      </div>
 
-     ${s.photo?`
-      <img class="photo-thumb"
-       src="${s.photo}" alt="">
-      <button class="btn danger"
-       data-action="remove-photo"
-       data-day="${di}" data-spot="${si}">
-       写真を削除
-      </button>`:''}
+      ${d.stops.map((s,si)=>`
+        <div class="spot">
 
-     <label class="file-label">
-      ＋ 写真ライブラリから選択
-      <input type="file"
-       accept="image/*"
-       data-photo="1"
-       data-day="${di}" data-spot="${si}">
-     </label>
-    </div>
+          <div class="actions">
+            <b style="margin-right:auto">
+              スポット ${si+1}
+            </b>
 
-    <div class="panel">
-     <strong>📍 地図の位置</strong>
+            <button
+              class="btn alt"
+              data-a="up"
+              data-day="${di}"
+              data-spot="${si}"
+              ${si===0?'disabled':''}>
+              ▲
+            </button>
 
-     <p class="muted">
-      ${coords(s.coords)
-       ?'✓ 位置登録済み：'+esc(s.locationLabel||s.name)
-       :'位置未登録'}
-     </p>
+            <button
+              class="btn alt"
+              data-a="down"
+              data-day="${di}"
+              data-spot="${si}"
+              ${si===d.stops.length-1
+                ?'disabled':''}>
+              ▼
+            </button>
+          </div>
 
-     <label>場所の検索キーワード
-      <input data-field="lookup"
-       data-day="${di}" data-spot="${si}"
-       value="${esc(s.lookup||ALIASES[s.name]||s.name)}">
-     </label>
+          <div class="row">
+            <label class="short">
+              訪問時刻
+              <input
+                type="time"
+                data-field="time"
+                data-day="${di}"
+                data-spot="${si}"
+                value="${esc(s.time)}">
+            </label>
 
-     <button class="btn alt"
-      data-action="lookup"
-      data-day="${di}" data-spot="${si}">
-      🔎 場所を検索
-     </button>
+            <label>
+              訪問場所
+              <input
+                data-field="name"
+                data-day="${di}"
+                data-spot="${si}"
+                value="${esc(s.name)}">
+            </label>
+          </div>
 
-     <div id="lookup-${di}-${si}"></div>
-    </div>
+          <label>
+            滞在時間（分）
+            <input
+              type="number"
+              min="0"
+              step="1"
+              data-field="stayMinutes"
+              data-day="${di}"
+              data-spot="${si}"
+              value="${esc(s.stayMinutes)}">
+          </label>
 
-    <button class="btn danger"
-     data-action="remove"
-     data-day="${di}" data-spot="${si}">
-     スポットを削除
-    </button>
-   </div>
-  `).join('')}
+          ${si?`
+            <div class="panel">
+              <b>前のスポットからの移動</b>
 
-  <button class="btn alt"
-   data-action="add" data-day="${di}">
-   ＋ スポット追加
-  </button>
+              <label>
+                移動手段
+                <select
+                  data-field="transport"
+                  data-day="${di}"
+                  data-spot="${si}">
 
-  <button class="btn alt"
-   data-action="check" data-day="${di}">
-   🕒 時間チェック
-  </button>
+                  ${Object.entries(MODES)
+                    .map(([k,v])=>`
+                      <option
+                        value="${k}"
+                        ${s.transport===k
+                          ?'selected':''}>
+                        ${v}
+                      </option>
+                    `).join('')}
+                </select>
+              </label>
 
-  <div id="check-${di}"></div>
- </section>`).join('');
-}
+              <label>
+                移動時間（分）
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  data-field="travelMinutes"
+                  data-day="${di}"
+                  data-spot="${si}"
+                  value="${esc(s.travelMinutes)}">
+              </label>
+            </div>
+          `:''}
 
-function sync(){
- if(!draft)return;
+          <label>
+            コメント
+            <textarea
+              data-field="comment"
+              data-day="${di}"
+              data-spot="${si}">${esc(
+                s.comment
+              )}</textarea>
+          </label>
 
- const fields={
-  'trip-title':'title',
-  'trip-place':'place',
-  'trip-description':'description',
-  'trip-status':'status',
-  'trip-template':'template'
- };
+          ${s.photo?`
+            <img
+              class="photo"
+              src="${s.photo}"
+              alt="">
 
- Object.entries(fields).forEach(([id,k])=>{
-  const el=document.getElementById(id);
-  if(el)draft[k]=el.value;
- });
+            <button
+              class="btn danger"
+              data-a="remove-photo"
+              data-day="${di}"
+              data-spot="${si}">
+              写真を削除
+            </button>
+          `:''}
 
- document.querySelectorAll('[data-field]')
- .forEach(el=>{
-  const s=draft.schedule[+el.dataset.day]
-   ?.stops[+el.dataset.spot];
+          <label class="file-label">
+            ＋ 写真を選択
 
-  if(!s)return;
+            <input
+              type="file"
+              accept="image/*"
+              data-photo="1"
+              data-day="${di}"
+              data-spot="${si}">
+          </label>
 
-  const f=el.dataset.field;
+          <p class="muted">
+            ${coords(s.coords)
+              ?'✓ 位置登録済み：'
+                +esc(s.locationLabel||s.name)
+              :'位置未登録'}
+          </p>
 
-  if(f==='name'&&s.name!==el.value){
-   s.name=el.value;
-   s.lookup='';
-   delete s.coords;
-   delete s.locationLabel;
-  }else if(f!=='name'){
-   s[f]=el.value;
-  }
- });
-}
+          <label>
+            地図検索キーワード
+            <input
+              data-field="lookup"
+              data-day="${di}"
+              data-spot="${si}"
+              value="${esc(
+                s.lookup||s.name
+              )}">
+          </label>
 
-function changeDays(n){
- sync();
- n=Number(n);
+          <button
+            class="btn alt"
+            data-a="lookup"
+            data-day="${di}"
+            data-spot="${si}">
+            🔎 場所を検索
+          </button>
 
- if(!Number.isInteger(n)||n<1||n>14)return;
+          <div id="lookup-${di}-${si}"></div>
 
- while(draft.schedule.length<n){
-  draft.schedule.push({
-   name:'Day '+(draft.schedule.length+1),
-   stops:[newSpot()]
-  });
- }
+          <label>
+            別のDAYに移動
 
- if(n<draft.schedule.length){
-  if(!confirm(
-   '日数を減らすと、削除されるDAYの入力内容も失われます。続けますか？'
-  )){
-   document.getElementById('trip-days').value=
-    draft.schedule.length;
-   return;
-  }
- }
+            <select
+              data-move-target="${di}-${si}">
 
- draft.schedule.length=n;
- renderDays();
-}
+              ${draft.schedule.map((day,j)=>`
+                <option
+                  value="${j}"
+                  ${j===di?'selected':''}>
+                  ${esc(day.name)}
+                </option>
+              `).join('')}
+            </select>
+          </label>
 
-function addSpot(di){
- sync();
- draft.schedule[di].stops.push(newSpot());
- renderDays();
-}
+          <button
+            class="btn alt"
+            data-a="move-day"
+            data-day="${di}"
+            data-spot="${si}">
+            指定DAYへ移動
+          </button>
 
-function removeSpot(di,si){
- sync();
+          <button
+            class="btn danger"
+            data-a="remove"
+            data-day="${di}"
+            data-spot="${si}">
+            スポット削除
+          </button>
+        </div>
+      `).join('')}
 
- if(!confirm('このスポットを削除しますか？'))return;
+      <button
+        class="btn alt"
+        data-a="add"
+        data-day="${di}">
+        ＋ スポット追加
+      </button>
 
- const a=draft.schedule[di].stops;
- a.splice(si,1);
+      <button
+        class="btn alt"
+        data-a="check"
+        data-day="${di}">
+        🕒 時間チェック
+      </button>
 
- if(a.length){
-  a[0].transport='';
-  a[0].travelMinutes='';
-
-  if(si<a.length){
-   a[si].transport='';
-   a[si].travelMinutes='';
-  }
- }
-
- renderDays();
-}
-
-function moveSpot(di,si,delta){
- sync();
-
- const a=draft.schedule[di].stops;
- const to=si+delta;
-
- if(to<0||to>=a.length)return;
-
- [a[si],a[to]]=[a[to],a[si]];
-
- new Set([si,si+1,to,to+1]).forEach(i=>{
-  if(a[i]){
-   a[i].transport='';
-   a[i].travelMinutes='';
-  }
- });
-
- a[0].transport='';
- a[0].travelMinutes='';
-
- renderDays();
-
- alert(
-  '訪問順を変更しました。\n'+
-  '影響する移動区間の情報は再入力してください。'
- );
-}
-
-function checkTimes(di){
- sync();
-
- const a=draft.schedule[di].stops;
- const el=document.getElementById('check-'+di);
-
- el.innerHTML=a.slice(1).map((s,i)=>`
-  <p>${i+1} → ${i+2}</p>
-  ${timeCheckHTML(a[i],s)}
- `).join('')||
- '<p class="muted">スポットが2件以上必要です。</p>';
+      <div id="check-${di}"></div>
+    </section>
+  `).join('');
 }
 
 /* =========================
-   写真登録 ver.1.1
+   EDITOR DATA
 ========================= */
 
-async function loadPhoto(file,di,si){
- if(!file||!draft)return;
+function sync(){
+  if(!draft)return;
 
- sync();
-
- const s=draft.schedule[di]?.stops[si];
- if(!s)return;
-
- const spotId=s.uid;
-
- if(!file.type.startsWith('image/')){
-  alert('画像ファイルを選択してください。');
-  return;
- }
-
- if(file.size>20*1024*1024){
-  alert('20MB以下の画像を選択してください。');
-  return;
- }
-
- try{
-  const url=URL.createObjectURL(file);
-  const img=new Image();
-
-  try{
-   await new Promise((resolve,reject)=>{
-    img.onload=resolve;
-    img.onerror=reject;
-    img.src=url;
-   });
-  }finally{
-   URL.revokeObjectURL(url);
+  for(const [id,key] of [
+    ['trip-title','title'],
+    ['trip-place','place'],
+    ['trip-description','description'],
+    ['trip-style','style'],
+    ['trip-template','template'],
+    ['trip-status','status']
+  ]){
+    const el=document.getElementById(id);
+    if(el)draft[key]=el.value;
   }
 
-  const max=900;
-  const scale=Math.min(
-   1,max/Math.max(img.width,img.height)
+  document.querySelectorAll(
+    '[data-dayname]'
+  ).forEach(el=>{
+    const d=draft.schedule[
+      +el.dataset.dayname
+    ];
+
+    if(d)d.name=el.value;
+  });
+
+  document.querySelectorAll(
+    '[data-field]'
+  ).forEach(el=>{
+    const s=draft.schedule[
+      +el.dataset.day
+    ]?.stops[
+      +el.dataset.spot
+    ];
+
+    if(!s)return;
+
+    const f=el.dataset.field;
+
+    if(f==='name'&&s.name!==el.value){
+      s.name=el.value;
+      s.lookup='';
+      delete s.coords;
+      delete s.locationLabel;
+    }else if(f!=='name'){
+      s[f]=el.value;
+    }
+  });
+}
+
+function resizeDays(n){
+  while(draft.schedule.length<n){
+    draft.schedule.push({
+      name:'Day '+(draft.schedule.length+1),
+      stops:[newSpot()]
+    });
+  }
+
+  draft.schedule.length=n;
+  draft.days=n;
+}
+
+function dayAdd(){
+  sync();
+
+  if(draft.schedule.length>=14){
+    alert('最大14日間です。');
+    return;
+  }
+
+  resizeDays(draft.schedule.length+1);
+  renderDays();
+}
+
+function dayDelete(di){
+  sync();
+
+  if(draft.schedule.length<=1)return;
+
+  if(!confirm(
+    'このDAYとすべてのスポットを削除しますか？'
+  ))return;
+
+  draft.schedule.splice(di,1);
+  renderDays();
+}
+
+function daySwap(di,delta){
+  sync();
+
+  const j=di+delta;
+
+  if(j<0||j>=draft.schedule.length)return;
+
+  [
+    draft.schedule[di],
+    draft.schedule[j]
+  ]=[
+    draft.schedule[j],
+    draft.schedule[di]
+  ];
+
+  renderDays();
+}
+
+function resetIncoming(a,i){
+  if(a[i]){
+    a[i].transport='';
+    a[i].travelMinutes='';
+  }
+}
+
+function add(di){
+  sync();
+  draft.schedule[di].stops.push(newSpot());
+  renderDays();
+}
+
+function remove(di,si){
+  sync();
+
+  if(!confirm(
+    'このスポットを削除しますか？'
+  ))return;
+
+  const a=draft.schedule[di].stops;
+
+  a.splice(si,1);
+
+  resetIncoming(a,si);
+  resetIncoming(a,0);
+
+  renderDays();
+}
+
+function move(di,si,delta){
+  sync();
+
+  const a=draft.schedule[di].stops;
+  const j=si+delta;
+
+  if(j<0||j>=a.length)return;
+
+  [a[si],a[j]]=[a[j],a[si]];
+
+  [si,si+1,j,j+1,0].forEach(
+    i=>resetIncoming(a,i)
   );
 
-  const canvas=document.createElement('canvas');
-  canvas.width=Math.max(1,Math.round(img.width*scale));
-  canvas.height=Math.max(1,Math.round(img.height*scale));
-
-  const ctx=canvas.getContext('2d');
-  ctx.fillStyle='#ffffff';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.drawImage(img,0,0,canvas.width,canvas.height);
-
-  const data=canvas.toDataURL('image/jpeg',0.65);
-
-  const current=draft.schedule.flatMap(d=>d.stops)
-   .find(x=>x.uid===spotId);
-
-  if(!current){
-   alert('編集中のスポットが見つかりません。');
-   return;
-  }
-
-  current.photo=data;
   renderDays();
 
   alert(
-   '写真を追加しました。\n'+
-   '「旅程を保存」を押すと保存されます。'
+    '訪問順を変更しました。影響する移動時間・手段を再入力してください。'
   );
+}
 
- }catch(e){
-  console.error(e);
-  alert('写真の読み込みに失敗しました。');
- }
+function moveDay(di,si){
+  sync();
+
+  const target=+document.querySelector(
+    `[data-move-target="${di}-${si}"]`
+  )?.value;
+
+  if(
+    !Number.isInteger(target)
+    ||target===di
+    ||!draft.schedule[target]
+  ){
+    alert('移動先に別のDAYを選択してください。');
+    return;
+  }
+
+  const from=draft.schedule[di].stops;
+  const to=draft.schedule[target].stops;
+
+  const [s]=from.splice(si,1);
+
+  resetIncoming(from,si);
+  resetIncoming(from,0);
+
+  s.transport='';
+  s.travelMinutes='';
+
+  to.push(s);
+  resetIncoming(to,0);
+
+  renderDays();
+
+  alert(
+    'スポットを移動しました。移動元・移動先の移動情報を確認してください。'
+  );
+}
+
+function check(di){
+  sync();
+
+  const a=draft.schedule[di].stops;
+
+  document.getElementById(
+    'check-'+di
+  ).innerHTML=a.slice(1).map((s,i)=>`
+    <p>${i+1} → ${i+2}</p>
+    ${checkHTML(a[i],s)}
+  `).join('')
+  ||'<p class="muted">スポットが2件以上必要です。</p>';
 }
 
 /* =========================
-   場所検索
+   LOCATION SEARCH
 ========================= */
 
 function spotByUid(id){
- for(const d of draft?.schedule||[]){
-  for(const s of d.stops){
-   if(s.uid===id)return s;
+  for(const d of draft?.schedule||[]){
+    for(const s of d.stops){
+      if(s.uid===id)return s;
+    }
   }
- }
- return null;
+
+  return null;
 }
 
 async function lookup(di,si){
- sync();
+  sync();
 
- const s=draft.schedule[di]?.stops[si];
- const el=document.getElementById(
-  'lookup-'+di+'-'+si
- );
+  const s=draft.schedule[di]?.stops[si];
+  const el=document.getElementById(
+    `lookup-${di}-${si}`
+  );
 
- if(!s||!el)return;
+  if(!s||!el)return;
 
- if(!s.name.trim()){
-  el.textContent='訪問場所を入力してください。';
-  return;
- }
+  const q=(s.lookup||s.name).trim();
 
- if(searchBusy||Date.now()-lastSearch<1300){
-  el.textContent='少し時間を空けて検索してください。';
-  return;
- }
-
- searchBusy=true;
- lastSearch=Date.now();
-
- const token=uid();
- searchContext={uid:s.uid,token};
-
- el.textContent='検索中...';
-
- try{
-  const q=(s.lookup||ALIASES[s.name]||s.name).trim();
-
-  const params=new URLSearchParams({
-   format:'jsonv2',
-   q,
-   limit:'10',
-   addressdetails:'1',
-   accept_language:'ja,en'
-  });
-
-  if(/イタリア|italy|italia/i.test(draft.place)){
-   params.set('countrycodes','it');
+  if(!q){
+    el.textContent='検索語を入力してください。';
+    return;
   }
 
-  const res=await fetch(
-   'https://nominatim.openstreetmap.org/search?'+
-   params.toString(),
-   {headers:{Accept:'application/json'}}
-  );
+  if(
+    searchBusy
+    ||Date.now()-lastSearch<1300
+  ){
+    el.textContent=
+      '少し時間を空けて再検索してください。';
+    return;
+  }
 
-  if(!res.ok)throw Error(res.status);
+  searchBusy=true;
+  lastSearch=Date.now();
 
-  const data=await res.json();
+  const token=uid();
+  searchToken=token;
 
-  if(searchContext?.token!==token)return;
+  el.textContent='検索中...';
 
-  searchResults=data.map(x=>({
-   name:x.display_name,
-   coords:[Number(x.lat),Number(x.lon)]
-  })).filter(x=>coords(x.coords));
+  try{
+    const params=new URLSearchParams({
+      format:'jsonv2',
+      q,
+      limit:'10',
+      addressdetails:'1',
+      'accept-language':'ja,en'
+    });
 
-  const target=document.getElementById(
-   'lookup-'+di+'-'+si
-  );
+    const res=await fetch(
+      'https://nominatim.openstreetmap.org/search?'
+      +params,
+      {
+        headers:{
+          Accept:'application/json'
+        }
+      }
+    );
 
-  if(!target)return;
+    if(!res.ok)throw Error(res.status);
 
-  target.innerHTML=searchResults.length
-   ?searchResults.map((r,i)=>`
-    <div class="result">
-     ${esc(r.name)}<br>
-     <button class="btn alt"
-      data-action="choose"
-      data-index="${i}"
-      data-uid="${esc(s.uid)}">
-      この場所を選択
-     </button>
-    </div>`).join('')
-   :'<p class="muted">候補がありません。検索語を変更してください。</p>';
+    const data=await res.json();
 
- }catch(e){
-  el.textContent='検索に失敗しました。';
- }finally{
-  searchBusy=false;
- }
+    if(
+      searchToken!==token
+      ||!spotByUid(s.uid)
+    )return;
+
+    searchResults=data.map(x=>({
+      name:x.display_name,
+      coords:[+x.lat,+x.lon]
+    })).filter(x=>coords(x.coords));
+
+    const target=document.getElementById(
+      `lookup-${di}-${si}`
+    );
+
+    if(target){
+      target.innerHTML=searchResults
+        .map((r,i)=>`
+          <div class="result">
+            ${esc(r.name)}
+            <br>
+
+            <button
+              class="btn alt"
+              data-a="choose"
+              data-index="${i}"
+              data-uid="${esc(s.uid)}">
+              この場所を選択
+            </button>
+          </div>
+        `).join('')
+        ||'<p>候補がありません。</p>';
+    }
+
+  }catch(e){
+    el.textContent='検索に失敗しました。';
+  }finally{
+    searchBusy=false;
+  }
 }
 
-function choosePlace(i,id){
- if(searchContext?.uid!==id)return;
+function choose(i,id){
+  const s=spotByUid(id);
+  const r=searchResults[i];
 
- const s=spotByUid(id);
- const r=searchResults[i];
+  if(!s||!r)return;
 
- if(!s||!r)return;
+  sync();
 
- s.coords=r.coords;
- s.locationLabel=r.name;
+  s.coords=r.coords;
+  s.locationLabel=r.name;
 
- searchContext=null;
- searchResults=[];
- renderDays();
+  searchResults=[];
+
+  renderDays();
 }
 
 /* =========================
-   旅程保存・状態管理
+   PHOTO
+========================= */
+
+async function photo(file,di,si){
+  if(
+    !file
+    ||!file.type.startsWith('image/')
+  ){
+    alert('画像を選択してください。');
+    return;
+  }
+
+  if(file.size>20*1024*1024){
+    alert('20MB以下の画像を選択してください。');
+    return;
+  }
+
+  sync();
+
+  const spotId=draft.schedule[di]
+    ?.stops[si]?.uid;
+
+  try{
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+
+    try{
+      await new Promise((ok,fail)=>{
+        img.onload=ok;
+        img.onerror=fail;
+        img.src=url;
+      });
+    }finally{
+      URL.revokeObjectURL(url);
+    }
+
+    const ratio=Math.min(
+      1,
+      900/Math.max(img.width,img.height)
+    );
+
+    const c=document.createElement('canvas');
+
+    c.width=Math.max(
+      1,
+      Math.round(img.width*ratio)
+    );
+
+    c.height=Math.max(
+      1,
+      Math.round(img.height*ratio)
+    );
+
+    const ctx=c.getContext('2d');
+
+    ctx.fillStyle='white';
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.drawImage(img,0,0,c.width,c.height);
+
+    const s=spotByUid(spotId);
+
+    if(s){
+      s.photo=c.toDataURL('image/jpeg',.65);
+
+      renderDays();
+
+      alert(
+        '写真を追加しました。旅程を保存してください。'
+      );
+    }
+
+  }catch(e){
+    alert('写真を読み込めませんでした。');
+  }
+}
+
+/* =========================
+   SAVE / DELETE / STATUS
 ========================= */
 
 function saveTrip(){
- sync();
+  sync();
 
- if(!draft.title.trim()||!draft.place.trim()){
-  alert('タイトルと目的地を入力してください。');
-  return;
- }
+  if(
+    !draft.title.trim()
+    ||!draft.place.trim()
+  ){
+    alert('タイトルと目的地を入力してください。');
+    return;
+  }
 
- if(
-  !draft.schedule.some(d=>d.stops.length)||
-  draft.schedule.some(d=>
-   d.stops.some(s=>!s.name.trim()))
- ){
-  alert('スポットを入力してください。');
-  return;
- }
+  if(
+    !draft.schedule.some(
+      d=>d.stops.length
+    )
+    ||draft.schedule.some(
+      d=>d.stops.some(s=>!s.name.trim())
+    )
+  ){
+    alert(
+      'スポットを1件以上入力し、空欄をなくしてください。'
+    );
+    return;
+  }
 
- for(const d of draft.schedule){
-  for(const s of d.stops){
-   for(const v of [s.stayMinutes,s.travelMinutes]){
-    if(v!==''&&v!==null&&v!==undefined&&
-      (!Number.isInteger(Number(v))||Number(v)<0)){
-     alert('時間は0以上の整数で入力してください。');
-     return;
+  for(const d of draft.schedule){
+    for(const s of d.stops){
+      for(const v of [
+        s.travelMinutes,
+        s.stayMinutes
+      ]){
+        if(
+          v!==''
+          &&v!=null
+          &&(
+            !Number.isInteger(+v)
+            ||+v<0
+          )
+        ){
+          alert(
+            '時間は0以上の整数で入力してください。'
+          );
+          return;
+        }
+      }
     }
-   }
   }
- }
 
- const t=norm(draft);
+  const t=norm(draft);
 
- if(draft.publishAfterSave)t.published=true;
-
- delete t.publishAfterSave;
-
- if(editing&&!own(editing)){
-  alert('編集対象が見つかりません。');
-  return;
- }
-
- const ok=update(()=>{
-  if(editing){
-   const i=state.plans.findIndex(x=>x.id===editing);
-   state.plans[i]=t;
-  }else{
-   state.plans.unshift(t);
+  if(draft.publishAfterSave){
+    t.published=true;
   }
- });
 
- if(!ok)return;
+  delete t.publishAfterSave;
 
- draft=null;
- editing='';
- go('detail',t.id);
+  if(editing&&!own(editing)){
+    alert('編集対象がありません。');
+    return;
+  }
+
+  if(!update(()=>{
+    if(editing){
+      const i=state.plans.findIndex(
+        x=>x.id===editing
+      );
+
+      state.plans[i]=t;
+    }else{
+      state.plans.unshift(t);
+    }
+  }))return;
+
+  draft=null;
+  editing='';
+
+  go('detail',t.id);
 }
 
 function deleteTrip(id){
- const t=state.plans.find(x=>x.id===id);
- if(!t)return;
+  const t=state.plans.find(
+    x=>x.id===id
+  );
 
- if(!confirm(
-  '「'+t.title+'」を削除しますか？\n'+
-  'この操作は取り消せません。'
- ))return;
+  if(
+    !t
+    ||!confirm(
+      '「'+t.title+'」を削除しますか？'
+    )
+  )return;
 
- if(update(()=>{
-  state.plans=state.plans.filter(x=>x.id!==id);
-  state.saved=state.saved.filter(x=>x!==id);
- })){
-  go('my');
- }
+  if(update(()=>{
+    state.plans=state.plans.filter(
+      x=>x.id!==id
+    );
+
+    state.saved=state.saved.filter(
+      x=>x!==id
+    );
+  })){
+    go('my');
+  }
 }
 
 function setStatus(id,status){
- const t=state.plans.find(x=>x.id===id);
- if(!t)return;
+  const t=state.plans.find(
+    x=>x.id===id
+  );
 
- if(status==='completed'&&!confirm(
-  '実際に行った旅として記録しますか？'
- ))return;
+  if(!t)return;
 
- if(update(()=>{t.status=status})){
-  myTab=status;
-  go('my');
- }
+  if(
+    status==='completed'
+    &&!confirm(
+      '実際に行った旅として記録しますか？'
+    )
+  )return;
+
+  if(update(()=>{
+    t.status=status;
+  })){
+    myTab=status;
+    go('my');
+  }
 }
 
 function publish(id,value){
- const t=state.plans.find(x=>x.id===id);
- if(!t)return;
+  const t=state.plans.find(
+    x=>x.id===id
+  );
 
- if(value&&!confirm(
-  'POSTとして公開しますか？\n'+
-  '現在は同じブラウザ内のみの公開です。'
- ))return;
+  if(!t)return;
 
- if(update(()=>{t.published=value})){
-  if(page==='detail')go('detail',id);
-  else render();
- }
+  if(
+    value
+    &&!confirm(
+      '公開しますか？ 現在はこのブラウザ内のみの公開です。'
+    )
+  )return;
+
+  if(update(()=>{
+    t.published=value;
+  })){
+    if(page==='detail'){
+      go('detail',id);
+    }else{
+      render();
+    }
+  }
 }
 
 function bookmark(id){
- if(update(()=>{
-  state.saved=state.saved.includes(id)
-   ?state.saved.filter(x=>x!==id)
-   :[...state.saved,id];
- })){
-  go('detail',id);
- }
-}
-
-function copyTrip(id){
- const t=find(id);
- if(!t)return;
-
- const c=norm(t);
- c.id='plan-'+uid();
- c.title+='（コピー）';
- c.status='planning';
- c.published=false;
-
- if(update(()=>{
-  state.plans.unshift(c);
- })){
-  openEdit(c.id);
- }
+  if(update(()=>{
+    state.saved=state.saved.includes(id)
+      ?state.saved.filter(x=>x!==id)
+      :[...state.saved,id];
+  })){
+    go('detail',id);
+  }
 }
 
 /* =========================
-   バックアップ ver.0.9
+   BACKUP / RESTORE
 ========================= */
 
 function renderBackup(){
- app.innerHTML=`
- <h2>バックアップ・復元</h2>
- ${stats()}
+  app.innerHTML=`
+    <h2>バックアップ・復元</h2>
 
- <div class="notice">
-  バックアップはテキスト形式です。
-  iPadのメモアプリなどに保存してください。
-  写真データも含まれるため、
-  テキストが非常に長くなる場合があります。
- </div>
+    ${stats()}
 
- <section class="panel">
-  <h3>① バックアップ</h3>
+    <div class="notice">
+      写真を含むバックアップは非常に長くなります。
+      コピーしてメモアプリ等に保管してください。
+    </div>
 
-  <button class="btn"
-   data-action="backup-create">
-   バックアップを作成
-  </button>
+    <section class="panel">
+      <h3>① バックアップ</h3>
 
-  <textarea id="backup-output"
-   readonly
-   style="min-height:170px;font-size:11px"
-   placeholder="ここにバックアップが表示されます">${esc(backupText)}</textarea>
+      <button
+        class="btn"
+        data-a="backup-create">
+        バックアップを作成
+      </button>
 
-  <button class="btn alt"
-   data-action="backup-copy">
-   テキストをコピー
-  </button>
- </section>
+      <textarea
+        id="backup-output"
+        class="backup-text"
+        readonly>${esc(backupText)}</textarea>
 
- <section class="panel">
-  <h3>② データの復元</h3>
+      <button
+        class="btn alt"
+        data-a="backup-copy">
+        テキストをコピー
+      </button>
+    </section>
 
-  <textarea id="restore-input"
-   style="min-height:170px;font-size:11px"
-   placeholder="バックアップテキストを貼り付け"></textarea>
+    <section class="panel">
+      <h3>② 復元</h3>
 
-  <button class="btn alt"
-   data-action="restore-preview">
-   データを確認
-  </button>
+      <textarea
+        id="restore-input"
+        class="backup-text"
+        placeholder="バックアップテキストを貼り付け"></textarea>
 
-  <div id="restore-preview"></div>
- </section>
- `;
+      <button
+        class="btn alt"
+        data-a="restore-preview">
+        データを確認
+      </button>
+
+      <div id="restore-preview"></div>
+    </section>
+  `;
 }
 
 function createBackup(){
- backupText=JSON.stringify({
-  app:'TUMUGOU',
-  backupVersion:1,
-  exportedAt:new Date().toISOString(),
-  data:clone(state)
- },null,2);
+  backupText=JSON.stringify({
+    app:'TUMUGOU',
+    backupVersion:1,
+    exportedAt:new Date().toISOString(),
+    data:clone(state)
+  },null,2);
 
- const el=document.getElementById('backup-output');
- if(el)el.value=backupText;
+  document.getElementById(
+    'backup-output'
+  ).value=backupText;
 }
 
 async function copyBackup(){
- const el=document.getElementById('backup-output');
- if(!el||!el.value){
-  alert('先にバックアップを作成してください。');
-  return;
- }
+  const el=document.getElementById(
+    'backup-output'
+  );
 
- try{
-  await navigator.clipboard.writeText(el.value);
-  alert('コピーしました。');
- }catch(e){
-  el.focus();
-  el.select();
-  alert('選択したテキストを手動でコピーしてください。');
- }
+  if(!el?.value){
+    alert(
+      '先にバックアップを作成してください。'
+    );
+    return;
+  }
+
+  try{
+    await navigator.clipboard.writeText(
+      el.value
+    );
+
+    alert('コピーしました。');
+
+  }catch(e){
+    el.focus();
+    el.select();
+
+    alert(
+      '選択したテキストを手動でコピーしてください。'
+    );
+  }
 }
 
 function validTrip(t){
- return t&&
- typeof t.id==='string'&&t.id.length>0&&
- typeof t.title==='string'&&
- typeof t.place==='string'&&
- Array.isArray(t.schedule)&&
- t.schedule.length>=1&&
- t.schedule.length<=14&&
- t.schedule.every(d=>
-  d&&Array.isArray(d.stops)&&
-  d.stops.length<=500&&
-  d.stops.every(s=>
-   s&&typeof s.name==='string'&&
-   typeof s.time==='string'&&
-   (s.coords===undefined||coords(s.coords))&&
-   (s.photo===undefined||
-    (typeof s.photo==='string'&&
-     (!s.photo||/^data:image\/jpeg;base64,/.test(s.photo))))
-  )
- );
+  return t
+    &&typeof t.id==='string'
+    &&!!t.id
+    &&typeof t.title==='string'
+    &&typeof t.place==='string'
+    &&Array.isArray(t.schedule)
+    &&t.schedule.length>=1
+    &&t.schedule.length<=14
+    &&t.schedule.every(d=>
+      d
+      &&Array.isArray(d.stops)
+      &&d.stops.length<=500
+      &&d.stops.every(s=>
+        s
+        &&typeof s.name==='string'
+        &&typeof s.time==='string'
+        &&(
+          s.coords===undefined
+          ||coords(s.coords)
+        )
+        &&(
+          s.photo===undefined
+          ||(
+            typeof s.photo==='string'
+            &&(
+              !s.photo
+              ||/^data:image\/jpeg;base64,/.test(
+                s.photo
+              )
+            )
+          )
+        )
+      )
+    );
 }
 
 function previewRestore(){
- const raw=document.getElementById('restore-input')
-  ?.value.trim()||'';
+  const raw=document.getElementById(
+    'restore-input'
+  )?.value.trim()||'';
 
- const el=document.getElementById('restore-preview');
- restoreCandidate=null;
+  const el=document.getElementById(
+    'restore-preview'
+  );
 
- try{
-  if(raw.length>15000000){
-   throw Error('バックアップが大きすぎます。');
+  restoreCandidate=null;
+
+  try{
+    if(raw.length>15000000){
+      throw Error(
+        'バックアップが大きすぎます。'
+      );
+    }
+
+    const v=JSON.parse(raw);
+
+    if(
+      v.app!=='TUMUGOU'
+      ||v.backupVersion!==1
+      ||!v.data
+      ||!Array.isArray(v.data.plans)
+      ||!Array.isArray(v.data.saved)
+    ){
+      throw Error(
+        '対応していないデータです。'
+      );
+    }
+
+    if(
+      v.data.plans.length>1000
+      ||v.data.saved.length>2000
+      ||!v.data.plans.every(validTrip)
+      ||!v.data.saved.every(
+        x=>typeof x==='string'
+      )
+    ){
+      throw Error(
+        '旅程データが正しくありません。'
+      );
+    }
+
+    const ids=v.data.plans.map(
+      t=>t.id
+    );
+
+    if(
+      new Set(ids).size!==ids.length
+    ){
+      throw Error(
+        '重複した旅程IDがあります。'
+      );
+    }
+
+    restoreCandidate=v;
+
+    const existing=new Set(
+      state.plans.map(t=>t.id)
+    );
+
+    el.innerHTML=`
+      <p class="ok">
+        ✓ バックアップを確認しました。
+      </p>
+
+      <p>
+        旅程：${ids.length}件／
+        既存と重複：
+        ${ids.filter(
+          id=>existing.has(id)
+        ).length}件
+      </p>
+
+      <label>
+        復元方法
+        <select id="restore-mode">
+          <option value="merge">
+            既存データに追加（重複を除く）
+          </option>
+
+          <option value="replace">
+            既存データを置き換え
+          </option>
+        </select>
+      </label>
+
+      <button
+        class="btn danger"
+        data-a="restore-confirm">
+        復元を実行
+      </button>
+    `;
+
+  }catch(e){
+    el.innerHTML=`
+      <p class="warn">
+        ${esc(e.message)}
+      </p>
+    `;
   }
-
-  const v=JSON.parse(raw);
-
-  if(v.app!=='TUMUGOU'||
-     v.backupVersion!==1||
-     !v.data||
-     !Array.isArray(v.data.plans)||
-     !Array.isArray(v.data.saved)){
-   throw Error('対応していないデータ形式です。');
-  }
-
-  if(v.data.plans.length>1000||
-     v.data.saved.length>2000||
-     !v.data.plans.every(validTrip)||
-     !v.data.saved.every(x=>typeof x==='string')){
-   throw Error('旅程データが正しくありません。');
-  }
-
-  const ids=v.data.plans.map(t=>t.id);
-  if(new Set(ids).size!==ids.length){
-   throw Error('バックアップ内に重複IDがあります。');
-  }
-
-  restoreCandidate=v;
-
-  const existing=new Set(state.plans.map(t=>t.id));
-  const duplicates=ids.filter(id=>existing.has(id)).length;
-
-  el.innerHTML=`
-   <div class="success">
-    ✓ バックアップを読み取りました。
-   </div>
-
-   <p>旅程：${ids.length}件</p>
-   <p>既存旅程との重複：${duplicates}件</p>
-
-   <label>復元方法
-    <select id="restore-mode">
-     <option value="merge">
-      既存データに追加
-     </option>
-     <option value="replace">
-      既存データを置き換え
-     </option>
-    </select>
-   </label>
-
-   <button class="btn danger"
-    data-action="restore-confirm">
-    復元を実行
-   </button>
-  `;
-
- }catch(e){
-  el.innerHTML=`
-   <div class="warning">
-    ${esc(e.message)}
-   </div>`;
- }
 }
 
 function restoreData(){
- if(!restoreCandidate)return;
+  if(!restoreCandidate)return;
 
- const mode=document.getElementById('restore-mode')
-  ?.value||'merge';
+  const mode=document.getElementById(
+    'restore-mode'
+  )?.value||'merge';
 
- if(!confirm(
-  mode==='replace'
-   ?'現在のデータを置き換えます。実行しますか？'
-   :'重複を除いて追加します。実行しますか？'
- ))return;
+  if(!confirm(
+    mode==='replace'
+      ?'現在のデータを置き換えます。実行しますか？'
+      :'重複を除いて追加します。実行しますか？'
+  ))return;
 
- const data=restoreCandidate.data;
+  const data=restoreCandidate.data;
 
- const ok=update(()=>{
-  if(mode==='replace'){
-   state.plans=data.plans.map(norm);
-   state.saved=[...new Set(data.saved)];
-  }else{
-   const ids=new Set(state.plans.map(t=>t.id));
+  if(update(()=>{
+    if(mode==='replace'){
+      state.plans=data.plans.map(norm);
+      state.saved=[
+        ...new Set(data.saved)
+      ];
+    }else{
+      const ids=new Set(
+        state.plans.map(t=>t.id)
+      );
 
-   state.plans.push(
-    ...data.plans
-     .filter(t=>!ids.has(t.id))
-     .map(norm)
-   );
+      state.plans.push(
+        ...data.plans
+          .filter(t=>!ids.has(t.id))
+          .map(norm)
+      );
 
-   state.saved=[
-    ...new Set([...state.saved,...data.saved])
-   ];
+      state.saved=[
+        ...new Set([
+          ...state.saved,
+          ...data.saved
+        ])
+      ];
+    }
+  })){
+    restoreCandidate=null;
+    alert('復元しました。');
+    go('my');
   }
- });
-
- if(ok){
-  restoreCandidate=null;
-  alert('復元しました。');
-  go('my');
- }
 }
 
 /* =========================
-   Instagram画像 ver.1.2
+   INSTAGRAM EXPORT
 ========================= */
 
 function openExport(id){
- const t=find(id);
- if(!t)return;
+  const t=find(id);
+  if(!t)return;
 
- exportTrip=norm(t);
- exportIndex=0;
- go('export');
+  exportTrip=norm(t);
+  exportIndex=0;
+
+  go('export');
 }
 
 function renderExport(){
- if(!exportTrip){
-  go('home');
-  return;
- }
-
- const t=exportTrip;
- const total=2+days(t);
-
- app.innerHTML=`
- <div class="eyebrow">INSTAGRAM CAROUSEL</div>
- <h2>旅を、投稿にしよう。</h2>
-
- <p>
-  表紙・全体ルート・DAY別スケジュールを
-  1080×1350pxの縦長画像として生成します。
- </p>
-
- <div class="notice">
-  画像を長押しして「写真に保存」または
-  「画像を保存」を選んでください。
-  iPadのブラウザによっては長押し保存が
-  利用できない場合があります。
- </div>
-
- <div class="panel">
-  <label>画像を選択
-   <select id="export-index">
-    <option value="0">1. 表紙</option>
-    <option value="1">2. 全体ルート</option>
-
-    ${t.schedule.map((d,i)=>`
-     <option value="${i+2}">
-      ${i+3}. ${esc(d.name)}
-     </option>`).join('')}
-   </select>
-  </label>
-
-  <p id="export-count" class="muted">
-   1 / ${total}
-  </p>
-
-  <div class="export-preview" id="export-preview">
-   <p class="muted">画像を生成しています...</p>
-  </div>
-
-  <div class="actions">
-   <button class="btn alt"
-    data-action="export-prev">
-    ← 前へ
-   </button>
-
-   <button class="btn"
-    data-action="export-next">
-    次へ →
-   </button>
-  </div>
-
-  <p class="muted">
-   画像は1枚ずつ生成されます。
-   写真は登録済みのスポット写真を使用します。
-  </p>
- </div>
- `;
-
- document.getElementById('export-index').value=
-  String(exportIndex);
-
- setTimeout(drawExport,50);
-}
-
-function wrapLines(ctx,text,maxWidth){
- const lines=[];
- let line='';
-
- for(const ch of String(text)){
-  if(ch==='\n'){
-   lines.push(line);
-   line='';
-   continue;
+  if(!exportTrip){
+    go('home');
+    return;
   }
 
-  if(ctx.measureText(line+ch).width>maxWidth&&line){
-   lines.push(line);
-   line=ch;
-  }else{
-   line+=ch;
+  const t=exportTrip;
+
+  app.innerHTML=`
+    <div class="eyebrow">
+      INSTAGRAM CAROUSEL
+    </div>
+
+    <h2>旅を、投稿にしよう。</h2>
+
+    <div class="notice">
+      1080×1350pxの画像を生成します。
+      画像を長押しして写真に保存してください。
+      全体ルート画像は現段階では訪問順の一覧です。
+    </div>
+
+    <label>
+      画像を選択
+
+      <select id="export-index">
+        <option value="0">
+          1. 表紙
+        </option>
+
+        <option value="1">
+          2. 全体ルート
+        </option>
+
+        ${t.schedule.map((d,i)=>`
+          <option value="${i+2}">
+            ${i+3}. ${esc(d.name)}
+          </option>
+        `).join('')}
+      </select>
+    </label>
+
+    <p
+      id="export-count"
+      class="muted">
+    </p>
+
+    <div
+      class="preview"
+      id="export-preview">
+      画像を生成しています...
+    </div>
+
+    <button
+      class="btn alt"
+      data-a="export-prev">
+      ← 前へ
+    </button>
+
+    <button
+      class="btn"
+      data-a="export-next">
+      次へ →
+    </button>
+
+    <p class="muted">
+      スポットが多いDAYでは
+      画像の下部が省略される場合があります。
+    </p>
+  `;
+
+  document.getElementById(
+    'export-index'
+  ).value=String(exportIndex);
+
+  setTimeout(drawExport,50);
+}
+
+function lines(ctx,text,width){
+  let out=[];
+  let line='';
+
+  for(const ch of String(text)){
+    if(ch==='\n'){
+      out.push(line);
+      line='';
+      continue;
+    }
+
+    if(
+      line
+      &&ctx.measureText(line+ch).width>width
+    ){
+      out.push(line);
+      line=ch;
+    }else{
+      line+=ch;
+    }
   }
- }
 
- if(line)lines.push(line);
- return lines;
+  if(line)out.push(line);
+
+  return out;
 }
 
-function drawText(ctx,text,x,y,maxWidth,lineHeight,maxLines=99){
- const lines=wrapLines(ctx,text,maxWidth);
- const n=Math.min(lines.length,maxLines);
+function drawLines(
+  ctx,text,x,y,w,step,max=3
+){
+  const a=lines(ctx,text,w);
 
- for(let i=0;i<n;i++){
-  let value=lines[i];
-
-  if(i===n-1&&lines.length>maxLines){
-   while(ctx.measureText(value+'…').width>maxWidth){
-    value=value.slice(0,-1);
-   }
-   value+='…';
-  }
-
-  ctx.fillText(value,x,y+i*lineHeight);
- }
-
- return y+n*lineHeight;
+  a.slice(0,max).forEach((v,i)=>{
+    ctx.fillText(
+      v,
+      x,
+      y+i*step
+    );
+  });
 }
 
-function roundRect(ctx,x,y,w,h,r,fill){
- ctx.fillStyle=fill;
- ctx.beginPath();
- ctx.roundRect(x,y,w,h,r);
- ctx.fill();
+async function imageOf(src){
+  return new Promise(resolve=>{
+    if(!src)return resolve(null);
+
+    const img=new Image();
+
+    img.onload=()=>resolve(img);
+    img.onerror=()=>resolve(null);
+    img.src=src;
+  });
 }
 
-async function loadImage(src){
- return new Promise(resolve=>{
-  if(!src){resolve(null);return}
+function coverImage(ctx,img,x,y,w,h){
+  if(!img)return;
 
-  const img=new Image();
-  img.onload=()=>resolve(img);
-  img.onerror=()=>resolve(null);
-  img.src=src;
- });
-}
+  const scale=Math.max(
+    w/img.width,
+    h/img.height
+  );
 
-function drawCoverImage(ctx,img,x,y,w,h){
- if(!img)return;
+  const sw=w/scale;
+  const sh=h/scale;
 
- const scale=Math.max(w/img.width,h/img.height);
- const sw=w/scale;
- const sh=h/scale;
-
- ctx.drawImage(
-  img,
-  (img.width-sw)/2,
-  (img.height-sh)/2,
-  sw,sh,x,y,w,h
- );
+  ctx.drawImage(
+    img,
+    (img.width-sw)/2,
+    (img.height-sh)/2,
+    sw,
+    sh,
+    x,y,w,h
+  );
 }
 
 async function drawExport(){
- const t=exportTrip;
- if(!t||page!=='export')return;
+  const t=exportTrip;
+  const index=exportIndex;
 
- const index=exportIndex;
- const preview=document.getElementById('export-preview');
- if(!preview)return;
+  const el=document.getElementById(
+    'export-preview'
+  );
 
- const canvas=document.createElement('canvas');
- canvas.width=1080;
- canvas.height=1350;
+  if(!t||!el)return;
 
- const ctx=canvas.getContext('2d');
- const W=1080,H=1350;
+  const c=document.createElement('canvas');
 
- const palette={
-  bg:'#f8f5ee',
-  brown:'#493c30',
-  olive:'#59634a',
-  sand:'#e9dfcc',
-  white:'#fffefa'
- };
+  c.width=1080;
+  c.height=1350;
 
- const template=t.template||'scrapbook';
+  const ctx=c.getContext('2d');
 
- ctx.fillStyle=template==='minimal'
-  ?'#f6f6f3':palette.bg;
- ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#f8f5ee';
+  ctx.fillRect(0,0,1080,1350);
 
- ctx.fillStyle=palette.olive;
- ctx.fillRect(0,0,W,15);
+  ctx.fillStyle='#59634a';
+  ctx.fillRect(0,0,1080,14);
 
- ctx.fillStyle=palette.brown;
- ctx.font='bold 40px Georgia,serif';
- ctx.fillText('TUMUGOU',70,95);
+  ctx.fillStyle='#493c30';
+  ctx.font='bold 42px Georgia,serif';
+  ctx.fillText('TUMUGOU',65,90);
 
- ctx.font='22px sans-serif';
- ctx.fillStyle='#8c8274';
- ctx.fillText(
-  'あなたの旅が、次の誰かの旅になる。',
-  70,137
- );
-
- ctx.strokeStyle='#d9cfc0';
- ctx.beginPath();
- ctx.moveTo(70,165);
- ctx.lineTo(1010,165);
- ctx.stroke();
-
- if(index===0){
-  const photo=await loadImage(firstPhoto(t));
-
-  if(photo){
-   drawCoverImage(ctx,photo,70,205,940,640);
-  }else{
-   roundRect(
-    ctx,70,205,940,640,25,'#d8ddcf'
-   );
-
-   ctx.font='180px sans-serif';
-   ctx.textAlign='center';
-   ctx.fillStyle=palette.brown;
-   ctx.fillText(t.icon||'🧳',540,590);
-   ctx.textAlign='left';
-  }
-
-  ctx.fillStyle=palette.olive;
-  ctx.font='bold 27px sans-serif';
+  ctx.font='22px sans-serif';
   ctx.fillText(
-   t.place.toUpperCase()+'  /  '+days(t)+' DAYS',
-   75,925
+    'あなたの旅が、次の誰かの旅になる。',
+    65,130
   );
 
-  ctx.fillStyle=palette.brown;
-  ctx.font='bold 65px sans-serif';
+  ctx.strokeStyle='#d9cfc0';
+  ctx.beginPath();
+  ctx.moveTo(65,160);
+  ctx.lineTo(1015,160);
+  ctx.stroke();
 
-  drawText(
-   ctx,t.title,70,1020,940,85,3
-  );
+  if(index===0){
+    const img=await imageOf(
+      firstPhoto(t)
+    );
 
-  ctx.font='27px sans-serif';
-  ctx.fillStyle='#84786a';
+    if(img){
+      coverImage(
+        ctx,img,
+        65,195,950,640
+      );
+    }else{
+      ctx.fillStyle='#d9decf';
+      ctx.fillRect(
+        65,195,950,640
+      );
 
-  drawText(
-   ctx,t.description||'旅の記録',
-   75,1220,930,38,2
-  );
+      ctx.font='170px sans-serif';
+      ctx.textAlign='center';
+      ctx.fillStyle='#493c30';
 
- }else if(index===1){
+      ctx.fillText(
+        t.icon||'🧳',
+        540,585
+      );
 
-  ctx.fillStyle=palette.olive;
-  ctx.font='bold 32px sans-serif';
-  ctx.fillText('OUR TRAVEL ROUTE',70,235);
+      ctx.textAlign='left';
+    }
 
-  ctx.fillStyle=palette.brown;
-  ctx.font='bold 50px sans-serif';
-  ctx.fillText('旅の全体ルート',70,310);
+    ctx.fillStyle='#59634a';
+    ctx.font='bold 28px sans-serif';
 
-  let y=365;
-  let maxRows=0;
-
-  t.schedule.forEach((d,di)=>{
-   if(y>1190)return;
-
-   const color=COLORS[di%COLORS.length];
-
-   roundRect(
-    ctx,70,y,940,55,12,color
-   );
-
-   ctx.fillStyle='white';
-   ctx.font='bold 27px sans-serif';
-   ctx.fillText(d.name,95,y+38);
-
-   y+=75;
-
-   d.stops.forEach((s,si)=>{
-    if(y>1210)return;
-
-    ctx.fillStyle=color;
-    ctx.beginPath();
-    ctx.arc(100,y+8,17,0,Math.PI*2);
-    ctx.fill();
-
-    ctx.fillStyle='white';
-    ctx.font='bold 20px sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText(String(si+1),100,y+15);
-    ctx.textAlign='left';
-
-    ctx.fillStyle=palette.brown;
-    ctx.font='bold 26px sans-serif';
-
-    const name=wrapLines(ctx,s.name,680)[0]||'';
     ctx.fillText(
-     s.time+'  '+name,
-     145,y+17
+      t.place+' / '
+      +t.schedule.length+' DAYS',
+      70,925
     );
 
-    y+=48;
-    maxRows++;
-   });
+    ctx.fillStyle='#493c30';
+    ctx.font='bold 64px sans-serif';
 
-   y+=25;
-  });
-
-  if(y>1210){
-   ctx.fillStyle='#8b6555';
-   ctx.font='22px sans-serif';
-   ctx.fillText(
-    '※ 表示しきれないスポットはDAY別画像をご確認ください。',
-    70,1260
-   );
-  }
-
-  ctx.fillStyle='#80796d';
-  ctx.font='20px sans-serif';
-  ctx.fillText(
-   '訪問順を示す一覧です。地理的な地図画像ではありません。',
-   70,1310
-  );
-
- }else{
-
-  const di=index-2;
-  const d=t.schedule[di];
-
-  const color=COLORS[di%COLORS.length];
-
-  ctx.fillStyle=color;
-  ctx.font='bold 34px sans-serif';
-  ctx.fillText('DAY '+(di+1),70,235);
-
-  ctx.fillStyle=palette.brown;
-  ctx.font='bold 50px sans-serif';
-  ctx.fillText(d.name,70,310);
-
-  let y=360;
-
-  for(let si=0;si<d.stops.length;si++){
-   const s=d.stops[si];
-
-   if(y>1190)break;
-
-   const hasPhoto=!!s.photo;
-   const cardHeight=hasPhoto?270:135;
-
-   roundRect(
-    ctx,70,y,940,cardHeight,15,palette.white
-   );
-
-   ctx.fillStyle=color;
-   ctx.fillRect(70,y,8,cardHeight);
-
-   ctx.fillStyle=color;
-   ctx.font='bold 27px sans-serif';
-   ctx.fillText(s.time||'--:--',100,y+45);
-
-   ctx.fillStyle=palette.brown;
-   ctx.font='bold 31px sans-serif';
-
-   drawText(
-    ctx,(si+1)+'. '+s.name,
-    250,y+45,700,40,2
-   );
-
-   if(hasPhoto){
-    const photo=await loadImage(s.photo);
-
-    if(photo){
-     drawCoverImage(
-      ctx,photo,100,y+105,390,140
-     );
-    }
-
-    ctx.fillStyle='#766d62';
-    ctx.font='22px sans-serif';
-
-    if(s.comment){
-     drawText(
-      ctx,s.comment,520,y+130,440,31,3
-     );
-    }
-   }else if(s.comment){
-    ctx.fillStyle='#766d62';
-    ctx.font='21px sans-serif';
-
-    drawText(
-     ctx,s.comment,250,y+100,700,27,2
+    drawLines(
+      ctx,t.title,
+      70,1020,930,82,3
     );
-   }
 
-   y+=cardHeight+18;
+    ctx.font='25px sans-serif';
 
-   if(si<d.stops.length-1){
-    const next=d.stops[si+1];
+    drawLines(
+      ctx,t.description,
+      70,1220,930,34,2
+    );
 
-    ctx.fillStyle='#857b6e';
+  }else if(index===1){
+    ctx.fillStyle='#59634a';
+    ctx.font='bold 32px sans-serif';
+
+    ctx.fillText(
+      'OUR TRAVEL ROUTE',
+      65,230
+    );
+
+    ctx.fillStyle='#493c30';
+    ctx.font='bold 50px sans-serif';
+
+    ctx.fillText(
+      '旅の全体ルート',
+      65,310
+    );
+
+    let y=365;
+
+    for(
+      let di=0;
+      di<t.schedule.length;
+      di++
+    ){
+      if(y>1180)break;
+
+      const d=t.schedule[di];
+
+      ctx.fillStyle=
+        COLORS[di%COLORS.length];
+
+      ctx.fillRect(
+        65,y,950,54
+      );
+
+      ctx.fillStyle='white';
+      ctx.font='bold 26px sans-serif';
+
+      ctx.fillText(
+        d.name,
+        90,y+36
+      );
+
+      y+=73;
+
+      for(
+        let si=0;
+        si<d.stops.length;
+        si++
+      ){
+        if(y>1200)break;
+
+        const s=d.stops[si];
+
+        ctx.fillStyle='#493c30';
+        ctx.font='26px sans-serif';
+
+        drawLines(
+          ctx,
+          (si+1)+'. '
+          +s.time+'  '+s.name,
+          90,y+25,900,33,1
+        );
+
+        y+=49;
+      }
+
+      y+=20;
+    }
+
+    ctx.fillStyle='#817768';
     ctx.font='20px sans-serif';
+
     ctx.fillText(
-     '↓ '+travel(next),
-     100,y+10
+      '訪問順の一覧です。地理的な地図ではありません。',
+      65,1300
     );
 
-    y+=45;
-   }
+  }else{
+    const di=index-2;
+    const d=t.schedule[di];
+
+    ctx.fillStyle=
+      COLORS[di%COLORS.length];
+
+    ctx.font='bold 35px sans-serif';
+
+    ctx.fillText(
+      'DAY '+(di+1),
+      65,235
+    );
+
+    ctx.fillStyle='#493c30';
+    ctx.font='bold 49px sans-serif';
+
+    ctx.fillText(
+      d.name,
+      65,310
+    );
+
+    let y=360;
+
+    for(
+      let si=0;
+      si<d.stops.length;
+      si++
+    ){
+      if(y>1180)break;
+
+      const s=d.stops[si];
+      const h=s.photo?255:140;
+
+      ctx.fillStyle='#fffefa';
+      ctx.fillRect(
+        65,y,950,h
+      );
+
+      ctx.fillStyle=
+        COLORS[di%COLORS.length];
+
+      ctx.fillRect(
+        65,y,8,h
+      );
+
+      ctx.font='bold 28px sans-serif';
+
+      ctx.fillText(
+        s.time,
+        95,y+45
+      );
+
+      ctx.fillStyle='#493c30';
+      ctx.font='bold 30px sans-serif';
+
+      drawLines(
+        ctx,
+        (si+1)+'. '+s.name,
+        260,y+45,710,38,2
+      );
+
+      if(s.photo){
+        const img=await imageOf(
+          s.photo
+        );
+
+        if(img){
+          coverImage(
+            ctx,img,
+            95,y+95,395,135
+          );
+        }
+
+        ctx.fillStyle='#817768';
+        ctx.font='21px sans-serif';
+
+        drawLines(
+          ctx,s.comment,
+          515,y+120,450,30,3
+        );
+
+      }else if(s.comment){
+        ctx.fillStyle='#817768';
+        ctx.font='21px sans-serif';
+
+        drawLines(
+          ctx,s.comment,
+          260,y+105,700,29,2
+        );
+      }
+
+      y+=h+18;
+
+      if(si<d.stops.length-1){
+        ctx.fillStyle='#817768';
+        ctx.font='20px sans-serif';
+
+        ctx.fillText(
+          '↓ '+travel(
+            d.stops[si+1]
+          ),
+          95,y+10
+        );
+
+        y+=45;
+      }
+    }
   }
 
-  if(y>1210){
-   ctx.fillStyle='#8b6555';
-   ctx.font='20px sans-serif';
-   ctx.fillText(
-    '※ スポット数が多い場合は一部省略されます。',
-    70,1270
-   );
-  }
- }
+  ctx.fillStyle='#493c30';
+  ctx.font='22px Georgia,serif';
+  ctx.textAlign='right';
 
- ctx.fillStyle=palette.brown;
- ctx.font='21px Georgia,serif';
- ctx.textAlign='right';
- ctx.fillText(
-  'TUMUGOU  •  '+(index+1)+' / '+(2+days(t)),
-  1000,1320
- );
- ctx.textAlign='left';
+  ctx.fillText(
+    'TUMUGOU • '
+    +(index+1)
+    +' / '
+    +(t.schedule.length+2),
+    1010,1320
+  );
 
- if(page!=='export'||exportIndex!==index)return;
+  if(
+    page!=='export'
+    ||exportIndex!==index
+  )return;
 
- const img=document.createElement('img');
- img.alt='Instagram投稿用画像';
- img.style.width='100%';
- img.style.display='block';
- img.style.webkitTouchCallout='default';
+  const img=document.createElement('img');
 
- img.src=canvas.toDataURL('image/png');
+  img.alt='Instagram投稿用画像';
+  img.src=c.toDataURL('image/png');
 
- preview.innerHTML='';
- preview.appendChild(img);
+  el.innerHTML='';
+  el.appendChild(img);
 
- document.getElementById('export-count').textContent=
-  (index+1)+' / '+(2+days(t));
+  document.getElementById(
+    'export-count'
+  ).textContent=
+    (index+1)
+    +' / '
+    +(t.schedule.length+2);
 }
 
-function changeExport(delta){
- if(!exportTrip)return;
+function exportMove(delta){
+  if(!exportTrip)return;
 
- exportIndex=Math.max(
-  0,
-  Math.min(
-   1+days(exportTrip),
-   exportIndex+delta
-  )
- );
+  exportIndex=Math.max(
+    0,
+    Math.min(
+      exportTrip.schedule.length+1,
+      exportIndex+delta
+    )
+  );
 
- renderExport();
+  renderExport();
 }
 
 /* =========================
-   イベント処理
+   BUTTON EVENTS
 ========================= */
 
 document.addEventListener('click',e=>{
- const b=e.target.closest('button[data-action]');
- if(!b)return;
+  const b=e.target.closest(
+    'button[data-a]'
+  );
 
- const a=b.dataset.action;
- const id=b.dataset.id;
- const di=Number(b.dataset.day);
- const si=Number(b.dataset.spot);
+  if(!b)return;
 
- if(a==='page')go(id);
- else if(a==='tab'){
-  myTab=id;
-  render();
- }
- else if(a==='detail')go('detail',id);
- else if(a==='new')openNew(false);
- else if(a==='new-publish')openNew(true);
- else if(a==='edit')openEdit(id);
- else if(a==='add')addSpot(di);
- else if(a==='remove')removeSpot(di,si);
- else if(a==='up')moveSpot(di,si,-1);
- else if(a==='down')moveSpot(di,si,1);
- else if(a==='check')checkTimes(di);
- else if(a==='lookup')lookup(di,si);
- else if(a==='choose'){
-  choosePlace(Number(b.dataset.index),b.dataset.uid);
- }
- else if(a==='remove-photo'){
-  sync();
-  const s=draft.schedule[di]?.stops[si];
-  if(s&&confirm('写真を削除しますか？')){
-   s.photo='';
-   renderDays();
+  const a=b.dataset.a;
+  const id=b.dataset.id;
+  const di=+b.dataset.day;
+  const si=+b.dataset.spot;
+
+  if(a==='page'){
+    go(id);
+
+  }else if(a==='tab'){
+    myTab=id;
+    render();
+
+  }else if(a==='detail'){
+    go('detail',id);
+
+  }else if(a==='new'){
+    openNew(false);
+
+  }else if(a==='new-publish'){
+    openNew(true);
+
+  }else if(a==='edit'){
+    openEdit(id);
+
+  }else if(a==='copy'){
+    openCopy(id);
+
+  }else if(a==='copy-next'){
+    copyNext();
+
+  }else if(a==='day-add'){
+    dayAdd();
+
+  }else if(a==='day-delete'){
+    dayDelete(di);
+
+  }else if(a==='day-up'){
+    daySwap(di,-1);
+
+  }else if(a==='day-down'){
+    daySwap(di,1);
+
+  }else if(a==='add'){
+    add(di);
+
+  }else if(a==='remove'){
+    remove(di,si);
+
+  }else if(a==='up'){
+    move(di,si,-1);
+
+  }else if(a==='down'){
+    move(di,si,1);
+
+  }else if(a==='move-day'){
+    moveDay(di,si);
+
+  }else if(a==='check'){
+    check(di);
+
+  }else if(a==='lookup'){
+    lookup(di,si);
+
+  }else if(a==='choose'){
+    choose(
+      +b.dataset.index,
+      b.dataset.uid
+    );
+
+  }else if(a==='remove-photo'){
+    sync();
+
+    const s=draft.schedule[di]
+      ?.stops[si];
+
+    if(
+      s
+      &&confirm(
+        '写真を削除しますか？'
+      )
+    ){
+      s.photo='';
+      renderDays();
+    }
+
+  }else if(a==='save-trip'){
+    saveTrip();
+
+  }else if(a==='delete'){
+    deleteTrip(id);
+
+  }else if(a==='complete'){
+    setStatus(id,'completed');
+
+  }else if(a==='planning'){
+    setStatus(id,'planning');
+
+  }else if(a==='publish'){
+    publish(id,true);
+
+  }else if(a==='unpublish'){
+    publish(id,false);
+
+  }else if(a==='bookmark'){
+    bookmark(id);
+
+  }else if(a==='backup-create'){
+    createBackup();
+
+  }else if(a==='backup-copy'){
+    copyBackup();
+
+  }else if(a==='restore-preview'){
+    previewRestore();
+
+  }else if(a==='restore-confirm'){
+    restoreData();
+
+  }else if(a==='export'){
+    openExport(id);
+
+  }else if(a==='export-prev'){
+    exportMove(-1);
+
+  }else if(a==='export-next'){
+    exportMove(1);
+
+  }else if(a==='reset-search'){
+    search={
+      q:'',
+      days:'',
+      style:'',
+      status:''
+    };
+
+    renderSearch();
   }
- }
- else if(a==='save-trip')saveTrip();
- else if(a==='delete')deleteTrip(id);
- else if(a==='complete')setStatus(id,'completed');
- else if(a==='planning')setStatus(id,'planning');
- else if(a==='publish')publish(id,true);
- else if(a==='unpublish')publish(id,false);
- else if(a==='bookmark')bookmark(id);
- else if(a==='copy')copyTrip(id);
- else if(a==='backup-create')createBackup();
- else if(a==='backup-copy')copyBackup();
- else if(a==='restore-preview')previewRestore();
- else if(a==='restore-confirm')restoreData();
- else if(a==='export')openExport(id);
- else if(a==='export-prev')changeExport(-1);
- else if(a==='export-next')changeExport(1);
 });
+
+/* =========================
+   INPUT EVENTS
+========================= */
 
 document.addEventListener('input',e=>{
- if(e.target.id==='query'){
-  query=e.target.value;
-  renderResults();
- }
-
- if(e.target.id==='restore-input'){
-  restoreCandidate=null;
-  const el=document.getElementById('restore-preview');
-  if(el)el.innerHTML='';
- }
-
- if(e.target.dataset.field==='name'){
-  const s=draft?.schedule[
-   +e.target.dataset.day
-  ]?.stops[
-   +e.target.dataset.spot
-  ];
-
-  if(s&&s.name!==e.target.value){
-   s.name=e.target.value;
-   s.lookup='';
-   delete s.coords;
-   delete s.locationLabel;
-
-   const box=e.target.closest('.spot');
-   const lookupField=box?.querySelector(
-    '[data-field="lookup"]'
-   );
-
-   if(lookupField){
-    lookupField.value=ALIASES[s.name]||s.name;
-   }
-
-   const status=box?.querySelector('.muted');
-   if(status&&status.textContent.includes('位置登録済み')){
-    status.textContent='位置未登録';
-   }
-
-   const result=box?.querySelector('[id^="lookup-"]');
-   if(result)result.innerHTML='';
+  if(e.target.id==='search-q'){
+    search.q=e.target.value;
+    renderResults();
   }
- }
+
+  if(e.target.id==='restore-input'){
+    restoreCandidate=null;
+
+    const el=document.getElementById(
+      'restore-preview'
+    );
+
+    if(el)el.innerHTML='';
+  }
+
+  if(e.target.dataset.field==='name'){
+    const s=draft?.schedule[
+      +e.target.dataset.day
+    ]?.stops[
+      +e.target.dataset.spot
+    ];
+
+    if(
+      s
+      &&s.name!==e.target.value
+    ){
+      s.name=e.target.value;
+      s.lookup='';
+
+      delete s.coords;
+      delete s.locationLabel;
+
+      const box=e.target.closest(
+        '.spot'
+      );
+
+      const input=box?.querySelector(
+        '[data-field="lookup"]'
+      );
+
+      if(input){
+        input.value=s.name;
+      }
+
+      const res=box?.querySelector(
+        '[id^="lookup-"]'
+      );
+
+      if(res){
+        res.innerHTML='';
+      }
+    }
+  }
 });
+
+/* =========================
+   CHANGE EVENTS
+========================= */
 
 document.addEventListener('change',async e=>{
- if(e.target.id==='duration'){
-  duration=e.target.value;
-  renderResults();
- }
+  if([
+    'search-days',
+    'search-style',
+    'search-status'
+  ].includes(e.target.id)){
 
- else if(e.target.id==='trip-days'){
-  changeDays(e.target.value);
- }
+    search[
+      e.target.id.replace('search-','')
+    ]=e.target.value;
 
- else if(e.target.id==='export-index'){
-  exportIndex=Number(e.target.value);
-  renderExport();
- }
+    renderResults();
 
- else if(e.target.dataset.photo){
-  await loadPhoto(
-   e.target.files?.[0],
-   +e.target.dataset.day,
-   +e.target.dataset.spot
-  );
- }
+  }else if(e.target.id==='export-index'){
+    exportIndex=+e.target.value;
+    renderExport();
+
+  }else if(e.target.dataset.photo){
+    await photo(
+      e.target.files?.[0],
+      +e.target.dataset.day,
+      +e.target.dataset.spot
+    );
+  }
 });
+
+/* =========================
+   START
+========================= */
 
 render();
 
