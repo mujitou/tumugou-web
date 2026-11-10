@@ -7,310 +7,200 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-:root{
---bg:#f8f5ee;
---sand:#e9dfcc;
---brown:#493c30;
---green:#59634a;
-}
+:root{--bg:#f8f5ee;--sand:#e9dfcc;--brown:#493c30;--green:#59634a}
 *{box-sizing:border-box}
-body{
-margin:0;
-background:var(--bg);
-color:var(--brown);
-font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-}
-header{
-background:var(--green);
-color:white;
-text-align:center;
-padding:24px 12px;
-}
-header h1{
-font-family:Georgia,serif;
-letter-spacing:5px;
-font-size:36px;
-margin:0;
-}
+body{margin:0;background:var(--bg);color:var(--brown);font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+header{background:var(--green);color:white;text-align:center;padding:24px 12px}
+header h1{font:bold 36px Georgia,serif;letter-spacing:5px;margin:0}
 header p{font-size:12px;margin:8px 0 0}
-main{
-max-width:760px;
-margin:auto;
-padding:22px 16px 110px;
-min-height:70vh;
-}
-h2{font-size:25px}
+main{max-width:760px;margin:auto;padding:20px 15px 110px}
+h2{font-size:24px}
 h3{font-size:18px}
-p{line-height:1.7}
-small,.muted{color:#817768}
-.card,.box{
-background:white;
-border-radius:16px;
-padding:18px;
-margin:15px 0;
-border:1px solid #e8dfd1;
-}
-.cover{
-background:linear-gradient(120deg,#a6b4a0,#e5cba9);
-border-radius:12px;
-text-align:center;
-padding:30px;
-font-size:52px;
-}
-.tag{
-display:inline-block;
-background:#edf0e7;
-color:var(--green);
-padding:6px 10px;
-border-radius:20px;
-margin:8px 5px 0 0;
-font-size:12px;
-}
+p{line-height:1.6}
+.muted{color:#817768;font-size:13px}
+.card,.box{background:white;border:1px solid #e8dfd1;border-radius:15px;padding:16px;margin:14px 0}
+.cover{background:linear-gradient(120deg,#a6b4a0,#e5cba9);text-align:center;border-radius:12px;padding:25px;font-size:45px}
+.tag{display:inline-block;background:#edf0e7;color:var(--green);padding:5px 9px;border-radius:15px;font-size:12px;margin:7px 5px 0 0}
 button{cursor:pointer;touch-action:manipulation}
-.btn{
-background:var(--green);
-color:white;
-border:0;
-border-radius:9px;
-padding:12px 15px;
-margin:5px 5px 5px 0;
-font-size:14px;
-}
-.btn:disabled{opacity:.5;cursor:wait}
+.btn{background:var(--green);color:white;border:0;border-radius:9px;padding:11px 13px;margin:5px 5px 5px 0;font-size:14px}
 .secondary{background:var(--sand);color:var(--brown)}
-input,textarea,select{
-width:100%;
-padding:12px;
-border:1px solid #d5c9b8;
-border-radius:9px;
-font:inherit;
-margin:7px 0 15px;
-background:white;
-}
-textarea{min-height:100px}
-label{font-weight:bold;font-size:13px}
-nav{
-position:fixed;
-z-index:1000;
-bottom:0;
-left:0;
-right:0;
-display:flex;
-background:white;
-border-top:1px solid #ddd;
-padding-bottom:env(safe-area-inset-bottom);
-}
-nav button{
-flex:1;
-background:white;
-border:0;
-padding:13px 2px;
-font-size:11px;
-color:var(--brown);
-}
-nav button.active{
-background:#edf0e7;
-color:var(--green);
-font-weight:bold;
-}
+.danger{background:#f3e4e0;color:#8d4238}
+button:disabled{opacity:.5}
+input,textarea,select{width:100%;padding:11px;border:1px solid #d5c9b8;border-radius:8px;font:inherit;background:white;margin:6px 0 12px}
+label{display:block;font-size:13px;font-weight:600}
+textarea{min-height:70px}
+nav{position:fixed;z-index:1000;bottom:0;left:0;right:0;display:flex;background:white;border-top:1px solid #ddd;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:white;padding:12px 0;font-size:11px;color:var(--brown)}
+nav button.active{background:#edf0e7;font-weight:bold}
+.notice{background:#eee9da;border-radius:10px;padding:12px;font-size:13px;line-height:1.6}
+.map{height:360px;border-radius:12px;margin:15px 0;z-index:0}
 .day{border-left:5px solid var(--green)}
-.stop{
-padding:10px 0;
-border-bottom:1px solid #eee;
-}
-.route,.notice{
-background:#eee9da;
-padding:14px;
-border-radius:12px;
-line-height:1.8;
-}
-.notice{font-size:13px}
-.map{
-height:350px;
-width:100%;
-border-radius:12px;
-margin:15px 0;
-z-index:0;
-}
-.legend{
-display:flex;
-gap:12px;
-flex-wrap:wrap;
-font-size:13px;
-margin:8px 0;
-}
-.dot{
-display:inline-block;
-width:10px;
-height:10px;
-border-radius:50%;
-margin-right:4px;
-}
-.result{
-border:1px solid #ddd;
-border-radius:10px;
-padding:12px;
-margin:9px 0;
-background:#fff;
-}
-.result p{font-size:13px;margin:5px 0}
-.ok{
-color:#45634b;
-font-weight:bold;
-font-size:13px;
-}
-.warn{color:#9b6943;font-size:13px}
-.section-title{
-border-bottom:1px solid #ddd;
-padding-bottom:10px;
-}
+.stop{border-bottom:1px solid #eee;padding:9px 0}
+.row{display:flex;gap:9px;align-items:flex-start}
+.row .time{width:110px;flex-shrink:0}
+.row .place{flex:1;min-width:0}
+.spot{background:#f8f5ee;border-radius:12px;padding:12px;margin:10px 0}
+.status{font-size:12px;margin:5px 0;color:#956239}
+.ok{color:#466846}
+.results{max-height:280px;overflow:auto}
+.result{padding:11px;border:1px solid #ddd;border-radius:8px;margin:7px 0;background:white}
+.result p{font-size:12px;margin:5px 0;overflow-wrap:anywhere}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.number{display:inline-flex;background:var(--green);color:white;border-radius:50%;width:24px;height:24px;align-items:center;justify-content:center;margin-right:6px;font-size:12px}
+.route{background:#eee9da;border-radius:12px;padding:13px;line-height:1.8}
+.route-day{margin:8px 0}
+.hint{font-size:12px;color:#756d61}
 </style>
 </head>
 <body>
-
 <header>
 <h1>TUMUGOU</h1>
 <p>誰かの旅が、次の誰かの旅になる。</p>
 </header>
-
 <main id="app"></main>
 <nav id="nav"></nav>
 
 <script>
-"use strict";
+'use strict';
 
-const KEY="tumugou_v02";
+const KEY='tumugou_v02';
+const COLORS=['#59634a','#a66b4b','#607f9a','#b38b45','#9872a0'];
+
+const aliases={
+'コロッセオ':'Colosseo, Roma, Italia',
+'トレビの泉':'Fontana di Trevi, Roma, Italia',
+'スペイン広場':'Piazza di Spagna, Roma, Italia',
+'パンテオン':'Pantheon, Roma, Italia',
+'ナヴォーナ広場':'Piazza Navona, Roma, Italia'
+};
+
+const known={
+'清水寺':[34.9949,135.785],
+'祇園で昼食':[35.003,135.778],
+'鴨川散歩':[35.01,135.771],
+'嵐山':[35.0094,135.6668],
+'竹林の小径':[35.017,135.671],
+'京都駅':[34.9858,135.7588],
+'迪化街':[25.0545,121.509],
+'寧夏夜市':[25.0567,121.5153],
+'龍山寺':[25.0372,121.4999],
+'中正紀念堂':[25.0345,121.5219],
+'カフェ巡り':[25.043,121.525],
+'空港へ移動':[25.0797,121.2342],
+'札幌時計台':[43.0626,141.3535],
+'大通公園':[43.06,141.35],
+'小樽運河':[43.199,141.001],
+'堺町通り':[43.192,141.006]
+};
 
 const samples=[
 {
-id:"kyoto",
-title:"京都、街歩きと喫茶の2日間",
-place:"京都",
+id:'kyoto',
+title:'京都、街歩きと喫茶の2日間',
+place:'京都',
 days:2,
-icon:"🍵",
-description:"寺社と喫茶をゆっくり巡る旅。",
+icon:'🍵',
+description:'寺社と喫茶をゆっくり巡る旅。',
 schedule:[
-{name:"Day 1",stops:[
-{time:"09:30",name:"清水寺"},
-{time:"12:00",name:"祇園で昼食"},
-{time:"15:00",name:"鴨川散歩"}
+{name:'Day 1',stops:[
+{time:'09:30',name:'清水寺'},
+{time:'12:00',name:'祇園で昼食'},
+{time:'15:00',name:'鴨川散歩'}
 ]},
-{name:"Day 2",stops:[
-{time:"10:00",name:"嵐山"},
-{time:"13:00",name:"竹林の小径"},
-{time:"16:00",name:"京都駅"}
+{name:'Day 2',stops:[
+{time:'10:00',name:'嵐山'},
+{time:'13:00',name:'竹林の小径'},
+{time:'16:00',name:'京都駅'}
 ]}
 ]
 },
 {
-id:"taipei",
-title:"台北の街と夜市を楽しむ3日間",
-place:"台北",
+id:'taipei',
+title:'台北の街と夜市を楽しむ3日間',
+place:'台北',
 days:3,
-icon:"🏮",
-description:"ローカルグルメと街歩き。",
+icon:'🏮',
+description:'ローカルグルメと街歩き。',
 schedule:[
-{name:"Day 1",stops:[
-{time:"11:00",name:"迪化街"},
-{time:"18:00",name:"寧夏夜市"}
+{name:'Day 1',stops:[
+{time:'11:00',name:'迪化街'},
+{time:'18:00',name:'寧夏夜市'}
 ]},
-{name:"Day 2",stops:[
-{time:"09:00",name:"龍山寺"},
-{time:"14:00",name:"中正紀念堂"}
+{name:'Day 2',stops:[
+{time:'09:00',name:'龍山寺'},
+{time:'14:00',name:'中正紀念堂'}
 ]},
-{name:"Day 3",stops:[
-{time:"10:00",name:"カフェ巡り"},
-{time:"15:00",name:"空港へ移動"}
+{name:'Day 3',stops:[
+{time:'10:00',name:'カフェ巡り'},
+{time:'15:00',name:'空港へ移動'}
 ]}
 ]
 },
 {
-id:"hokkaido",
-title:"札幌・小樽を巡る2日間",
-place:"北海道",
+id:'hokkaido',
+title:'札幌・小樽を巡る2日間',
+place:'北海道',
 days:2,
-icon:"🌲",
-description:"海辺の街と北海道グルメ。",
+icon:'🌲',
+description:'海辺の街と北海道グルメ。',
 schedule:[
-{name:"Day 1",stops:[
-{time:"10:00",name:"札幌時計台"},
-{time:"13:00",name:"大通公園"}
+{name:'Day 1',stops:[
+{time:'10:00',name:'札幌時計台'},
+{time:'13:00',name:'大通公園'}
 ]},
-{name:"Day 2",stops:[
-{time:"10:00",name:"小樽運河"},
-{time:"14:00",name:"堺町通り"}
+{name:'Day 2',stops:[
+{time:'10:00',name:'小樽運河'},
+{time:'14:00',name:'堺町通り'}
 ]}
 ]
 }
-];
-
-const knownCoords={
-"清水寺":[34.9949,135.7850],
-"祇園で昼食":[35.0030,135.7780],
-"鴨川散歩":[35.0100,135.7710],
-"嵐山":[35.0094,135.6668],
-"竹林の小径":[35.0170,135.6710],
-"京都駅":[34.9858,135.7588],
-"迪化街":[25.0545,121.5090],
-"寧夏夜市":[25.0567,121.5153],
-"龍山寺":[25.0372,121.4999],
-"中正紀念堂":[25.0345,121.5219],
-"カフェ巡り":[25.0430,121.5250],
-"空港へ移動":[25.0797,121.2342],
-"札幌時計台":[43.0626,141.3535],
-"大通公園":[43.0600,141.3500],
-"小樽運河":[43.1990,141.0010],
-"堺町通り":[43.1920,141.0060]
-};
-
-const colors=[
-"#59634a",
-"#a66b4b",
-"#607f9a",
-"#b38b45",
-"#9872a0"
 ];
 
 let state={saved:[],plans:[]};
 
 try{
-const data=JSON.parse(localStorage.getItem(KEY));
-if(data&&Array.isArray(data.saved)&&Array.isArray(data.plans)){
-state=data;
+const x=JSON.parse(localStorage.getItem(KEY));
+if(x&&Array.isArray(x.saved)&&Array.isArray(x.plans)){
+state=x;
 }
 }catch(e){}
 
-let page="home";
-let selected="";
-let query="";
-let duration="";
-let editId="";
-let tripMap=null;
-let geoChoices={};
-let geoResults=[];
-let lastSearch=0;
-let searching=false;
-let searchSerial=0;
+const app=document.getElementById('app');
+const nav=document.getElementById('nav');
 
-const app=document.getElementById("app");
-const nav=document.getElementById("nav");
+let page='home';
+let selected='';
+let query='';
+let duration='';
+let draft=null;
+let editing='';
+let map=null;
+let searchContext=null;
+let searchResults=[];
+let searchBusy=false;
+let lastSearch=0;
+
+function uid(){
+return 's'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+}
 
 function esc(v){
-return String(v??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
+return String(v??'').replace(/[&<>"']/g,c=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
 }[c]));
 }
 
-function persist(){
+function save(){
 try{
 localStorage.setItem(KEY,JSON.stringify(state));
 return true;
 }catch(e){
-alert("データを保存できませんでした。");
+alert('保存できませんでした。空き容量やブラウザ設定を確認してください。');
 return false;
 }
 }
@@ -323,23 +213,34 @@ function find(id){
 return all().find(t=>t.id===id);
 }
 
-function go(p,id=""){
-searchSerial++;
-
-if(tripMap){
-tripMap.remove();
-tripMap=null;
+function validCoords(p){
+return Array.isArray(p)&&p.length===2&&p.every(n=>Number.isFinite(Number(n)));
 }
 
+function normalizeTrip(t){
+const x=JSON.parse(JSON.stringify(t));
+x.schedule=(x.schedule||[]).map((d,i)=>({
+name:d.name||'Day '+(i+1),
+stops:(d.stops||[]).map(s=>({
+...s,
+uid:s.uid||uid()
+}))
+}));
+return x;
+}
+
+function go(p,id=''){
+if(map){
+map.remove();
+map=null;
+}
 page=p;
 selected=id;
-
 window.scrollTo(0,0);
 render();
-
-if(p==="detail"){
+if(p==='detail'){
 setTimeout(()=>{
-if(page==="detail"&&selected===id){
+if(page==='detail'&&selected===id){
 drawMap(find(id));
 }
 },50);
@@ -349,203 +250,602 @@ drawMap(find(id));
 function card(t){
 return `
 <article class="card">
-<div class="cover">${esc(t.icon||"🧳")}</div>
+<div class="cover">${esc(t.icon||'🧳')}</div>
 <span class="tag">${esc(t.place)}</span>
 <span class="tag">${esc(t.days)}日間</span>
 <h3>${esc(t.title)}</h3>
 <p class="muted">${esc(t.description)}</p>
-<button class="btn"
-data-action="detail"
-data-id="${esc(t.id)}">
+<button class="btn" data-action="detail" data-id="${esc(t.id)}">
 旅程を見る →
 </button>
 </article>`;
 }
 
 function menu(){
-const items=[
-["home","HOME","⌂"],
-["search","SEARCH","⌕"],
-["my","MY TRIP","♡"],
-["post","POST","＋"]
-];
-
-nav.innerHTML=items.map(([id,name,icon])=>`
-<button
-data-action="page"
-data-id="${id}"
-class="${page===id?"active":""}">
+nav.innerHTML=[
+['home','HOME','⌂'],
+['search','SEARCH','⌕'],
+['my','MY TRIP','♡'],
+['post','POST','＋']
+].map(([id,name,icon])=>`
+<button data-action="page" data-id="${id}"
+class="${page===id?'active':''}">
 ${icon}<br>${name}
 </button>
-`).join("");
+`).join('');
 }
 
 function render(){
 menu();
 
-if(page==="home"){
+if(page==='home'){
 app.innerHTML=`
 <small>EXPLORE JOURNEYS</small>
 <h2>次の旅のヒントを探そう。</h2>
 <p>誰かの旅が、次の誰かの旅になる。</p>
 <div class="notice">
-以下は機能確認用のサンプル旅程です。
+以下は動作確認用のサンプル旅程です。
 実際の旅行記録ではありません。
 </div>
-${samples.map(card).join("")}
+${samples.map(card).join('')}
 `;
 }
 
-else if(page==="search"){
+else if(page==='search'){
 app.innerHTML=`
 <h2>旅程を探す</h2>
 <label>目的地・キーワード
-<input id="query"
-value="${esc(query)}"
-placeholder="例：京都">
+<input id="query" value="${esc(query)}" placeholder="例：京都">
 </label>
-
 <label>旅行日数
 <select id="duration">
 <option value="">すべて</option>
 ${Array.from({length:14},(_,i)=>i+1).map(n=>`
-<option value="${n}"
-${duration===String(n)?"selected":""}>
+<option value="${n}" ${duration===String(n)?'selected':''}>
 ${n}日間
 </option>
-`).join("")}
+`).join('')}
 </select>
 </label>
-
 <div id="results"></div>
 `;
 results();
 }
 
-else if(page==="detail"){
-const t=find(selected);
+else if(page==='my'){
+const saved=state.saved.map(find).filter(Boolean);
+app.innerHTML=`
+<h2>MY TRIP</h2>
+<h3>PLANNING｜自分の旅程</h3>
+${state.plans.length
+?state.plans.map(card).join('')
+:'<p>まだ旅程がありません。</p>'}
+<h3>SAVED｜保存した旅程</h3>
+${saved.length
+?saved.map(card).join('')
+:'<p>まだ保存した旅程がありません。</p>'}
+`;
+}
 
+else if(page==='detail'){
+const t=find(selected);
 if(!t){
-go("home");
+go('home');
 return;
 }
 
-const own=state.plans.some(p=>p.id===t.id);
+const own=state.plans.some(x=>x.id===t.id);
 
 app.innerHTML=`
-<button class="btn secondary"
-data-action="page" data-id="home">
+<button class="btn secondary" data-action="page" data-id="home">
 ← HOME
 </button>
-
-<div class="cover">${esc(t.icon||"🧳")}</div>
+<div class="cover">${esc(t.icon||'🧳')}</div>
 <h2>${esc(t.title)}</h2>
-
 <span class="tag">${esc(t.place)}</span>
 <span class="tag">${esc(t.days)}日間</span>
-
 <p>${esc(t.description)}</p>
 
-<button class="btn secondary"
-data-action="bookmark"
-data-id="${esc(t.id)}">
-${state.saved.includes(t.id)?"♥ 保存済み":"♡ 保存する"}
+<button class="btn secondary" data-action="bookmark" data-id="${esc(t.id)}">
+${state.saved.includes(t.id)?'♥ 保存済み':'♡ 保存する'}
 </button>
 
-<button class="btn"
-data-action="copy"
-data-id="${esc(t.id)}">
+<button class="btn" data-action="copy" data-id="${esc(t.id)}">
 この旅程をコピー
 </button>
 
 ${own?`
-<button class="btn secondary"
-data-action="edit"
-data-id="${esc(t.id)}">
+<button class="btn secondary" data-action="edit" data-id="${esc(t.id)}">
 編集する
-</button>`:""}
+</button>`:''}
 
-<h3 class="section-title">全体ルートマップ</h3>
-
+<h3>全体ルートマップ</h3>
 <div id="trip-map" class="map"></div>
 
 <div class="legend">
 ${t.schedule.map((d,i)=>`
 <span>
-<span class="dot"
-style="background:${colors[i%colors.length]}"></span>
+<span class="dot" style="background:${COLORS[i%COLORS.length]}"></span>
 ${esc(d.name)}
 </span>
-`).join("")}
+`).join('')}
 </div>
 
 <p class="muted">
-線はスポット間を結ぶ直線です。
-道路・鉄道の実際の経路ではありません。
+地点間は直線で結んでいます。
+実際の道路・鉄道経路や所要時間ではありません。
 </p>
 
 <div class="route">
-${t.schedule.map(d=>`
-<b>${esc(d.name)}</b><br>
-${d.stops.map(s=>esc(s.name)).join(" → ")}
-`).join("<br>")}
-</div>
-
-<h3 class="section-title">DAY別スケジュール</h3>
-
 ${t.schedule.map((d,i)=>`
-<div class="box day"
-style="border-left-color:${colors[i%colors.length]}">
+<div class="route-day">
+<b>${esc(d.name)}</b><br>
+${d.stops.map((s,j)=>`${j+1}. ${esc(s.name)}`).join(' → ')}
+</div>
+`).join('')}
+</div>
+
+<h3>DAY別スケジュール</h3>
+${t.schedule.map((d,i)=>`
+<div class="box day" style="border-left-color:${COLORS[i%COLORS.length]}">
 <h3>${esc(d.name)}</h3>
-
-${d.stops.map(s=>`
+${d.stops.map((s,j)=>`
 <div class="stop">
+<span class="number" style="background:${COLORS[i%COLORS.length]}">
+${j+1}
+</span>
 <b>${esc(s.time)}</b>　${esc(s.name)}
-${Array.isArray(s.coords)
-?'<span class="ok"> 📍</span>':""}
+${validCoords(s.coords)?'<span class="ok">📍</span>':''}
 </div>
-`).join("")}
-
+`).join('')}
 </div>
-`).join("")}
+`).join('')}
 `;
 }
 
-else if(page==="my"){
-const saved=state.saved.map(find).filter(Boolean);
-
-app.innerHTML=`
-<h2>MY TRIP</h2>
-
-<h3>PLANNING｜自分の旅程</h3>
-${state.plans.length
-?state.plans.map(card).join("")
-:"<p>まだ旅程がありません。</p>"}
-
-<h3>SAVED｜保存した旅程</h3>
-${saved.length
-?saved.map(card).join("")
-:"<p>まだ保存した旅程がありません。</p>"}
-`;
-}
-
-else if(page==="post"||page==="edit"){
+else if(page==='post'||page==='edit'){
 renderEditor();
 }
 }
 
 function results(){
-const el=document.getElementById("results");
+const el=document.getElementById('results');
 if(!el)return;
 
 const r=all().filter(t=>
-(t.place+" "+t.title).toLowerCase().includes(query.toLowerCase())&&
+(t.place+' '+t.title).toLowerCase().includes(query.toLowerCase())&&
 (!duration||t.days===Number(duration))
 );
 
 el.innerHTML=r.length
-?r.map(card).join("")
-:"<p>該当する旅程がありません。</p>";
+?r.map(card).join('')
+:'<p>該当する旅程がありません。</p>';
+}
+
+function newDraft(){
+return {
+id:'plan-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),
+title:'',
+place:'',
+days:2,
+icon:'🧳',
+description:'',
+schedule:[
+{name:'Day 1',stops:[{uid:uid(),time:'09:00',name:''}]},
+{name:'Day 2',stops:[{uid:uid(),time:'09:00',name:''}]}
+]
+};
+}
+
+function openNew(){
+editing='';
+draft=newDraft();
+go('post');
+}
+
+function openEdit(id){
+const t=find(id);
+if(!t)return;
+editing=id;
+draft=normalizeTrip(t);
+go('edit');
+}
+
+function renderEditor(){
+if(!draft)draft=newDraft();
+
+app.innerHTML=`
+<h2>${editing?'旅程を編集':'新しい旅程を作成'}</h2>
+
+<div class="notice">
+DAYごとに訪問時間と場所を入力。
+<b>「場所を検索」→候補を選択</b>すると、
+複数スポットが地図に登録されます。
+</div>
+
+<div class="box">
+<label>旅程タイトル
+<input id="trip-title" value="${esc(draft.title)}"
+placeholder="ローマを巡る2日間">
+</label>
+
+<label>目的地（都市・国名まで入力）
+<input id="trip-place" value="${esc(draft.place)}"
+placeholder="ローマ, イタリア">
+</label>
+
+<label>旅の説明
+<textarea id="trip-description">${esc(draft.description)}</textarea>
+</label>
+
+<label>旅行日数
+<select id="trip-days">
+${Array.from({length:14},(_,i)=>i+1).map(n=>`
+<option value="${n}" ${draft.days===n?'selected':''}>
+${n}日間
+</option>
+`).join('')}
+</select>
+</label>
+
+<div id="day-editor"></div>
+
+<button class="btn" data-action="save-trip">
+旅程を保存
+</button>
+</div>
+
+<div class="notice">
+データはこのブラウザ内に保存されます。
+他の端末とは同期されません。
+</div>
+`;
+
+renderDays();
+}
+
+function renderDays(){
+const el=document.getElementById('day-editor');
+if(!el||!draft)return;
+
+el.innerHTML=draft.schedule.map((d,di)=>`
+<section class="box day"
+style="border-left-color:${COLORS[di%COLORS.length]}">
+<h3>${esc(d.name)}</h3>
+
+${d.stops.map((s,si)=>`
+<div class="spot">
+<b>スポット ${si+1}</b>
+
+<div class="row">
+<label class="time">訪問時間
+<input type="time"
+data-field="time"
+data-day="${di}"
+data-spot="${si}"
+value="${esc(/^\d\d:\d\d$/.test(s.time)?s.time:'09:00')}">
+</label>
+
+<label class="place">訪問場所
+<input data-field="name"
+data-day="${di}"
+data-spot="${si}"
+value="${esc(s.name)}"
+placeholder="例：コロッセオ">
+</label>
+</div>
+
+<div class="status ${validCoords(s.coords)?'ok':''}">
+${validCoords(s.coords)
+?'✓ 位置登録済み：'+esc(s.locationLabel||s.name)
+:'位置未登録'}
+</div>
+
+<label>検索キーワード（必要なら英語・現地語に変更）
+<input data-field="lookup"
+data-day="${di}"
+data-spot="${si}"
+value="${esc(s.lookup||aliases[s.name]||s.name)}"
+placeholder="例：Colosseo, Roma, Italia">
+</label>
+
+<button class="btn secondary"
+data-action="find-place"
+data-day="${di}"
+data-spot="${si}">
+🔎 この場所を検索
+</button>
+
+<button class="btn danger"
+data-action="remove-spot"
+data-day="${di}"
+data-spot="${si}">
+削除
+</button>
+
+<div id="lookup-${di}-${si}"></div>
+</div>
+`).join('')}
+
+<button class="btn secondary"
+data-action="add-spot"
+data-day="${di}">
+＋ スポットを追加
+</button>
+</section>
+`).join('');
+}
+
+function syncDraft(){
+if(!draft)return;
+
+const t=document.getElementById('trip-title');
+const p=document.getElementById('trip-place');
+const desc=document.getElementById('trip-description');
+
+if(t)draft.title=t.value;
+if(p)draft.place=p.value;
+if(desc)draft.description=desc.value;
+
+document.querySelectorAll('[data-field]').forEach(el=>{
+const d=draft.schedule[Number(el.dataset.day)];
+const s=d?.stops[Number(el.dataset.spot)];
+
+if(!s)return;
+
+if(el.dataset.field==='time'){
+s.time=el.value;
+}
+
+if(el.dataset.field==='lookup'){
+s.lookup=el.value;
+}
+
+if(el.dataset.field==='name'&&s.name!==el.value){
+s.name=el.value;
+s.lookup='';
+delete s.coords;
+delete s.locationLabel;
+}
+});
+}
+
+function changeDays(n){
+syncDraft();
+n=Number(n);
+
+if(!Number.isInteger(n)||n<1||n>14)return;
+
+while(draft.schedule.length<n){
+draft.schedule.push({
+name:'Day '+(draft.schedule.length+1),
+stops:[{uid:uid(),time:'09:00',name:''}]
+});
+}
+
+draft.schedule.length=n;
+draft.days=n;
+renderDays();
+}
+
+function addSpot(di){
+syncDraft();
+draft.schedule[di].stops.push({
+uid:uid(),
+time:'09:00',
+name:''
+});
+renderDays();
+}
+
+function removeSpot(di,si){
+syncDraft();
+draft.schedule[di].stops.splice(si,1);
+renderDays();
+}
+
+function getSpotByUid(id){
+for(const d of draft?.schedule||[]){
+for(const s of d.stops){
+if(s.uid===id)return s;
+}
+}
+return null;
+}
+
+async function lookup(di,si){
+syncDraft();
+
+const s=draft?.schedule[di]?.stops[si];
+const destination=draft?.place.trim();
+const el=document.getElementById('lookup-'+di+'-'+si);
+
+if(!s||!el)return;
+
+if(!s.name.trim()){
+el.innerHTML='<p class="status">先に訪問場所を入力してください。</p>';
+return;
+}
+
+if(!destination){
+el.innerHTML='<p class="status">先に目的地（都市・国名）を入力してください。</p>';
+return;
+}
+
+if(searchBusy){
+el.innerHTML='<p class="status">前の検索が完了してからお試しください。</p>';
+return;
+}
+
+if(Date.now()-lastSearch<1300){
+el.innerHTML='<p class="status">少し時間を空けて再検索してください。</p>';
+return;
+}
+
+lastSearch=Date.now();
+searchBusy=true;
+searchContext={uid:s.uid,di,si};
+el.innerHTML='<p class="muted">検索中...</p>';
+
+const button=document.querySelector(
+`[data-action="find-place"][data-day="${di}"][data-spot="${si}"]`
+);
+
+if(button)button.disabled=true;
+
+try{
+const searchText=(s.lookup||aliases[s.name]||s.name).trim();
+
+const params=new URLSearchParams({
+format:'jsonv2',
+q:searchText,
+limit:'10',
+addressdetails:'1',
+accept_language:'ja,en'
+});
+
+if(/イタリア|italy|italia/i.test(destination)){
+params.set('countrycodes','it');
+}
+
+const response=await fetch(
+'https://nominatim.openstreetmap.org/search?'+params.toString(),
+{headers:{Accept:'application/json'}}
+);
+
+if(!response.ok){
+throw new Error('HTTP '+response.status);
+}
+
+const data=await response.json();
+
+if(!getSpotByUid(s.uid))return;
+
+searchResults=data.map(x=>({
+name:x.display_name,
+coords:[Number(x.lat),Number(x.lon)],
+type:x.type
+})).filter(x=>validCoords(x.coords));
+
+const current=document.getElementById('lookup-'+di+'-'+si);
+if(!current)return;
+
+current.innerHTML=searchResults.length
+?`
+<p class="hint">
+所在地を確認し、正しい候補を選択してください。
+候補が違う場合は施設名を現地語・英語で入力して再検索してください。
+</p>
+
+<div class="results">
+${searchResults.map((r,i)=>`
+<div class="result">
+<p>${esc(r.name)}</p>
+<button class="btn secondary"
+data-action="choose-place"
+data-index="${i}"
+data-uid="${esc(s.uid)}">
+この場所を選択
+</button>
+</div>
+`).join('')}
+</div>
+`
+:`
+<p class="status">
+候補が見つかりません。
+施設名を英語または現地語で入力し、
+目的地は「Roma, Italia」のように設定して再検索してください。
+</p>
+`;
+
+}catch(e){
+const current=document.getElementById('lookup-'+di+'-'+si);
+
+if(current){
+current.innerHTML=`
+<p class="status">
+検索できませんでした。
+通信状態を確認し、時間を空けて再試行してください。
+</p>
+`;
+}
+
+console.error(e);
+
+}finally{
+searchBusy=false;
+if(button&&document.contains(button)){
+button.disabled=false;
+}
+}
+}
+
+function choosePlace(index,id){
+if(searchContext?.uid!==id)return;
+
+const s=getSpotByUid(id);
+const r=searchResults[index];
+
+if(!s||!r)return;
+
+s.coords=r.coords;
+s.locationLabel=r.name;
+
+searchResults=[];
+searchContext=null;
+
+renderDays();
+}
+
+function submitTrip(){
+syncDraft();
+
+if(!draft.title.trim()||!draft.place.trim()){
+alert('タイトルと目的地を入力してください。');
+return;
+}
+
+if(draft.schedule.some(d=>d.stops.some(s=>!s.name.trim()))){
+alert('空欄の訪問場所があります。入力するか削除してください。');
+return;
+}
+
+if(!draft.schedule.some(d=>d.stops.length)){
+alert('スポットを1つ以上登録してください。');
+return;
+}
+
+const t=normalizeTrip(draft);
+
+if(editing){
+const i=state.plans.findIndex(p=>p.id===editing);
+
+if(i<0){
+alert('編集対象が見つかりません。');
+return;
+}
+
+const prev=state.plans[i];
+state.plans[i]=t;
+
+if(!save()){
+state.plans[i]=prev;
+return;
+}
+
+}else{
+state.plans.unshift(t);
+
+if(!save()){
+state.plans.shift();
+return;
+}
+}
+
+draft=null;
+editing='';
+go('detail',t.id);
 }
 
 function bookmark(id){
@@ -553,672 +853,204 @@ state.saved=state.saved.includes(id)
 ?state.saved.filter(x=>x!==id)
 :[...state.saved,id];
 
-persist();
-render();
-
-if(page==="detail"){
-setTimeout(()=>drawMap(find(selected)),50);
-}
+save();
+go('detail',id);
 }
 
 function copyTrip(id){
 const t=find(id);
 if(!t)return;
 
-const c=JSON.parse(JSON.stringify(t));
-
-c.id="plan-"+Date.now()+"-"+Math.random().toString(36).slice(2,7);
-c.title=t.title+"（コピー）";
+const c=normalizeTrip(t);
+c.id='plan-'+Date.now()+'-'+Math.random().toString(36).slice(2,6);
+c.title+='（コピー）';
 
 state.plans.unshift(c);
 
-if(!persist()){
+if(!save()){
 state.plans.shift();
 return;
 }
 
-editTrip(c.id);
-}
-
-function editTrip(id){
-editId=id;
-geoChoices={};
-
-const t=find(id);
-
-if(t){
-t.schedule.forEach((d,di)=>{
-d.stops.forEach((s,si)=>{
-if(Array.isArray(s.coords)&&s.coords.length===2){
-geoChoices[spotKey(di,si,s)]={
-coords:s.coords,
-label:s.locationLabel||s.name
-};
-}
-});
-});
-}
-
-go("edit");
-}
-
-function spotKey(di,si,s){
-return di+"|"+si+"|"+s.time+"|"+s.name;
-}
-
-function parseStops(text){
-const schedule=[];
-let current=null;
-
-for(const line of String(text).split("\n")){
-const s=line.trim();
-if(!s)continue;
-
-if(/^Day\s*\d+$/i.test(s)){
-current={name:s,stops:[]};
-schedule.push(current);
-}else{
-if(!current){
-current={name:"Day 1",stops:[]};
-schedule.push(current);
-}
-
-let at=s.indexOf(",");
-if(at<0)at=s.indexOf("、");
-
-const time=at>=0?s.slice(0,at).trim():"--:--";
-const name=at>=0?s.slice(at+1).trim():s;
-
-if(name){
-current.stops.push({time,name});
-}
-}
-}
-
-return schedule;
-}
-
-function renderEditor(){
-const t=page==="edit"?find(editId):null;
-
-if(page==="post"){
-geoChoices={};
-}
-
-const stops=t
-?t.schedule.map(d=>
-d.name+"\n"+
-d.stops.map(s=>s.time+","+s.name).join("\n")
-).join("\n")
-:"Day 1\n09:00,最初のスポット\n12:00,ランチ\nDay 2\n10:00,次のスポット";
-
-app.innerHTML=`
-<h2>${t?"旅程を編集":"新しい旅程を作成"}</h2>
-
-<form id="trip-form" class="box">
-
-<label>旅程タイトル
-<input name="title" required maxlength="100"
-value="${esc(t?.title||"")}"
-placeholder="ローマを巡る2日間">
-</label>
-
-<label>目的地
-<input name="place" id="trip-place"
-required maxlength="60"
-value="${esc(t?.place||"")}"
-placeholder="イタリア・ローマ">
-</label>
-
-<label>旅行日数
-<input name="days" type="number"
-min="1" max="14" required
-value="${t?.days||2}">
-</label>
-
-<label>旅の説明
-<textarea name="description">${esc(t?.description||"")}</textarea>
-</label>
-
-<label>訪問スポット</label>
-
-<p class="muted">
-Day 1のように区切り、
-各行に「時間,スポット名」を入力してください。
-</p>
-
-<textarea
-name="stops"
-id="stops-text"
-style="min-height:230px"
-required>${esc(stops)}</textarea>
-
-<h3>📍 スポットの位置を登録</h3>
-
-<div class="notice">
-① 上の旅程を入力<br>
-② 下からスポットを選択<br>
-③ 場所を検索<br>
-④ 正しい候補を選択<br>
-⑤ 必要なスポットで繰り返す<br>
-⑥ 最後に「旅程を保存」
-</div>
-
-<label>位置を登録するスポット
-<select id="spot-target"></select>
-</label>
-
-<div id="location-status"></div>
-
-<label>検索する場所
-<input id="location-query"
-placeholder="例：コロッセオ ローマ">
-</label>
-
-<button class="btn secondary"
-type="button"
-id="geo-search">
-🔎 場所を検索
-</button>
-
-<div id="geo-results"></div>
-
-<p class="muted">
-場所検索：© OpenStreetMap contributors
-</p>
-
-<hr style="border:0;border-top:1px solid #ddd;margin:24px 0">
-
-<button class="btn" type="submit">
-${t?"変更を保存":"旅程を保存"}
-</button>
-
-</form>
-
-<div class="notice">
-旅程データは現在、このブラウザ内だけに保存されます。
-他の端末とは同期されません。
-</div>
-`;
-
-updateSpotSelector();
-}
-
-function currentSpots(){
-const text=document.getElementById("stops-text");
-if(!text)return [];
-
-const schedule=parseStops(text.value);
-const list=[];
-
-schedule.forEach((d,di)=>{
-d.stops.forEach((s,si)=>{
-list.push({
-key:spotKey(di,si,s),
-label:d.name+" / "+s.time+" "+s.name,
-name:s.name
-});
-});
-});
-
-return list;
-}
-
-function updateSpotSelector(){
-const select=document.getElementById("spot-target");
-if(!select)return;
-
-const previous=select.value;
-const spots=currentSpots();
-
-select.innerHTML=spots.map(s=>`
-<option value="${esc(s.key)}">
-${esc(s.label)}
-${geoChoices[s.key]?" 📍登録済み":""}
-</option>
-`).join("");
-
-if(spots.some(s=>s.key===previous)){
-select.value=previous;
-}
-
-updateLocationStatus();
-}
-
-function updateLocationStatus(){
-const select=document.getElementById("spot-target");
-const status=document.getElementById("location-status");
-const input=document.getElementById("location-query");
-
-if(!select||!status||!input)return;
-
-const key=select.value;
-const spot=currentSpots().find(s=>s.key===key);
-
-if(!spot){
-status.innerHTML='<p class="warn">先に訪問スポットを入力してください。</p>';
-return;
-}
-
-if(geoChoices[key]){
-status.innerHTML=`
-<p class="ok">✓ 位置登録済み：${esc(geoChoices[key].label)}</p>
-`;
-}else{
-status.innerHTML=`
-<p class="warn">このスポットの位置は未登録です。</p>
-`;
-}
-
-input.value=spot.name;
-}
-
-async function searchLocation(){
-const select=document.getElementById("spot-target");
-const input=document.getElementById("location-query");
-const output=document.getElementById("geo-results");
-const button=document.getElementById("geo-search");
-
-if(!select||!input||!output||!button)return;
-
-const targetKey=select.value;
-const q=input.value.trim();
-
-if(!targetKey){
-alert("検索対象のスポットを選択してください。");
-return;
-}
-
-if(q.length<2){
-alert("場所の名前を2文字以上入力してください。");
-return;
-}
-
-if(searching)return;
-
-const elapsed=Date.now()-lastSearch;
-
-if(elapsed<1200){
-alert("検索間隔を少し空けて、もう一度お試しください。");
-return;
-}
-
-lastSearch=Date.now();
-searching=true;
-button.disabled=true;
-output.innerHTML='<p>場所を検索しています...</p>';
-
-const serial=++searchSerial;
-
-try{
-const destination=document.getElementById("trip-place").value.trim();
-
-const params=new URLSearchParams({
-format:"jsonv2",
-q:q,
-limit:"5",
-addressdetails:"1"
-});
-
-const url="https://nominatim.openstreetmap.org/search?"+params;
-
-const response=await fetch(url,{
-headers:{"Accept":"application/json"}
-});
-
-if(!response.ok){
-throw new Error("HTTP "+response.status);
-}
-
-const data=await response.json();
-
-if(serial!==searchSerial||!document.getElementById("geo-results")){
-return;
-}
-
-geoResults=data.map(item=>({
-label:item.display_name,
-coords:[Number(item.lat),Number(item.lon)]
-})).filter(item=>
-Number.isFinite(item.coords[0])&&
-Number.isFinite(item.coords[1])
-);
-
-if(!geoResults.length){
-output.innerHTML=`
-<p class="warn">
-該当する場所がありません。
-施設名・都市名・国名を組み合わせて再検索してください。
-</p>
-`;
-}else{
-output.innerHTML=`
-<p><b>検索結果</b></p>
-<p class="muted">
-目的地：${esc(destination||"未入力")}。
-候補の住所を確認して正しい場所を選択してください。
-</p>
-${geoResults.map((r,i)=>`
-<div class="result">
-<p>${esc(r.label)}</p>
-<button class="btn secondary"
-type="button"
-data-action="choose-location"
-data-index="${i}"
-data-key="${esc(targetKey)}">
-この場所を選択
-</button>
-</div>
-`).join("")}
-`;
-}
-
-}catch(e){
-if(serial===searchSerial){
-output.innerHTML=`
-<p class="warn">
-場所検索に失敗しました。
-通信状態を確認し、時間を空けて再試行してください。
-</p>
-`;
-}
-console.error(e);
-
-}finally{
-searching=false;
-const currentButton=document.getElementById("geo-search");
-if(currentButton)currentButton.disabled=false;
-}
-}
-
-function chooseLocation(index,key){
-const choice=geoResults[index];
-
-if(!choice||!currentSpots().some(s=>s.key===key)){
-alert("スポットが変更されています。再度選択してください。");
-return;
-}
-
-geoChoices[key]={
-coords:choice.coords,
-label:choice.label
-};
-
-geoResults=[];
-
-updateSpotSelector();
-
-const select=document.getElementById("spot-target");
-if(select){
-select.value=key;
-updateLocationStatus();
-}
-
-const output=document.getElementById("geo-results");
-if(output){
-output.innerHTML=`
-<p class="ok">
-✓ 場所を登録しました。
-最後に「旅程を保存」を押してください。
-</p>
-`;
-}
-}
-
-function submitTrip(e){
-e.preventDefault();
-
-const f=new FormData(e.target);
-const days=Number(f.get("days"));
-const schedule=parseStops(f.get("stops"));
-
-if(!schedule.length||schedule.every(d=>!d.stops.length)){
-alert("スポットを入力してください。");
-return;
-}
-
-if(schedule.length>days){
-alert("Dayの数が旅行日数を超えています。");
-return;
-}
-
-schedule.forEach((d,di)=>{
-d.stops.forEach((s,si)=>{
-const choice=geoChoices[spotKey(di,si,s)];
-
-if(choice){
-s.coords=choice.coords;
-s.locationLabel=choice.label;
-}
-});
-});
-
-const id=page==="edit"
-?editId
-:"plan-"+Date.now()+"-"+Math.random().toString(36).slice(2,7);
-
-const old=find(id);
-
-const t={
-id,
-title:String(f.get("title")).trim(),
-place:String(f.get("place")).trim(),
-days,
-icon:old?.icon||"🧳",
-description:String(f.get("description")).trim(),
-schedule
-};
-
-if(!t.title||!t.place){
-alert("タイトルと目的地を入力してください。");
-return;
-}
-
-if(page==="edit"){
-const i=state.plans.findIndex(x=>x.id===id);
-
-if(i<0){
-alert("編集対象が見つかりません。");
-return;
-}
-
-const previous=state.plans[i];
-state.plans[i]=t;
-
-if(!persist()){
-state.plans[i]=previous;
-return;
-}
-
-}else{
-state.plans.unshift(t);
-
-if(!persist()){
-state.plans.shift();
-return;
-}
-}
-
-go("detail",id);
+openEdit(c.id);
 }
 
 function drawMap(t){
-const el=document.getElementById("trip-map");
+const el=document.getElementById('trip-map');
 
 if(!el||!t)return;
 
-if(typeof L==="undefined"){
-el.innerHTML=`
-<div class="notice">
-地図ライブラリを読み込めませんでした。
-通信環境を確認してください。
-</div>`;
+if(typeof L==='undefined'){
+el.innerHTML='<div class="notice">地図を読み込めません。通信状態を確認してください。</div>';
 return;
 }
 
 try{
-if(tripMap){
-tripMap.remove();
-tripMap=null;
-}
-
-tripMap=L.map(el,{
-scrollWheelZoom:false
-});
+map=L.map(el,{scrollWheelZoom:false});
 
 L.tileLayer(
-"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 {
 attribution:'&copy; OpenStreetMap contributors',
 maxZoom:19
 }
-).addTo(tripMap);
+).addTo(map);
 
 const bounds=[];
 let missing=0;
 
 t.schedule.forEach((d,di)=>{
 const points=[];
-const color=colors[di%colors.length];
 
 d.stops.forEach((s,si)=>{
-const pos=Array.isArray(s.coords)
-?s.coords
-:knownCoords[s.name];
+const p=validCoords(s.coords)?s.coords:known[s.name];
 
-if(!pos||pos.length!==2||
-!Number.isFinite(Number(pos[0]))||
-!Number.isFinite(Number(pos[1]))){
+if(!validCoords(p)){
 missing++;
 return;
 }
 
-const coordinates=[Number(pos[0]),Number(pos[1])];
+const pos=p.map(Number);
+points.push(pos);
+bounds.push(pos);
 
-points.push(coordinates);
-bounds.push(coordinates);
+const color=COLORS[di%COLORS.length];
 
-L.circleMarker(coordinates,{
-radius:11,
-color:"white",
+L.circleMarker(pos,{
+radius:12,
+color:'#fff',
 weight:2,
 fillColor:color,
 fillOpacity:1
 })
-.addTo(tripMap)
+.addTo(map)
 .bindPopup(
-esc(d.name)+" / "+
-(si+1)+". "+esc(s.name)
+esc(d.name)+' / '+(si+1)+'. '+esc(s.name)
 );
 });
 
 if(points.length>1){
 L.polyline(points,{
-color:color,
+color:COLORS[di%COLORS.length],
 weight:4,
 opacity:.85
-}).addTo(tripMap);
+}).addTo(map);
 }
 });
 
 if(bounds.length){
-tripMap.fitBounds(bounds,{
+map.fitBounds(bounds,{
 padding:[30,30],
 maxZoom:13
 });
 }else{
-tripMap.setView([35.6812,139.7671],5);
+map.setView([35.6812,139.7671],5);
 }
 
-if(missing>0){
+if(missing){
 el.insertAdjacentHTML(
-"afterend",
-`<p class="warn">
-位置未登録のスポットが${missing}件あります。
-旅程を編集して場所を検索・登録してください。
+'afterend',
+`<p class="status">
+位置未登録：${missing}件。
+編集画面から場所を検索・選択してください。
 </p>`
 );
 }
 
 setTimeout(()=>{
-if(tripMap)tripMap.invalidateSize();
+if(map)map.invalidateSize();
 },150);
 
 }catch(e){
 console.error(e);
-el.innerHTML=`
-<div class="notice">
-地図の表示に失敗しました。
-ページを再読み込みしてください。
-</div>`;
+el.innerHTML='<div class="notice">地図の表示に失敗しました。</div>';
 }
 }
 
-document.addEventListener("click",e=>{
-const b=e.target.closest("button[data-action]");
+document.addEventListener('click',e=>{
+const b=e.target.closest('button[data-action]');
 if(!b)return;
 
-const action=b.dataset.action;
+const a=b.dataset.action;
 const id=b.dataset.id;
+const di=Number(b.dataset.day);
+const si=Number(b.dataset.spot);
 
-if(action==="page"){
+if(a==='page'){
+if(id==='post'){
+openNew();
+}else{
 go(id);
 }
-else if(action==="detail"){
-go("detail",id);
 }
-else if(action==="bookmark"){
+else if(a==='detail'){
+go('detail',id);
+}
+else if(a==='bookmark'){
 bookmark(id);
 }
-else if(action==="copy"){
+else if(a==='copy'){
 copyTrip(id);
 }
-else if(action==="edit"){
-editTrip(id);
+else if(a==='edit'){
+openEdit(id);
 }
-else if(action==="choose-location"){
-chooseLocation(
-Number(b.dataset.index),
-b.dataset.key
-);
+else if(a==='add-spot'){
+addSpot(di);
+}
+else if(a==='remove-spot'){
+removeSpot(di,si);
+}
+else if(a==='find-place'){
+lookup(di,si);
+}
+else if(a==='choose-place'){
+choosePlace(Number(b.dataset.index),b.dataset.uid);
+}
+else if(a==='save-trip'){
+submitTrip();
 }
 });
 
-document.addEventListener("click",e=>{
-if(e.target.id==="geo-search"){
-searchLocation();
-}
-});
-
-document.addEventListener("input",e=>{
-if(e.target.id==="query"){
+document.addEventListener('input',e=>{
+if(e.target.id==='query'){
 query=e.target.value;
 results();
 }
-else if(e.target.id==="stops-text"){
-geoResults=[];
-const output=document.getElementById("geo-results");
-if(output)output.innerHTML="";
-updateSpotSelector();
+else if(e.target.dataset.field==='name'){
+const d=draft?.schedule[Number(e.target.dataset.day)];
+const s=d?.stops[Number(e.target.dataset.spot)];
+
+if(s&&s.name!==e.target.value){
+s.name=e.target.value;
+s.lookup='';
+delete s.coords;
+delete s.locationLabel;
+
+const spot=e.target.closest('.spot');
+const status=spot?.querySelector('.status');
+
+if(status){
+status.textContent='位置未登録';
+status.classList.remove('ok');
+}
+
+const lookupEl=spot?.querySelector('[id^="lookup-"]');
+
+if(lookupEl){
+lookupEl.innerHTML='';
+}
+}
 }
 });
 
-document.addEventListener("change",e=>{
-if(e.target.id==="duration"){
+document.addEventListener('change',e=>{
+if(e.target.id==='duration'){
 duration=e.target.value;
 results();
 }
-else if(e.target.id==="spot-target"){
-geoResults=[];
-const output=document.getElementById("geo-results");
-if(output)output.innerHTML="";
-updateLocationStatus();
-}
-});
-
-document.addEventListener("submit",e=>{
-if(e.target.id==="trip-form"){
-submitTrip(e);
+else if(e.target.id==='trip-days'){
+changeDays(e.target.value);
 }
 });
 
