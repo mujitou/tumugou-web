@@ -4,117 +4,101 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#59634a">
-<title>TUMUGOU ver.1.5</title>
+<title>TUMUGOU ver.1.8</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 :root{
-  --ivory:#f8f5ee;
+  --bg:#f8f5ee;
+  --paper:#fffefa;
   --sand:#e9dfcc;
   --brown:#493c30;
   --olive:#59634a;
   --line:#ddd3c4;
+  --muted:#817768;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
-  background:var(--ivory);
+  background:var(--bg);
   color:var(--brown);
   font-family:-apple-system,BlinkMacSystemFont,
   "Hiragino Kaku Gothic ProN",sans-serif;
 }
 header{
+  padding:20px 12px;
   text-align:center;
-  padding:23px 10px;
   border-bottom:1px solid var(--line);
 }
 header strong{
-  font:bold 34px Georgia,serif;
+  font: bold 34px Georgia,serif;
   letter-spacing:5px;
 }
 header small{
   display:block;
-  color:#82776a;
-  margin-top:7px;
+  margin-top:5px;
+  font-size:11px;
+  color:var(--muted);
 }
 main{
-  max-width:760px;
+  max-width:800px;
   margin:auto;
   padding:20px 15px 115px;
 }
+h1,h2,h3{line-height:1.35}
 h2{font-size:25px}
 h3{font-size:18px}
 p{line-height:1.65}
-.muted{color:#817768;font-size:13px}
 .eyebrow{
   font-size:11px;
   letter-spacing:2px;
   color:var(--olive);
   font-weight:bold;
 }
+.muted{color:var(--muted);font-size:13px}
 .card,.panel{
-  background:#fffefa;
+  background:var(--paper);
   border:1px solid var(--line);
   border-radius:15px;
   padding:16px;
   margin:14px 0;
-  overflow:hidden;
-}
-.hero{
-  height:180px;
-  border-radius:10px;
-  background:linear-gradient(125deg,#bac6b4,#ead4b7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:60px;
-  overflow:hidden;
-}
-.hero img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
 }
 .btn{
   border:0;
   border-radius:9px;
   background:var(--olive);
   color:white;
-  padding:11px 13px;
+  padding:11px 14px;
   margin:4px 4px 4px 0;
   font-size:13px;
   cursor:pointer;
   touch-action:manipulation;
 }
-.alt{background:var(--sand);color:var(--brown)}
-.danger{background:#f4e2df;color:#88493c}
-.btn:disabled{opacity:.4}
-.actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:3px;
-}
+.btn.alt{background:var(--sand);color:var(--brown)}
+.btn.danger{background:#f4e2df;color:#88493c}
+.btn:disabled{opacity:.35}
+.actions{display:flex;flex-wrap:wrap;gap:4px}
 .tag{
   display:inline-block;
+  padding:5px 9px;
+  margin:4px 4px 4px 0;
+  border-radius:20px;
   background:#e9eee3;
   color:var(--olive);
-  padding:5px 9px;
-  border-radius:20px;
   font-size:11px;
-  margin:7px 4px 3px 0;
 }
 label{
   display:block;
+  margin:11px 0;
   font-size:13px;
   font-weight:600;
-  margin:11px 0;
 }
 input,select,textarea{
   display:block;
   width:100%;
-  padding:10px;
+  padding:11px;
   margin-top:6px;
   border:1px solid #d3c8b8;
   border-radius:8px;
@@ -122,25 +106,29 @@ input,select,textarea{
   color:var(--brown);
   font:inherit;
 }
-textarea{min-height:75px}
+textarea{min-height:80px}
+input[type="checkbox"]{width:auto;display:inline}
+.row{display:flex;gap:10px}
+.row>*{flex:1;min-width:0}
+.short{flex:0 0 120px}
 .notice{
   background:#eee9dc;
   border-radius:10px;
-  padding:12px;
+  padding:13px;
   font-size:13px;
-  line-height:1.6;
+  line-height:1.7;
   margin:12px 0;
-}
-.warn{
-  background:#fff0e6;
-  color:#925333;
-  padding:10px;
-  border-radius:8px;
-  font-size:12px;
 }
 .ok{
   background:#e8efe4;
   color:#42613e;
+  padding:10px;
+  border-radius:8px;
+  font-size:12px;
+}
+.warn{
+  background:#fff0e6;
+  color:#925333;
   padding:10px;
   border-radius:8px;
   font-size:12px;
@@ -151,7 +139,7 @@ nav{
   left:0;
   right:0;
   display:flex;
-  background:#fffefa;
+  background:var(--paper);
   border-top:1px solid var(--line);
   z-index:1000;
   padding-bottom:env(safe-area-inset-bottom);
@@ -161,88 +149,74 @@ nav button{
   border:0;
   background:transparent;
   padding:12px 0;
-  font-size:11px;
   color:var(--brown);
+  font-size:11px;
 }
 nav button.active{
   background:#e8ede0;
   font-weight:bold;
 }
-.tabs{
+.hero{
+  height:190px;
   display:flex;
-  gap:5px;
-  overflow:auto;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(125deg,#bac6b4,#ead4b7);
+  border-radius:11px;
+  overflow:hidden;
+  font-size:65px;
 }
-.tabs .btn{white-space:nowrap}
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:6px;
+.hero img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
-.stat{
-  text-align:center;
-  background:white;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:12px 2px;
+.day{
+  border-left:5px solid var(--olive);
 }
-.stat b{
-  display:block;
-  font-size:23px;
-  color:var(--olive);
-}
-.stat small{font-size:9px}
-.day{border-left:5px solid var(--olive)}
 .spot{
   background:#f6f2e9;
-  padding:12px;
+  padding:13px;
   border-radius:11px;
-  margin:10px 0;
+  margin:12px 0;
+}
+.spot-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.travel{
+  background:#eee9dc;
+  border-left:3px solid #b5a48d;
+  padding:9px;
+  font-size:12px;
+  margin:9px 0;
 }
 .photo{
   width:100%;
-  max-height:240px;
+  max-height:250px;
   object-fit:cover;
   border-radius:9px;
-  margin:7px 0;
-}
-.row{display:flex;gap:9px}
-.row>*{flex:1;min-width:0}
-.row .short{flex:0 0 110px}
-.travel{
-  background:#eee9dc;
-  padding:9px;
-  border-left:3px solid #b5a48d;
-  font-size:12px;
-  margin:8px 0;
+  margin:9px 0;
 }
 .map{
-  height:350px;
+  height:360px;
   border-radius:12px;
   margin:14px 0;
   z-index:0;
 }
 .pin{
-  width:29px;
-  height:29px;
-  border:2px solid white;
-  border-radius:50%;
+  width:30px;
+  height:30px;
   display:flex;
   align-items:center;
   justify-content:center;
+  border:2px solid white;
+  border-radius:50%;
   color:white;
   font-weight:bold;
   box-shadow:0 2px 5px #0004;
-}
-.arrow{
-  background:white;
-  border-radius:50%;
-  width:24px;
-  height:24px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:19px;
 }
 .legend{
   display:flex;
@@ -257,8 +231,58 @@ nav button.active{
   border-radius:50%;
   margin-right:5px;
 }
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+}
+.stat{
+  padding:12px 3px;
+  text-align:center;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.stat b{
+  display:block;
+  font-size:23px;
+  color:var(--olive);
+}
+.stat small{font-size:9px}
+.tabs{display:flex;overflow:auto;gap:5px}
+.tabs button{white-space:nowrap}
+.file-label{
+  display:block;
+  padding:13px;
+  text-align:center;
+  border:1px dashed #9c9487;
+  border-radius:9px;
+  background:#eee9dc;
+}
+.file-label input{display:none}
+.result{
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+  font-size:12px;
+}
+.divider{
+  border:0;
+  border-top:1px solid var(--line);
+  margin:23px 0;
+}
+.preview img{
+  display:block;
+  width:100%;
+  max-width:440px;
+  margin:10px auto;
+  box-shadow:0 5px 15px #0002;
+}
+.backup-text{
+  min-height:180px;
+  font:11px monospace;
+}
 .template-scrapbook .day{
-  box-shadow:4px 4px 0 #e9dfcc;
+  box-shadow:4px 4px 0 var(--sand);
   border-radius:3px 15px 8px 15px;
 }
 .template-minimal .day{
@@ -268,37 +292,52 @@ nav button.active{
 .template-magazine h2{
   font-family:Georgia,serif;
 }
-.file-label{
-  display:block;
-  border:1px dashed #9c9487;
-  padding:12px;
-  text-align:center;
-  border-radius:9px;
-  background:#eee9dc;
-  cursor:pointer;
+.filter-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
 }
-.file-label input{display:none}
-.result{
-  border-bottom:1px solid var(--line);
-  padding:9px 0;
+.search-summary{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:10px 0;
+}
+.search-summary span{
+  background:#eee9dc;
+  border-radius:8px;
+  padding:7px 9px;
   font-size:12px;
 }
-.preview img{
-  width:100%;
-  max-width:420px;
-  display:block;
-  margin:10px auto;
-  box-shadow:0 5px 15px #0002;
+.timeline-item{
+  border-left:2px solid #b8c1ad;
+  padding:0 0 12px 15px;
+  margin-left:9px;
+  position:relative;
 }
-.backup-text{
-  font-size:11px;
-  min-height:170px;
-  font-family:monospace;
+.timeline-item:before{
+  content:"";
+  position:absolute;
+  left:-6px;
+  top:4px;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--olive);
 }
-.divider{
-  border:0;
-  border-top:1px solid var(--line);
-  margin:20px 0;
+.tool-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin:10px 0;
+}
+.result-card{
+  border-left:4px solid var(--olive);
+}
+@media(max-width:420px){
+  .row{gap:6px}
+  .short{flex:0 0 105px}
+  .btn{padding:10px;font-size:12px}
 }
 </style>
 </head>
@@ -314,6 +353,11 @@ nav button.active{
 
 <script>
 'use strict';
+
+/* ==========================================
+   TUMUGOU VERSION 1.8
+   Compatible with tumugou_v02
+========================================== */
 
 const KEY='tumugou_v02';
 
@@ -382,36 +426,48 @@ const SAMPLES=[
       {
         name:'Day 1',
         stops:[
-          {time:'09:30',name:'清水寺'},
           {
-            time:'12:00',
-            name:'祇園で昼食',
-            transport:'walk',
-            travelMinutes:25
+            time:'09:30',
+            name:'清水寺',
+            stayMinutes:90
           },
           {
-            time:'15:00',
+            time:'11:25',
+            name:'祇園で昼食',
+            transport:'walk',
+            travelMinutes:25,
+            stayMinutes:90
+          },
+          {
+            time:'13:10',
             name:'鴨川散歩',
             transport:'walk',
-            travelMinutes:15
+            travelMinutes:15,
+            stayMinutes:60
           }
         ]
       },
       {
         name:'Day 2',
         stops:[
-          {time:'10:00',name:'嵐山'},
           {
-            time:'13:00',
-            name:'竹林の小径',
-            transport:'walk',
-            travelMinutes:15
+            time:'10:00',
+            name:'嵐山',
+            stayMinutes:120
           },
           {
-            time:'16:00',
+            time:'12:15',
+            name:'竹林の小径',
+            transport:'walk',
+            travelMinutes:15,
+            stayMinutes:90
+          },
+          {
+            time:'14:20',
             name:'京都駅',
             transport:'train',
-            travelMinutes:35
+            travelMinutes:35,
+            stayMinutes:60
           }
         ]
       }
@@ -428,15 +484,35 @@ const SAMPLES=[
       {
         name:'Day 1',
         stops:[
-          {time:'11:00',name:'迪化街'},
-          {time:'18:00',name:'寧夏夜市'}
+          {
+            time:'11:00',
+            name:'迪化街',
+            stayMinutes:120
+          },
+          {
+            time:'18:00',
+            name:'寧夏夜市',
+            transport:'walk',
+            travelMinutes:20,
+            stayMinutes:120
+          }
         ]
       },
       {
         name:'Day 2',
         stops:[
-          {time:'09:00',name:'龍山寺'},
-          {time:'14:00',name:'中正紀念堂'}
+          {
+            time:'09:00',
+            name:'龍山寺',
+            stayMinutes:90
+          },
+          {
+            time:'14:00',
+            name:'中正紀念堂',
+            transport:'train',
+            travelMinutes:30,
+            stayMinutes:90
+          }
         ]
       }
     ]
@@ -452,20 +528,44 @@ const SAMPLES=[
       {
         name:'Day 1',
         stops:[
-          {time:'10:00',name:'札幌時計台'},
-          {time:'13:00',name:'大通公園'}
+          {
+            time:'10:00',
+            name:'札幌時計台',
+            stayMinutes:60
+          },
+          {
+            time:'13:00',
+            name:'大通公園',
+            transport:'walk',
+            travelMinutes:15,
+            stayMinutes:60
+          }
         ]
       },
       {
         name:'Day 2',
         stops:[
-          {time:'10:00',name:'小樽運河'},
-          {time:'14:00',name:'堺町通り'}
+          {
+            time:'10:00',
+            name:'小樽運河',
+            stayMinutes:90
+          },
+          {
+            time:'14:00',
+            name:'堺町通り',
+            transport:'walk',
+            travelMinutes:15,
+            stayMinutes:90
+          }
         ]
       }
     ]
   }
 ];
+
+/* ==========================================
+   STATE
+========================================== */
 
 let state={
   plans:[],
@@ -473,13 +573,14 @@ let state={
 };
 
 try{
-  const v=JSON.parse(localStorage.getItem(KEY));
+  const saved=JSON.parse(localStorage.getItem(KEY));
+
   if(
-    v &&
-    Array.isArray(v.plans) &&
-    Array.isArray(v.saved)
+    saved &&
+    Array.isArray(saved.plans) &&
+    Array.isArray(saved.saved)
   ){
-    state=v;
+    state=saved;
   }
 }catch(e){
   console.error(e);
@@ -491,27 +592,33 @@ const nav=document.getElementById('nav');
 let page='home';
 let selected='';
 let myTab='planning';
+
 let draft=null;
 let editing='';
+
 let map=null;
-
-let searchBusy=false;
-let lastSearch=0;
-let searchToken='';
-let searchResults=[];
-
 let exportTrip=null;
 let exportIndex=0;
 
-let restoreCandidate=null;
+let searchBusy=false;
+let lastSearch=0;
+let searchResults=[];
+
 let backupText='';
+let restoreCandidate=null;
 
 let search={
   q:'',
   days:'',
   style:'',
-  status:''
+  status:'',
+  minStops:'',
+  sort:'recommended'
 };
+
+/* ==========================================
+   UTILITIES
+========================================== */
 
 function uid(){
   return 't'+Date.now().toString(36)
@@ -541,7 +648,7 @@ function persist(){
     return true;
   }catch(e){
     alert(
-      '保存に失敗しました。写真の保存容量などを確認してください。'
+      '保存に失敗しました。写真の保存容量を確認してください。'
     );
     return false;
   }
@@ -571,16 +678,19 @@ function own(id){
   return state.plans.some(t=>t.id===id);
 }
 
+function hasNum(v){
+  return v!=='' &&
+    v!==null &&
+    v!==undefined &&
+    Number.isFinite(+v);
+}
+
 function coords(p){
   return Array.isArray(p)
     &&p.length===2
     &&p.every(n=>Number.isFinite(+n))
     &&Math.abs(+p[0])<=90
     &&Math.abs(+p[1])<=180;
-}
-
-function hasNum(v){
-  return v!==''&&v!=null&&Number.isFinite(+v);
 }
 
 function norm(t){
@@ -603,6 +713,7 @@ function norm(t){
       ...s,
       uid:s.uid||uid(),
       time:s.time||'09:00',
+      name:s.name||'',
       transport:s.transport||'',
       travelMinutes:s.travelMinutes??'',
       stayMinutes:s.stayMinutes??'',
@@ -616,12 +727,11 @@ function norm(t){
   return x;
 }
 
-function statusLabel(t){
-  return SAMPLES.includes(t)
-    ?'サンプル'
-    :t.status==='completed'
-      ?'実際に行った旅'
-      :'旅行計画';
+function stopCount(t){
+  return (t.schedule||[]).reduce(
+    (n,d)=>n+(d.stops||[]).length,
+    0
+  );
 }
 
 function firstPhoto(t){
@@ -633,14 +743,81 @@ function firstPhoto(t){
   return '';
 }
 
+function statusLabel(t){
+  if(SAMPLES.includes(t))return 'サンプル';
+
+  return t.status==='completed'
+    ?'実際に行った旅'
+    :'旅行計画';
+}
+
 function travel(s){
   return [
     MODES[s.transport]||'',
     hasNum(s.travelMinutes)
       ?s.travelMinutes+'分':''
-  ].filter(x=>x&&x!=='未設定').join('・')
+  ].filter(v=>v&&v!=='未設定').join('・')
   ||'移動情報未設定';
 }
+
+function timeMin(v){
+  if(!/^\d\d:\d\d$/.test(v||''))return null;
+
+  const [h,m]=v.split(':').map(Number);
+
+  if(h>23||m>59)return null;
+
+  return h*60+m;
+}
+
+function timeText(n){
+  if(!Number.isFinite(n)||n<0||n>=1440){
+    return null;
+  }
+
+  const h=Math.floor(n/60);
+  const m=n%60;
+
+  return String(h).padStart(2,'0')
+    +':'
+    +String(m).padStart(2,'0');
+}
+
+function checkHTML(a,b){
+  const x=timeMin(a.time);
+  const y=timeMin(b.time);
+
+  if(x===null||y===null){
+    return '<p class="muted">時刻未設定</p>';
+  }
+
+  if(y<x){
+    return '<p class="warn">⚠ 時刻が前後しています</p>';
+  }
+
+  if(
+    !hasNum(a.stayMinutes) ||
+    !hasNum(b.travelMinutes)
+  ){
+    return '<p class="muted">移動・滞在時間が未設定</p>';
+  }
+
+  const gap=y-x
+    -(+a.stayMinutes)
+    -(+b.travelMinutes);
+
+  return `
+    <p class="${gap<0?'warn':'ok'}">
+      ${gap<0
+        ?'⚠ '+(-gap)+'分不足'
+        :'✓ '+gap+'分の余裕'}
+    </p>
+  `;
+}
+
+/* ==========================================
+   NAVIGATION
+========================================== */
 
 function menu(){
   nav.innerHTML=[
@@ -648,12 +825,12 @@ function menu(){
     ['search','SEARCH','⌕'],
     ['my','MY TRIP','♡'],
     ['post','POST','＋']
-  ].map(([id,n,icon])=>`
+  ].map(([id,name,icon])=>`
     <button
       class="${page===id?'active':''}"
       data-a="page"
       data-id="${id}">
-      ${icon}<br>${n}
+      ${icon}<br>${name}
     </button>
   `).join('');
 }
@@ -668,6 +845,7 @@ function go(p,id=''){
   selected=id;
 
   window.scrollTo(0,0);
+
   render();
 
   if(p==='detail'){
@@ -675,9 +853,29 @@ function go(p,id=''){
       if(page==='detail'&&selected===id){
         drawMap(find(id));
       }
-    },80);
+    },100);
   }
 }
+
+function render(){
+  menu();
+
+  ({
+    home:renderHome,
+    search:renderSearch,
+    my:renderMy,
+    post:renderPost,
+    detail:renderDetail,
+    edit:renderEditor,
+    copy:renderCopy,
+    backup:renderBackup,
+    export:renderExport
+  })[page]?.();
+}
+
+/* ==========================================
+   CARDS
+========================================== */
 
 function hero(t){
   const p=firstPhoto(t);
@@ -686,32 +884,48 @@ function hero(t){
     <div class="hero">
       ${p
         ?`<img src="${p}" alt="">`
-        :esc(t.icon||'🧳')
-      }
+        :esc(t.icon||'🧳')}
     </div>
   `;
 }
 
-function card(t){
+function card(t,enhanced=false){
   return `
-    <article class="card">
+    <article class="card ${enhanced?'result-card':''}">
       ${hero(t)}
 
-      <span class="tag">${esc(t.place)}</span>
-      <span class="tag">${t.schedule.length}日間</span>
-      <span class="tag">${statusLabel(t)}</span>
+      <div style="margin-top:9px">
+        <span class="tag">${esc(t.place)}</span>
+        <span class="tag">${t.schedule.length}日間</span>
+        <span class="tag">${stopCount(t)}スポット</span>
+        <span class="tag">${statusLabel(t)}</span>
 
-      ${t.style?`
-        <span class="tag">
-          ${esc(STYLES[t.style])}
-        </span>
-      `:''}
+        ${t.style?`
+          <span class="tag">${esc(STYLES[t.style])}</span>
+        `:''}
+      </div>
 
       <h3>${esc(t.title)}</h3>
 
-      <p class="muted">
-        ${esc(t.description||'')}
-      </p>
+      <p class="muted">${esc(t.description||'')}</p>
+
+      ${enhanced?`
+        <div class="search-summary">
+          <span>📍 ${stopCount(t)}カ所</span>
+          <span>📅 ${t.schedule.length}日間</span>
+          <span>🎨 ${esc(
+            STYLES[t.style]||'未設定'
+          )}</span>
+        </div>
+
+        <p class="muted">
+          ${esc(
+            t.schedule.flatMap(
+              d=>d.stops.map(s=>s.name)
+            ).slice(0,5).join(' → ')
+          )}
+        </p>
+      `:''}
 
       <button
         class="btn"
@@ -719,6 +933,15 @@ function card(t){
         data-id="${esc(t.id)}">
         旅程を見る →
       </button>
+
+      ${enhanced?`
+        <button
+          class="btn alt"
+          data-a="copy"
+          data-id="${esc(t.id)}">
+          この旅程をコピー
+        </button>
+      `:''}
     </article>
   `;
 }
@@ -728,15 +951,12 @@ function stats(){
     PLANNING:state.plans.filter(
       t=>t.status!=='completed'
     ).length,
-
     COMPLETED:state.plans.filter(
       t=>t.status==='completed'
     ).length,
-
     POST:state.plans.filter(
       t=>t.published
     ).length,
-
     SAVED:state.saved.length
   };
 
@@ -752,25 +972,9 @@ function stats(){
   `;
 }
 
-function render(){
-  menu();
-
-  ({
-    home:renderHome,
-    search:renderSearch,
-    my:renderMy,
-    post:renderPost,
-    detail:renderDetail,
-    edit:renderEditor,
-    backup:renderBackup,
-    export:renderExport,
-    copy:renderCopy
-  })[page]?.();
-}
-
-/* =========================
+/* ==========================================
    HOME
-========================= */
+========================================== */
 
 function renderHome(){
   app.innerHTML=`
@@ -800,26 +1004,27 @@ function renderHome(){
     </button>
 
     <div class="notice">
-      試作版です。
-      公開した旅程は同じブラウザ内だけで表示されます。
-      サンプルは実体験を保証するものではありません。
+      TUMUGOU ver.1.8 試作版。
+      現在、旅程はこのブラウザ内に保存されます。
+      他のユーザーとの共有はまだできません。
+      サンプル旅程は実体験を保証するものではありません。
     </div>
 
     <h2>公開した旅程</h2>
 
     ${state.plans.filter(t=>t.published)
-      .map(card).join('')
+      .map(t=>card(t)).join('')
       ||'<p class="muted">まだ公開旅程がありません。</p>'}
 
     <h2>サンプル旅程</h2>
 
-    ${SAMPLES.map(card).join('')}
+    ${SAMPLES.map(t=>card(t)).join('')}
   `;
 }
 
-/* =========================
-   SEARCH ver.1.5
-========================= */
+/* ==========================================
+   SEARCH ver.1.8
+========================================== */
 
 function renderSearch(){
   app.innerHTML=`
@@ -829,98 +1034,149 @@ function renderSearch(){
 
     <h2>旅程を探す</h2>
 
-    <label>
-      目的地・キーワード
-      <input
-        id="search-q"
-        value="${esc(search.q)}"
-        placeholder="例：京都、台北、夜市">
-    </label>
+    <p class="muted">
+      目的地や旅行スタイルから、
+      自分に合った旅程を見つけよう。
+    </p>
 
-    <div class="row">
+    <div class="panel">
       <label>
-        旅行日数
-        <select id="search-days">
-          <option value="">すべて</option>
-
-          ${Array.from(
-            {length:14},
-            (_,i)=>i+1
-          ).map(n=>`
-            <option
-              value="${n}"
-              ${search.days===String(n)?'selected':''}>
-              ${n}日間
-            </option>
-          `).join('')}
-        </select>
+        目的地・キーワード
+        <input
+          id="search-q"
+          value="${esc(search.q)}"
+          placeholder="京都、台北、夜市など">
       </label>
 
-      <label>
-        旅行スタイル
-        <select id="search-style">
-          ${Object.entries(STYLES)
-            .map(([k,v])=>`
+      <div class="filter-grid">
+        <label>
+          旅行日数
+          <select id="search-days">
+            <option value="">すべて</option>
+
+            ${Array.from(
+              {length:14},
+              (_,i)=>i+1
+            ).map(n=>`
               <option
-                value="${k}"
-                ${search.style===k?'selected':''}>
-                ${k?v:'すべて'}
+                value="${n}"
+                ${search.days===String(n)?'selected':''}>
+                ${n}日間
               </option>
             `).join('')}
+          </select>
+        </label>
+
+        <label>
+          旅行スタイル
+          <select id="search-style">
+            ${Object.entries(STYLES)
+              .map(([k,v])=>`
+                <option
+                  value="${k}"
+                  ${search.style===k?'selected':''}>
+                  ${k?v:'すべて'}
+                </option>
+              `).join('')}
+          </select>
+        </label>
+
+        <label>
+          旅程の種類
+          <select id="search-status">
+            <option value="">すべて</option>
+
+            <option
+              value="completed"
+              ${search.status==='completed'?'selected':''}>
+              実際に行った旅
+            </option>
+
+            <option
+              value="planning"
+              ${search.status==='planning'?'selected':''}>
+              旅行計画
+            </option>
+
+            <option
+              value="sample"
+              ${search.status==='sample'?'selected':''}>
+              サンプル
+            </option>
+          </select>
+        </label>
+
+        <label>
+          最低スポット数
+          <select id="search-minStops">
+            <option value="">指定なし</option>
+
+            ${[3,5,8,10,15,20].map(n=>`
+              <option
+                value="${n}"
+                ${search.minStops===String(n)
+                  ?'selected':''}>
+                ${n}カ所以上
+              </option>
+            `).join('')}
+          </select>
+        </label>
+      </div>
+
+      <label>
+        並び順
+        <select id="search-sort">
+          <option value="recommended">
+            おすすめ順
+          </option>
+
+          <option value="stops-desc">
+            スポット数が多い順
+          </option>
+
+          <option value="stops-asc">
+            スポット数が少ない順
+          </option>
+
+          <option value="days-asc">
+            旅行日数が短い順
+          </option>
+
+          <option value="days-desc">
+            旅行日数が長い順
+          </option>
         </select>
       </label>
+
+      <button
+        class="btn alt"
+        data-a="reset-search">
+        絞り込みを解除
+      </button>
     </div>
-
-    <label>
-      旅程の種類
-      <select id="search-status">
-        <option
-          value=""
-          ${!search.status?'selected':''}>
-          すべて
-        </option>
-
-        <option
-          value="completed"
-          ${search.status==='completed'?'selected':''}>
-          実際に行った旅
-        </option>
-
-        <option
-          value="planning"
-          ${search.status==='planning'?'selected':''}>
-          旅行計画
-        </option>
-
-        <option
-          value="sample"
-          ${search.status==='sample'?'selected':''}>
-          サンプル
-        </option>
-      </select>
-    </label>
-
-    <button
-      class="btn alt"
-      data-a="reset-search">
-      絞り込みを解除
-    </button>
 
     <div id="search-results"></div>
   `;
+
+  document.getElementById(
+    'search-sort'
+  ).value=search.sort;
 
   renderResults();
 }
 
 function renderResults(){
-  const el=document.getElementById('search-results');
+  const el=document.getElementById(
+    'search-results'
+  );
+
   if(!el)return;
 
-  const list=[
+  let list=[
     ...SAMPLES,
     ...state.plans.filter(t=>t.published)
   ].filter(t=>{
-    const isSample=SAMPLES.includes(t);
+    const sample=SAMPLES.includes(t);
 
     const text=[
       t.title,
@@ -931,31 +1187,53 @@ function renderResults(){
       )
     ].join(' ').toLowerCase();
 
-    return text.includes(search.q.toLowerCase())
-      &&(!search.days
-        ||t.schedule.length===+search.days)
-      &&(!search.style
-        ||t.style===search.style)
-      &&(!search.status
+    return (
+      text.includes(search.q.toLowerCase())
+      &&(
+        !search.days
+        ||t.schedule.length===+search.days
+      )
+      &&(
+        !search.style
+        ||t.style===search.style
+      )
+      &&(
+        !search.minStops
+        ||stopCount(t)>=+search.minStops
+      )
+      &&(
+        !search.status
         ||(
           search.status==='sample'
-            ?isSample
-            :!isSample
+            ?sample
+            :!sample
               &&(t.status||'planning')===search.status
-        ));
+        )
+      )
+    );
   });
 
-  el.innerHTML=`
-    <p class="muted">${list.length}件の旅程</p>
+  if(search.sort==='stops-desc'){
+    list.sort((a,b)=>stopCount(b)-stopCount(a));
+  }else if(search.sort==='stops-asc'){
+    list.sort((a,b)=>stopCount(a)-stopCount(b));
+  }else if(search.sort==='days-asc'){
+    list.sort((a,b)=>a.schedule.length-b.schedule.length);
+  }else if(search.sort==='days-desc'){
+    list.sort((a,b)=>b.schedule.length-a.schedule.length);
+  }
 
-    ${list.map(card).join('')
-      ||'<p>該当する旅程はありません。</p>'}
+  el.innerHTML=`
+    <h3>検索結果：${list.length}件</h3>
+
+    ${list.map(t=>card(t,true)).join('')
+      ||'<p class="muted">条件に合う旅程がありません。</p>'}
   `;
 }
 
-/* =========================
+/* ==========================================
    MY TRIP
-========================= */
+========================================== */
 
 function renderMy(){
   const list=myTab==='saved'
@@ -968,7 +1246,6 @@ function renderMy(){
 
   app.innerHTML=`
     <div class="eyebrow">MY JOURNEYS</div>
-
     <h2>MY TRIP</h2>
 
     ${stats()}
@@ -1048,9 +1325,9 @@ function renderMy(){
   `;
 }
 
-/* =========================
+/* ==========================================
    POST
-========================= */
+========================================== */
 
 function renderPost(){
   app.innerHTML=`
@@ -1060,7 +1337,9 @@ function renderPost(){
 
     <h2>あなたの旅を紡ぐ。</h2>
 
-    <button class="btn" data-a="new-publish">
+    <button
+      class="btn"
+      data-a="new-publish">
       ＋ 新規作成して投稿
     </button>
 
@@ -1095,60 +1374,14 @@ function renderPost(){
       ||'<p>旅程がありません。</p>'}
 
     <div class="notice">
-      POSTへの公開は同じブラウザ内のみです。
+      現在のPOSTは同じブラウザ内のみの公開です。
     </div>
   `;
 }
 
-/* =========================
-   DETAIL
-========================= */
-
-function timeMin(v){
-  if(!/^\d\d:\d\d$/.test(v||''))return null;
-
-  const [h,m]=v.split(':').map(Number);
-
-  return h<24&&m<60
-    ?h*60+m
-    :null;
-}
-
-function checkHTML(a,b){
-  const x=timeMin(a.time);
-  const y=timeMin(b.time);
-
-  if(x===null||y===null){
-    return '<p class="muted">時刻未設定</p>';
-  }
-
-  if(y<x){
-    return '<p class="warn">⚠ 時刻が前後しています</p>';
-  }
-
-  if(
-    !hasNum(a.stayMinutes)
-    ||!hasNum(b.travelMinutes)
-  ){
-    return `
-      <p class="muted">
-        移動・滞在時間が未設定
-      </p>
-    `;
-  }
-
-  const gap=y-x
-    -(+a.stayMinutes)
-    -(+b.travelMinutes);
-
-  return `
-    <p class="${gap<0?'warn':'ok'}">
-      ${gap<0
-        ?'⚠ '+(-gap)+'分不足'
-        :'✓ '+gap+'分の余裕'}
-    </p>
-  `;
-}
+/* ==========================================
+   TRIP DETAIL
+========================================== */
 
 function renderDetail(){
   const original=find(selected);
@@ -1162,7 +1395,9 @@ function renderDetail(){
 
   app.innerHTML=`
     <div class="template-${t.template}">
-      <div class="eyebrow">TRAVEL JOURNAL</div>
+      <div class="eyebrow">
+        TRAVEL JOURNAL
+      </div>
 
       ${hero(t)}
 
@@ -1170,6 +1405,7 @@ function renderDetail(){
 
       <span class="tag">${esc(t.place)}</span>
       <span class="tag">${t.schedule.length}日間</span>
+      <span class="tag">${stopCount(t)}スポット</span>
       <span class="tag">${statusLabel(original)}</span>
 
       ${t.style?`
@@ -1226,8 +1462,7 @@ function renderDetail(){
           <span>
             <span
               class="dot"
-              style="background:
-                ${COLORS[i%COLORS.length]}">
+              style="background:${COLORS[i%COLORS.length]}">
             </span>
             ${esc(d.name)}
           </span>
@@ -1235,8 +1470,8 @@ function renderDetail(){
       </div>
 
       <p class="muted">
-        地図上の線は地点間の直線で、
-        実際の道路・鉄道経路ではありません。
+        地図の線はスポット間の直線です。
+        実際の道路・鉄道ルートではありません。
       </p>
 
       <hr class="divider">
@@ -1247,8 +1482,7 @@ function renderDetail(){
       ${t.schedule.map((d,di)=>`
         <section
           class="panel day"
-          style="border-left-color:
-            ${COLORS[di%COLORS.length]}">
+          style="border-left-color:${COLORS[di%COLORS.length]}">
 
           <div class="eyebrow">
             DAY ${di+1}
@@ -1265,7 +1499,7 @@ function renderDetail(){
               ${checkHTML(d.stops[si-1],s)}
             `:''}
 
-            <div class="spot">
+            <div class="timeline-item">
               <b>
                 ${esc(s.time)}
                 ${si+1}. ${esc(s.name)}
@@ -1295,9 +1529,9 @@ function renderDetail(){
   `;
 }
 
-/* =========================
+/* ==========================================
    MAP
-========================= */
+========================================== */
 
 function drawMap(t){
   const el=document.getElementById('trip-map');
@@ -1323,12 +1557,11 @@ function drawMap(t){
     ).addTo(map);
 
     const bounds=[];
-    const arrows=[];
     let missing=0;
 
     t.schedule.forEach((d,di)=>{
       const color=COLORS[di%COLORS.length];
-      let prev=null;
+      let previous=null;
 
       d.stops.forEach((s,si)=>{
         const p=coords(s.coords)
@@ -1337,7 +1570,7 @@ function drawMap(t){
 
         if(!coords(p)){
           missing++;
-          prev=null;
+          previous=null;
           return;
         }
 
@@ -1354,8 +1587,8 @@ function drawMap(t){
                 ${si+1}
               </div>
             `,
-            iconSize:[29,29],
-            iconAnchor:[14,14]
+            iconSize:[30,30],
+            iconAnchor:[15,15]
           })
         })
         .addTo(map)
@@ -1363,24 +1596,18 @@ function drawMap(t){
           esc(d.name)+' / '+esc(s.name)
         );
 
-        if(prev){
+        if(previous){
           L.polyline(
-            [prev,pos],
+            [previous,pos],
             {
               color,
               weight:4,
               opacity:.85
             }
           ).addTo(map);
-
-          arrows.push({
-            from:prev,
-            to:pos,
-            color
-          });
         }
 
-        prev=pos;
+        previous=pos;
       });
     });
 
@@ -1392,56 +1619,6 @@ function drawMap(t){
     }else{
       map.setView([35.6812,139.7671],5);
     }
-
-    let markers=[];
-
-    function redraw(){
-      markers.forEach(m=>map.removeLayer(m));
-      markers=[];
-
-      arrows.forEach(a=>{
-        const f=map.latLngToLayerPoint(a.from);
-        const t=map.latLngToLayerPoint(a.to);
-
-        const dx=t.x-f.x;
-        const dy=t.y-f.y;
-
-        if(Math.hypot(dx,dy)<12)return;
-
-        const angle=
-          Math.atan2(dy,dx)*180/Math.PI;
-
-        const mid=[
-          (a.from[0]+a.to[0])/2,
-          (a.from[1]+a.to[1])/2
-        ];
-
-        markers.push(
-          L.marker(mid,{
-            interactive:false,
-            icon:L.divIcon({
-              className:'',
-              html:`
-                <div
-                  class="arrow"
-                  style="color:${a.color}">
-                  <span
-                    style="transform:
-                      rotate(${angle}deg)">
-                    ➜
-                  </span>
-                </div>
-              `,
-              iconSize:[24,24],
-              iconAnchor:[12,12]
-            })
-          }).addTo(map)
-        );
-      });
-    }
-
-    map.on('zoomend',redraw);
-    redraw();
 
     if(missing){
       el.insertAdjacentHTML(
@@ -1465,9 +1642,9 @@ function drawMap(t){
   }
 }
 
-/* =========================
-   NEW / EDIT / COPY
-========================= */
+/* ==========================================
+   NEW / COPY
+========================================== */
 
 function newSpot(){
   return {
@@ -1518,7 +1695,6 @@ function openEdit(id){
 
   editing=id;
   draft=norm(find(id));
-
   go('edit');
 }
 
@@ -1546,8 +1722,7 @@ function renderCopy(){
 
     <div class="notice">
       元の旅程は変更しません。
-      タイトル・日数を調整してから
-      編集画面に進みます。
+      タイトルと日数を調整してから編集できます。
       日数を減らすと末尾のDAYが削除されます。
     </div>
 
@@ -1591,13 +1766,13 @@ function renderCopy(){
 }
 
 function copyNext(){
-  const title=document
-    .getElementById('copy-title')
-    .value.trim();
+  const title=document.getElementById(
+    'copy-title'
+  ).value.trim();
 
-  const n=+document
-    .getElementById('copy-days')
-    .value;
+  const n=+document.getElementById(
+    'copy-days'
+  ).value;
 
   if(!title){
     alert('タイトルを入力してください。');
@@ -1609,9 +1784,7 @@ function copyNext(){
     &&!confirm(
       '末尾のDAYが削除されます。続けますか？'
     )
-  ){
-    return;
-  }
+  )return;
 
   draft.title=title;
   resizeDays(n);
@@ -1619,9 +1792,9 @@ function copyNext(){
   go('edit');
 }
 
-/* =========================
-   EDITOR
-========================= */
+/* ==========================================
+   EDITOR ver.1.6
+========================================== */
 
 function renderEditor(){
   if(!draft)draft=newDraft();
@@ -1636,9 +1809,9 @@ function renderEditor(){
     </h2>
 
     <div class="notice">
-      DAYの追加・削除・並べ替え、
-      スポットのDAY間移動ができます。
-      変更後は必ず「旅程を保存」を押してください。
+      スポットの複製・並べ替え・DAY間移動に対応。
+      滞在時間と移動時間を入力すれば、
+      到着時刻も自動計算できます。
     </div>
 
     <div class="panel">
@@ -1717,8 +1890,7 @@ function renderEditor(){
     <button
       class="btn"
       data-a="day-add"
-      ${draft.schedule.length>=14
-        ?'disabled':''}>
+      ${draft.schedule.length>=14?'disabled':''}>
       ＋ DAYを追加
     </button>
 
@@ -1737,14 +1909,16 @@ function renderEditor(){
 }
 
 function renderDays(){
-  const el=document.getElementById('day-editor');
+  const el=document.getElementById(
+    'day-editor'
+  );
+
   if(!el)return;
 
   el.innerHTML=draft.schedule.map((d,di)=>`
     <section
       class="panel day"
-      style="border-left-color:
-        ${COLORS[di%COLORS.length]}">
+      style="border-left-color:${COLORS[di%COLORS.length]}">
 
       <div class="eyebrow">
         DAY ${di+1}
@@ -1757,7 +1931,7 @@ function renderDays(){
           value="${esc(d.name)}">
       </label>
 
-      <div class="actions">
+      <div class="tool-bar">
         <button
           class="btn alt"
           data-a="day-up"
@@ -1781,36 +1955,60 @@ function renderDays(){
           data-day="${di}"
           ${draft.schedule.length===1
             ?'disabled':''}>
-          DAYを削除
+          DAY削除
         </button>
       </div>
 
+      <div class="notice">
+        <b>⏰ スケジュール自動計算</b><br>
+        最初のスポットの訪問時刻を基準に、
+        滞在時間＋移動時間から
+        2件目以降の到着時刻を計算します。
+      </div>
+
+      <div class="tool-bar">
+        <button
+          class="btn"
+          data-a="calculate"
+          data-day="${di}">
+          ⏰ 到着時刻を自動計算
+        </button>
+
+        <button
+          class="btn alt"
+          data-a="check"
+          data-day="${di}">
+          時間チェック
+        </button>
+      </div>
+
+      <div id="check-${di}"></div>
+
       ${d.stops.map((s,si)=>`
         <div class="spot">
+          <div class="spot-head">
+            <b>スポット ${si+1}</b>
 
-          <div class="actions">
-            <b style="margin-right:auto">
-              スポット ${si+1}
-            </b>
+            <div class="actions">
+              <button
+                class="btn alt"
+                data-a="up"
+                data-day="${di}"
+                data-spot="${si}"
+                ${si===0?'disabled':''}>
+                ▲
+              </button>
 
-            <button
-              class="btn alt"
-              data-a="up"
-              data-day="${di}"
-              data-spot="${si}"
-              ${si===0?'disabled':''}>
-              ▲
-            </button>
-
-            <button
-              class="btn alt"
-              data-a="down"
-              data-day="${di}"
-              data-spot="${si}"
-              ${si===d.stops.length-1
-                ?'disabled':''}>
-              ▼
-            </button>
+              <button
+                class="btn alt"
+                data-a="down"
+                data-day="${di}"
+                data-spot="${si}"
+                ${si===d.stops.length-1
+                  ?'disabled':''}>
+                ▼
+              </button>
+            </div>
           </div>
 
           <div class="row">
@@ -1861,8 +2059,7 @@ function renderDays(){
                     .map(([k,v])=>`
                       <option
                         value="${k}"
-                        ${s.transport===k
-                          ?'selected':''}>
+                        ${s.transport===k?'selected':''}>
                         ${v}
                       </option>
                     `).join('')}
@@ -1932,9 +2129,7 @@ function renderDays(){
               data-field="lookup"
               data-day="${di}"
               data-spot="${si}"
-              value="${esc(
-                s.lookup||s.name
-              )}">
+              value="${esc(s.lookup||s.name)}">
           </label>
 
           <button
@@ -1949,7 +2144,6 @@ function renderDays(){
 
           <label>
             別のDAYに移動
-
             <select
               data-move-target="${di}-${si}">
 
@@ -1963,21 +2157,31 @@ function renderDays(){
             </select>
           </label>
 
-          <button
-            class="btn alt"
-            data-a="move-day"
-            data-day="${di}"
-            data-spot="${si}">
-            指定DAYへ移動
-          </button>
+          <div class="tool-bar">
+            <button
+              class="btn alt"
+              data-a="move-day"
+              data-day="${di}"
+              data-spot="${si}">
+              DAY移動
+            </button>
 
-          <button
-            class="btn danger"
-            data-a="remove"
-            data-day="${di}"
-            data-spot="${si}">
-            スポット削除
-          </button>
+            <button
+              class="btn alt"
+              data-a="duplicate"
+              data-day="${di}"
+              data-spot="${si}">
+              📋 複製
+            </button>
+
+            <button
+              class="btn danger"
+              data-a="remove"
+              data-day="${di}"
+              data-spot="${si}">
+              削除
+            </button>
+          </div>
         </div>
       `).join('')}
 
@@ -1987,22 +2191,13 @@ function renderDays(){
         data-day="${di}">
         ＋ スポット追加
       </button>
-
-      <button
-        class="btn alt"
-        data-a="check"
-        data-day="${di}">
-        🕒 時間チェック
-      </button>
-
-      <div id="check-${di}"></div>
     </section>
   `).join('');
 }
 
-/* =========================
-   EDITOR DATA
-========================= */
+/* ==========================================
+   EDITOR SYNC
+========================================== */
 
 function sync(){
   if(!draft)return;
@@ -2016,6 +2211,7 @@ function sync(){
     ['trip-status','status']
   ]){
     const el=document.getElementById(id);
+
     if(el)draft[key]=el.value;
   }
 
@@ -2117,6 +2313,7 @@ function resetIncoming(a,i){
 
 function add(di){
   sync();
+
   draft.schedule[di].stops.push(newSpot());
   renderDays();
 }
@@ -2155,7 +2352,7 @@ function move(di,si,delta){
   renderDays();
 
   alert(
-    '訪問順を変更しました。影響する移動時間・手段を再入力してください。'
+    '順番を変更しました。移動情報を再確認してください。'
   );
 }
 
@@ -2171,7 +2368,7 @@ function moveDay(di,si){
     ||target===di
     ||!draft.schedule[target]
   ){
-    alert('移動先に別のDAYを選択してください。');
+    alert('別のDAYを選択してください。');
     return;
   }
 
@@ -2192,11 +2389,137 @@ function moveDay(di,si){
   renderDays();
 
   alert(
-    'スポットを移動しました。移動元・移動先の移動情報を確認してください。'
+    'DAYを移動しました。移動時間を確認してください。'
   );
 }
 
-function check(di){
+/* ==========================================
+   DUPLICATE SPOT ver.1.6
+========================================== */
+
+function duplicateSpot(di,si){
+  sync();
+
+  const a=draft.schedule[di].stops;
+  const original=a[si];
+
+  if(!original)return;
+
+  const copy=clone(original);
+
+  copy.uid=uid();
+  copy.transport='';
+  copy.travelMinutes='';
+
+  a.splice(si+1,0,copy);
+
+  resetIncoming(a,si+2);
+
+  renderDays();
+
+  alert(
+    'スポットを複製しました。時刻と移動情報を調整してください。'
+  );
+}
+
+/* ==========================================
+   AUTO TIME CALCULATION ver.1.7
+========================================== */
+
+function calculateDay(di){
+  sync();
+
+  const d=draft.schedule[di];
+
+  if(!d||d.stops.length<2){
+    alert(
+      'スポットを2件以上登録してください。'
+    );
+    return;
+  }
+
+  const first=timeMin(d.stops[0].time);
+
+  if(first===null){
+    alert(
+      '最初のスポットの時刻を設定してください。'
+    );
+    return;
+  }
+
+  let current=first;
+  const calculated=[];
+
+  for(let i=1;i<d.stops.length;i++){
+    const previous=d.stops[i-1];
+    const next=d.stops[i];
+
+    if(
+      !hasNum(previous.stayMinutes)
+      ||!hasNum(next.travelMinutes)
+    ){
+      alert(
+        'スポット'+i+'の滞在時間、またはスポット'
+        +(i+1)+'への移動時間が未入力です。'
+      );
+      return;
+    }
+
+    const stay=+previous.stayMinutes;
+    const travelMinutes=+next.travelMinutes;
+
+    if(
+      !Number.isInteger(stay)
+      ||!Number.isInteger(travelMinutes)
+      ||stay<0
+      ||travelMinutes<0
+    ){
+      alert('時間は0以上の整数で入力してください。');
+      return;
+    }
+
+    current+=stay+travelMinutes;
+
+    const result=timeText(current);
+
+    if(!result){
+      alert(
+        '計算結果が翌日にまたがります。'
+        +'DAYを分けてください。'
+      );
+      return;
+    }
+
+    calculated.push(result);
+  }
+
+  if(!confirm(
+    'DAY '+(di+1)
+    +'の2件目以降の到着時刻を自動計算します。'
+    +'現在の時刻を上書きしてよいですか？'
+  ))return;
+
+  calculated.forEach((v,i)=>{
+    d.stops[i+1].time=v;
+  });
+
+  renderDays();
+
+  const box=document.getElementById(
+    'check-'+di
+  );
+
+  if(box){
+    box.innerHTML=`
+      <p class="ok">
+        ✓ 到着時刻を自動計算しました。
+        保存ボタンを押すと確定します。
+      </p>
+    `;
+  }
+}
+
+function checkDay(di){
   sync();
 
   const a=draft.schedule[di].stops;
@@ -2210,9 +2533,9 @@ function check(di){
   ||'<p class="muted">スポットが2件以上必要です。</p>';
 }
 
-/* =========================
+/* ==========================================
    LOCATION SEARCH
-========================= */
+========================================== */
 
 function spotByUid(id){
   for(const d of draft?.schedule||[]){
@@ -2220,7 +2543,6 @@ function spotByUid(id){
       if(s.uid===id)return s;
     }
   }
-
   return null;
 }
 
@@ -2253,8 +2575,7 @@ async function lookup(di,si){
   searchBusy=true;
   lastSearch=Date.now();
 
-  const token=uid();
-  searchToken=token;
+  const spotId=s.uid;
 
   el.textContent='検索中...';
 
@@ -2281,10 +2602,7 @@ async function lookup(di,si){
 
     const data=await res.json();
 
-    if(
-      searchToken!==token
-      ||!spotByUid(s.uid)
-    )return;
+    if(!spotByUid(spotId))return;
 
     searchResults=data.map(x=>({
       name:x.display_name,
@@ -2296,22 +2614,21 @@ async function lookup(di,si){
     );
 
     if(target){
-      target.innerHTML=searchResults
-        .map((r,i)=>`
-          <div class="result">
-            ${esc(r.name)}
-            <br>
+      target.innerHTML=searchResults.map((r,i)=>`
+        <div class="result">
+          ${esc(r.name)}
+          <br>
 
-            <button
-              class="btn alt"
-              data-a="choose"
-              data-index="${i}"
-              data-uid="${esc(s.uid)}">
-              この場所を選択
-            </button>
-          </div>
-        `).join('')
-        ||'<p>候補がありません。</p>';
+          <button
+            class="btn alt"
+            data-a="choose"
+            data-index="${i}"
+            data-uid="${esc(spotId)}">
+            この場所を選択
+          </button>
+        </div>
+      `).join('')
+      ||'<p>候補がありません。</p>';
     }
 
   }catch(e){
@@ -2337,9 +2654,9 @@ function choose(i,id){
   renderDays();
 }
 
-/* =========================
+/* ==========================================
    PHOTO
-========================= */
+========================================== */
 
 async function photo(file,di,si){
   if(
@@ -2401,7 +2718,6 @@ async function photo(file,di,si){
 
     if(s){
       s.photo=c.toDataURL('image/jpeg',.65);
-
       renderDays();
 
       alert(
@@ -2414,9 +2730,9 @@ async function photo(file,di,si){
   }
 }
 
-/* =========================
+/* ==========================================
    SAVE / DELETE / STATUS
-========================= */
+========================================== */
 
 function saveTrip(){
   sync();
@@ -2430,9 +2746,7 @@ function saveTrip(){
   }
 
   if(
-    !draft.schedule.some(
-      d=>d.stops.length
-    )
+    !draft.schedule.some(d=>d.stops.length)
     ||draft.schedule.some(
       d=>d.stops.some(s=>!s.name.trim())
     )
@@ -2450,8 +2764,7 @@ function saveTrip(){
         s.stayMinutes
       ]){
         if(
-          v!==''
-          &&v!=null
+          v!==''&&v!=null
           &&(
             !Number.isInteger(+v)
             ||+v<0
@@ -2579,9 +2892,9 @@ function bookmark(id){
   }
 }
 
-/* =========================
-   BACKUP / RESTORE
-========================= */
+/* ==========================================
+   BACKUP
+========================================== */
 
 function renderBackup(){
   app.innerHTML=`
@@ -2653,9 +2966,7 @@ async function copyBackup(){
   );
 
   if(!el?.value){
-    alert(
-      '先にバックアップを作成してください。'
-    );
+    alert('先にバックアップを作成してください。');
     return;
   }
 
@@ -2703,9 +3014,7 @@ function validTrip(t){
             typeof s.photo==='string'
             &&(
               !s.photo
-              ||/^data:image\/jpeg;base64,/.test(
-                s.photo
-              )
+              ||/^data:image\/jpeg;base64,/.test(s.photo)
             )
           )
         )
@@ -2758,13 +3067,9 @@ function previewRestore(){
       );
     }
 
-    const ids=v.data.plans.map(
-      t=>t.id
-    );
+    const ids=v.data.plans.map(t=>t.id);
 
-    if(
-      new Set(ids).size!==ids.length
-    ){
+    if(new Set(ids).size!==ids.length){
       throw Error(
         '重複した旅程IDがあります。'
       );
@@ -2864,9 +3169,9 @@ function restoreData(){
   }
 }
 
-/* =========================
+/* ==========================================
    INSTAGRAM EXPORT
-========================= */
+========================================== */
 
 function openExport(id){
   const t=find(id);
@@ -2895,8 +3200,8 @@ function renderExport(){
 
     <div class="notice">
       1080×1350pxの画像を生成します。
-      画像を長押しして写真に保存してください。
-      全体ルート画像は現段階では訪問順の一覧です。
+      画像を長押しして保存してください。
+      全体ルート画像は現在、訪問順の一覧です。
     </div>
 
     <label>
@@ -2943,8 +3248,8 @@ function renderExport(){
     </button>
 
     <p class="muted">
-      スポットが多いDAYでは
-      画像の下部が省略される場合があります。
+      スポット数が多い場合、
+      画像の下部が省略されることがあります。
     </p>
   `;
 
@@ -2959,7 +3264,7 @@ function lines(ctx,text,width){
   let out=[];
   let line='';
 
-  for(const ch of String(text)){
+  for(const ch of String(text||'')){
     if(ch==='\n'){
       out.push(line);
       line='';
@@ -2988,11 +3293,7 @@ function drawLines(
   const a=lines(ctx,text,w);
 
   a.slice(0,max).forEach((v,i)=>{
-    ctx.fillText(
-      v,
-      x,
-      y+i*step
-    );
+    ctx.fillText(v,x,y+i*step);
   });
 }
 
@@ -3023,8 +3324,7 @@ function coverImage(ctx,img,x,y,w,h){
     img,
     (img.width-sw)/2,
     (img.height-sh)/2,
-    sw,
-    sh,
+    sw,sh,
     x,y,w,h
   );
 }
@@ -3054,9 +3354,11 @@ async function drawExport(){
 
   ctx.fillStyle='#493c30';
   ctx.font='bold 42px Georgia,serif';
+
   ctx.fillText('TUMUGOU',65,90);
 
   ctx.font='22px sans-serif';
+
   ctx.fillText(
     'あなたの旅が、次の誰かの旅になる。',
     65,130
@@ -3069,9 +3371,7 @@ async function drawExport(){
   ctx.stroke();
 
   if(index===0){
-    const img=await imageOf(
-      firstPhoto(t)
-    );
+    const img=await imageOf(firstPhoto(t));
 
     if(img){
       coverImage(
@@ -3080,9 +3380,7 @@ async function drawExport(){
       );
     }else{
       ctx.fillStyle='#d9decf';
-      ctx.fillRect(
-        65,195,950,640
-      );
+      ctx.fillRect(65,195,950,640);
 
       ctx.font='170px sans-serif';
       ctx.textAlign='center';
@@ -3151,9 +3449,7 @@ async function drawExport(){
       ctx.fillStyle=
         COLORS[di%COLORS.length];
 
-      ctx.fillRect(
-        65,y,950,54
-      );
+      ctx.fillRect(65,y,950,54);
 
       ctx.fillStyle='white';
       ctx.font='bold 26px sans-serif';
@@ -3179,8 +3475,7 @@ async function drawExport(){
 
         drawLines(
           ctx,
-          (si+1)+'. '
-          +s.time+'  '+s.name,
+          (si+1)+'. '+s.time+'  '+s.name,
           90,y+25,900,33,1
         );
 
@@ -3233,16 +3528,12 @@ async function drawExport(){
       const h=s.photo?255:140;
 
       ctx.fillStyle='#fffefa';
-      ctx.fillRect(
-        65,y,950,h
-      );
+      ctx.fillRect(65,y,950,h);
 
       ctx.fillStyle=
         COLORS[di%COLORS.length];
 
-      ctx.fillRect(
-        65,y,8,h
-      );
+      ctx.fillRect(65,y,8,h);
 
       ctx.font='bold 28px sans-serif';
 
@@ -3261,9 +3552,7 @@ async function drawExport(){
       );
 
       if(s.photo){
-        const img=await imageOf(
-          s.photo
-        );
+        const img=await imageOf(s.photo);
 
         if(img){
           coverImage(
@@ -3297,9 +3586,7 @@ async function drawExport(){
         ctx.font='20px sans-serif';
 
         ctx.fillText(
-          '↓ '+travel(
-            d.stops[si+1]
-          ),
+          '↓ '+travel(d.stops[si+1]),
           95,y+10
         );
 
@@ -3355,9 +3642,9 @@ function exportMove(delta){
   renderExport();
 }
 
-/* =========================
+/* ==========================================
    BUTTON EVENTS
-========================= */
+========================================== */
 
 document.addEventListener('click',e=>{
   const b=e.target.closest(
@@ -3423,8 +3710,14 @@ document.addEventListener('click',e=>{
   }else if(a==='move-day'){
     moveDay(di,si);
 
+  }else if(a==='duplicate'){
+    duplicateSpot(di,si);
+
+  }else if(a==='calculate'){
+    calculateDay(di);
+
   }else if(a==='check'){
-    check(di);
+    checkDay(di);
 
   }else if(a==='lookup'){
     lookup(di,si);
@@ -3443,9 +3736,7 @@ document.addEventListener('click',e=>{
 
     if(
       s
-      &&confirm(
-        '写真を削除しますか？'
-      )
+      &&confirm('写真を削除しますか？')
     ){
       s.photo='';
       renderDays();
@@ -3498,16 +3789,18 @@ document.addEventListener('click',e=>{
       q:'',
       days:'',
       style:'',
-      status:''
+      status:'',
+      minStops:'',
+      sort:'recommended'
     };
 
     renderSearch();
   }
 });
 
-/* =========================
+/* ==========================================
    INPUT EVENTS
-========================= */
+========================================== */
 
 document.addEventListener('input',e=>{
   if(e.target.id==='search-q'){
@@ -3532,48 +3825,41 @@ document.addEventListener('input',e=>{
       +e.target.dataset.spot
     ];
 
-    if(
-      s
-      &&s.name!==e.target.value
-    ){
+    if(s&&s.name!==e.target.value){
       s.name=e.target.value;
       s.lookup='';
 
       delete s.coords;
       delete s.locationLabel;
 
-      const box=e.target.closest(
-        '.spot'
-      );
+      const box=e.target.closest('.spot');
 
       const input=box?.querySelector(
         '[data-field="lookup"]'
       );
 
-      if(input){
-        input.value=s.name;
-      }
+      if(input)input.value=s.name;
 
       const res=box?.querySelector(
         '[id^="lookup-"]'
       );
 
-      if(res){
-        res.innerHTML='';
-      }
+      if(res)res.innerHTML='';
     }
   }
 });
 
-/* =========================
+/* ==========================================
    CHANGE EVENTS
-========================= */
+========================================== */
 
 document.addEventListener('change',async e=>{
   if([
     'search-days',
     'search-style',
-    'search-status'
+    'search-status',
+    'search-minStops',
+    'search-sort'
   ].includes(e.target.id)){
 
     search[
@@ -3595,9 +3881,9 @@ document.addEventListener('change',async e=>{
   }
 });
 
-/* =========================
+/* ==========================================
    START
-========================= */
+========================================== */
 
 render();
 
