@@ -51,13 +51,17 @@ nav button.active{background:#edf0e7;font-weight:bold}
 .route{background:#eee9da;border-radius:12px;padding:13px;line-height:1.8}
 .route-day{margin:8px 0}
 .hint{font-size:12px;color:#756d61}
+.plan-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:-7px;margin-bottom:20px}
+.plan-actions .btn{margin:0}
 </style>
 </head>
 <body>
+
 <header>
 <h1>TUMUGOU</h1>
-<p>誰かの旅が、次の誰かの旅になる。</p>
+<p>あなたの旅が、次の誰かの旅になる。</p>
 </header>
+
 <main id="app"></main>
 <nav id="nav"></nav>
 
@@ -282,7 +286,7 @@ if(page==='home'){
 app.innerHTML=`
 <small>EXPLORE JOURNEYS</small>
 <h2>次の旅のヒントを探そう。</h2>
-<p>誰かの旅が、次の誰かの旅になる。</p>
+<p>あなたの旅が、次の誰かの旅になる。</p>
 <div class="notice">
 以下は動作確認用のサンプル旅程です。
 実際の旅行記録ではありません。
@@ -314,12 +318,32 @@ results();
 
 else if(page==='my'){
 const saved=state.saved.map(find).filter(Boolean);
+
 app.innerHTML=`
 <h2>MY TRIP</h2>
+
 <h3>PLANNING｜自分の旅程</h3>
+
 ${state.plans.length
-?state.plans.map(card).join('')
+?state.plans.map(t=>`
+<div>
+${card(t)}
+<div class="plan-actions">
+<button class="btn secondary"
+data-action="edit"
+data-id="${esc(t.id)}">
+✎ 編集
+</button>
+<button class="btn danger"
+data-action="delete-trip"
+data-id="${esc(t.id)}">
+🗑 この旅程を削除
+</button>
+</div>
+</div>
+`).join('')
 :'<p>まだ旅程がありません。</p>'}
+
 <h3>SAVED｜保存した旅程</h3>
 ${saved.length
 ?saved.map(card).join('')
@@ -848,6 +872,41 @@ editing='';
 go('detail',t.id);
 }
 
+function deleteTrip(id){
+const trip=state.plans.find(t=>t.id===id);
+
+if(!trip){
+alert('削除対象の旅程が見つかりません。');
+return;
+}
+
+const confirmed=window.confirm(
+'「'+trip.title+'」を削除しますか？\n\n'+
+'この操作は取り消せません。'
+);
+
+if(!confirmed)return;
+
+const previousPlans=[...state.plans];
+const previousSaved=[...state.saved];
+
+state.plans=state.plans.filter(t=>t.id!==id);
+state.saved=state.saved.filter(x=>x!==id);
+
+if(!save()){
+state.plans=previousPlans;
+state.saved=previousSaved;
+return;
+}
+
+if(editing===id){
+draft=null;
+editing='';
+}
+
+go('my');
+}
+
 function bookmark(id){
 state.saved=state.saved.includes(id)
 ?state.saved.filter(x=>x!==id)
@@ -1009,6 +1068,9 @@ choosePlace(Number(b.dataset.index),b.dataset.uid);
 }
 else if(a==='save-trip'){
 submitTrip();
+}
+else if(a==='delete-trip'){
+deleteTrip(id);
 }
 });
 
