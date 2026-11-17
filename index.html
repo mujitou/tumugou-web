@@ -2,392 +2,270 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
- content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#59634a">
-<title>TUMUGOU ver.4.0</title>
-
-<link rel="stylesheet"
- href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<title>TUMUGOU ver.5.0</title>
 
 <style>
 :root{
- --bg:#f7f4ec;
- --paper:#fffdf8;
- --cream:#f0e9dc;
- --sand:#dfd0b8;
- --brown:#493c30;
- --olive:#59634a;
- --sage:#b7c3ad;
- --muted:#857c6d;
- --line:#ded6c9;
- --red:#9e6050;
+  --bg:#f7f4ec;
+  --paper:#fffdf8;
+  --cream:#eee8db;
+  --sand:#d9c6a9;
+  --brown:#493c30;
+  --olive:#59634a;
+  --sage:#b8c4ae;
+  --muted:#857c6d;
+  --line:#ded6c9;
+  --red:#a45f50;
 }
-
 *{box-sizing:border-box}
-
 body{
- margin:0;
- background:var(--bg);
- color:var(--brown);
- font-family:-apple-system,BlinkMacSystemFont,
- "Hiragino Kaku Gothic ProN",sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--brown);
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Kaku Gothic ProN",sans-serif;
 }
-
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-button:disabled{opacity:.4;cursor:not-allowed}
-
+button:disabled{opacity:.45}
 header{
- position:sticky;
- top:0;
- z-index:500;
- background:#fffdf8f0;
- backdrop-filter:blur(12px);
- border-bottom:1px solid var(--line);
- padding:13px;
- text-align:center;
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#fffdf8f2;
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  padding:13px;
+  text-align:center;
 }
-
 .logo{
- font:bold 29px Georgia,serif;
- letter-spacing:4px;
- color:var(--olive);
+  font:bold 29px Georgia,serif;
+  letter-spacing:4px;
+  color:var(--olive);
 }
-
 header small{
- display:block;
- font-size:10px;
- margin-top:4px;
- letter-spacing:1px;
+  display:block;
+  font-size:10px;
+  letter-spacing:1px;
+  margin-top:4px;
 }
-
 main{
- max-width:900px;
- margin:auto;
- padding:20px 14px 125px;
+  max-width:960px;
+  margin:auto;
+  padding:22px 14px 120px;
 }
-
 h1,h2,h3{line-height:1.4}
 h1{font-size:29px}
-h2{font-size:24px}
+h2{font-size:23px}
 h3{font-size:18px}
 p{line-height:1.75}
-
 .eyebrow{
- font-size:11px;
- letter-spacing:2.5px;
- color:var(--olive);
- font-weight:bold;
+  font-size:11px;
+  letter-spacing:2px;
+  color:var(--olive);
+  font-weight:bold;
 }
-
-.muted{
- color:var(--muted);
- font-size:12px;
-}
-
+.muted{color:var(--muted);font-size:12px}
 .card,.panel{
- background:var(--paper);
- border:1px solid var(--line);
- border-radius:16px;
- padding:16px;
- margin:15px 0;
- box-shadow:0 6px 22px #493c3010;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  margin:14px 0;
+  box-shadow:0 5px 20px #493c300b;
 }
-
 .btn{
- background:var(--olive);
- color:white;
- border:0;
- border-radius:10px;
- padding:11px 14px;
- margin:4px 4px 4px 0;
- font-size:13px;
+  border:0;
+  border-radius:10px;
+  padding:11px 14px;
+  margin:4px 4px 4px 0;
+  background:var(--olive);
+  color:white;
+  font-size:13px;
 }
-
-.btn.alt{
- background:var(--cream);
- color:var(--brown);
-}
-
-.btn.danger{
- background:#f3e2dd;
- color:#8d443b;
-}
-
-.actions{
- display:flex;
- flex-wrap:wrap;
- gap:5px;
-}
-
+.btn.alt{background:var(--cream);color:var(--brown)}
+.btn.danger{background:#f3e2dd;color:#90473d}
+.actions{display:flex;flex-wrap:wrap;gap:5px}
 label{
- display:block;
- font-size:13px;
- font-weight:600;
- margin:13px 0;
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin:13px 0;
 }
-
 input,select,textarea{
- display:block;
- width:100%;
- padding:11px;
- border:1px solid #d4c8b7;
- border-radius:9px;
- margin-top:6px;
- background:white;
- color:var(--brown);
+  display:block;
+  width:100%;
+  padding:11px;
+  margin-top:6px;
+  background:white;
+  border:1px solid #d4c8b7;
+  border-radius:9px;
+  color:var(--brown);
 }
-
-textarea{
- min-height:80px;
- resize:vertical;
-}
-
+textarea{min-height:85px;resize:vertical}
 .row{display:flex;gap:10px}
 .row>*{flex:1;min-width:0}
-
 .notice{
- background:#eee9dc;
- padding:14px;
- border-radius:12px;
- margin:13px 0;
- font-size:13px;
- line-height:1.7;
+  background:#eee9dc;
+  border-radius:12px;
+  padding:14px;
+  margin:14px 0;
+  font-size:13px;
+  line-height:1.7;
 }
-
 .warn{
- background:#fff0e6;
- color:#915438;
- padding:13px;
- border-radius:10px;
- margin:12px 0;
+  background:#fff0e6;
+  color:#915438;
+  border-radius:10px;
+  padding:13px;
+  margin:12px 0;
 }
-
-.ok{
- background:#e9efe4;
- color:#47603f;
- padding:12px;
- border-radius:10px;
- margin:12px 0;
-}
-
 .tag{
- display:inline-block;
- background:#e9eee3;
- color:var(--olive);
- border-radius:30px;
- padding:5px 10px;
- font-size:11px;
- margin:4px 3px 4px 0;
+  display:inline-block;
+  background:#e9eee3;
+  color:var(--olive);
+  border-radius:30px;
+  padding:5px 10px;
+  margin:3px;
+  font-size:11px;
 }
-
 .cover{
- height:210px;
- border-radius:13px;
- background:linear-gradient(135deg,#c8d0be,#e9d4b6);
- display:flex;
- align-items:center;
- justify-content:center;
- overflow:hidden;
- font-size:70px;
+  height:220px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#b8c5ad,#ead6b8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
+  overflow:hidden;
 }
-
 .cover img{
- width:100%;
- height:100%;
- object-fit:cover;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
-
 .trip-title{
- font-family:Georgia,"Hiragino Mincho ProN",serif;
- font-size:28px;
+  font-family:Georgia,"Hiragino Mincho ProN",serif;
+  font-size:29px;
 }
-
-.day-card{
- border-left:5px solid var(--olive);
-}
-
+.day-card{border-left:5px solid var(--olive)}
 .spot-card{
- background:#f6f1e7;
- padding:13px;
- border-radius:12px;
- margin:12px 0;
+  background:#f6f1e7;
+  border-radius:12px;
+  padding:13px;
+  margin:12px 0;
 }
-
-.spot-time{
- font-weight:bold;
- color:var(--olive);
-}
-
-.photo-grid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:7px;
- margin:10px 0;
-}
-
-.photo-grid img{
- width:100%;
- height:145px;
- object-fit:cover;
- border-radius:10px;
- background:#e9dfcf;
-}
-
-.photo-grid img:only-child{
- grid-column:span 2;
- height:230px;
-}
-
-.photo-controls{
- display:flex;
- flex-wrap:wrap;
- gap:5px;
- margin:6px 0;
-}
-
-.photo-controls .btn{
- font-size:11px;
- padding:8px;
-}
-
-.route-svg{
- width:100%;
- height:auto;
- display:block;
- background:#f3eddf;
- border-radius:13px;
-}
-
-.map{
- height:350px;
- border-radius:13px;
-}
-
+.spot-time{font-weight:bold;color:var(--olive)}
 .timeline{
- border-left:2px dashed #c4b99f;
- padding-left:15px;
- margin-left:10px;
+  border-left:2px dashed #c4b99f;
+  padding-left:15px;
+  margin-left:10px;
 }
-
 .travel{
- background:#eee9dc;
- padding:9px;
- border-radius:8px;
- font-size:12px;
- margin:9px 0;
+  background:#eee9dc;
+  padding:9px;
+  border-radius:8px;
+  font-size:12px;
+  margin:9px 0;
 }
-
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+  margin:10px 0;
+}
+.photo-grid img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:10px;
+}
+.photo-grid img:only-child{
+  grid-column:span 2;
+  height:230px;
+}
+.photo-item{position:relative}
+.photo-item img{display:block}
+.photo-item button{font-size:11px}
 .stats{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:7px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
 }
-
 .stat{
- background:white;
- border:1px solid var(--line);
- border-radius:10px;
- text-align:center;
- padding:12px 3px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 3px;
+  text-align:center;
 }
-
 .stat b{
- display:block;
- font-size:23px;
- color:var(--olive);
+  display:block;
+  font-size:22px;
+  color:var(--olive);
 }
-
 .stat small{font-size:9px}
-
-.tabs{
- display:flex;
- overflow:auto;
- gap:5px;
+.tabs{display:flex;overflow:auto;gap:5px}
+.route-svg{
+  display:block;
+  width:100%;
+  height:auto;
+  background:#f3eddf;
+  border-radius:13px;
 }
-
-.search-step{
- border-left:3px solid var(--olive);
- padding-left:13px;
- margin:16px 0;
+.search-step{border-left:3px solid var(--olive);padding-left:13px}
+.export-preview{
+  width:100%;
+  max-width:360px;
+  display:block;
+  margin:15px auto;
+  border-radius:10px;
+  border:1px solid var(--line);
 }
-
-.search-step.hidden{display:none}
-
-.export-page{
- border:1px solid var(--line);
- border-radius:13px;
- padding:12px;
- background:white;
- margin:12px 0;
+.empty{
+  padding:35px 15px;
+  text-align:center;
+  color:var(--muted);
 }
-
-.export-page canvas{
- display:block;
- width:100%;
- max-width:340px;
- height:auto;
- margin:10px auto;
- border-radius:8px;
-}
-
-.template-magazine .trip-title{
- font-size:34px;
- letter-spacing:1px;
-}
-
-.template-minimal .day-card{
- border-left-width:2px;
- box-shadow:none;
-}
-
-.template-scrapbook .day-card{
- box-shadow:4px 4px 0 var(--sand);
-}
-
 nav{
- position:fixed;
- bottom:0;
- left:0;
- right:0;
- z-index:600;
- background:#fffdf8f5;
- border-top:1px solid var(--line);
- display:flex;
- padding-bottom:env(safe-area-inset-bottom);
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:200;
+  background:#fffdf8f5;
+  border-top:1px solid var(--line);
+  display:flex;
+  padding-bottom:env(safe-area-inset-bottom);
 }
-
 nav button{
- flex:1;
- background:transparent;
- border:0;
- padding:12px 1px;
- font-size:10px;
- color:var(--brown);
+  flex:1;
+  border:0;
+  background:transparent;
+  padding:12px 1px;
+  font-size:10px;
+  color:var(--brown);
 }
-
 nav button.active{
- background:#e8ede1;
- color:var(--olive);
- font-weight:bold;
+  background:#e8ede1;
+  color:var(--olive);
+  font-weight:bold;
 }
-
-.loading{
- text-align:center;
- padding:40px;
- color:var(--olive);
+.template-magazine .trip-title{font-size:34px}
+.template-minimal .day-card{
+  border-left-width:2px;
+  box-shadow:none;
 }
-
+.template-scrapbook .day-card{
+  box-shadow:4px 4px 0 var(--sand);
+}
 @media(max-width:500px){
- .row{gap:7px}
- .stat b{font-size:18px}
- .photo-grid img{height:115px}
- .cover{height:180px}
+  .row{gap:7px}
+  .stat b{font-size:18px}
+  .cover{height:185px}
+  .photo-grid img{height:120px}
 }
 </style>
 </head>
@@ -395,4684 +273,2522 @@ nav button.active{
 <body>
 
 <header>
- <div class="logo">TUMUGOU</div>
- <small>あなたの旅が、次の誰かの旅になる。</small>
+  <div class="logo">TUMUGOU</div>
+  <small>あなたの旅が、次の誰かの旅になる。</small>
 </header>
 
-<main id="app">
- <div class="loading">旅のページを準備しています...</div>
-</main>
-
+<main id="app"></main>
 <nav id="nav"></nav>
 
 <script>
-'use strict';
+"use strict";
 
-/* ==========================================
-   01. SUPABASE SETTINGS
-========================================== */
+/* ========================================
+   01. SETTINGS
+======================================== */
 
-const SUPABASE_URL=
-'https://cmaghzhmkdajtwfawpps.supabase.co';
-
-const SUPABASE_KEY=
-'sb_publishable_LShArmYqRL5eRRHiCzH85Q_0L8aowMX';
-
-/* ==========================================
-   02. APP SETTINGS
-========================================== */
-
-const VERSION='4.0';
-const DRAFT_KEY='tumugou_draft_v40';
-const OLD_DRAFT_KEY='tumugou_draft_v33';
-const LEGACY_KEY='tumugou_v02';
-const BUCKET='trip-private';
+const VERSION="5.0";
+const STORAGE_KEY="tumugou_local_v50";
 
 const COLORS=[
- '#59634a',
- '#b47b59',
- '#66869a',
- '#b49a55',
- '#977d9d',
- '#68867b'
+  "#59634a",
+  "#b47b59",
+  "#66869a",
+  "#b49a55",
+  "#977d9d",
+  "#68867b"
 ];
 
 const STYLES={
- '':'未設定',
- culture:'歴史・文化',
- food:'グルメ',
- nature:'自然・絶景',
- relax:'のんびり',
- active:'アクティブ',
- city:'街歩き'
+  "":"未設定",
+  culture:"歴史・文化",
+  food:"グルメ",
+  nature:"自然・絶景",
+  relax:"のんびり",
+  active:"アクティブ",
+  city:"街歩き"
 };
 
 const MODES={
- '':'未設定',
- walk:'徒歩',
- train:'電車',
- bus:'バス',
- car:'車',
- taxi:'タクシー',
- bike:'自転車',
- ferry:'船',
- other:'その他'
+  "":"未設定",
+  walk:"徒歩",
+  train:"電車",
+  bus:"バス",
+  car:"車",
+  taxi:"タクシー",
+  bike:"自転車",
+  ferry:"船",
+  other:"その他"
 };
 
 const TEMPLATES={
- scrapbook:'手描きスクラップ',
- magazine:'トラベルマガジン',
- minimal:'シンプル'
+  scrapbook:"手描きスクラップ",
+  magazine:"トラベルマガジン",
+  minimal:"シンプル"
 };
 
 const CATEGORIES={
- food:'食事',
- transport:'交通',
- ticket:'入場料',
- hotel:'宿泊',
- shopping:'買い物',
- other:'その他'
+  food:"食事",
+  transport:"交通",
+  ticket:"入場料",
+  hotel:"宿泊",
+  shopping:"買い物",
+  other:"その他"
 };
 
-const app=document.getElementById('app');
-const nav=document.getElementById('nav');
+const app=document.getElementById("app");
+const nav=document.getElementById("nav");
 
-let sb=null;
-let user=null;
-let page='home';
-let selected='';
-let tab='planning';
-
+let page="home";
+let selected="";
+let tab="planning";
 let trips=[];
-let publicTrips=[];
-let searchResults=[];
 let bookmarks=[];
-let savedTrips=[];
-
 let draft=null;
-let editingId='';
-let map=null;
-let busy=false;
-let authMode='login';
-
-let searchPage=0;
-let searchTotal=0;
+let editingId="";
 let searchStep=1;
-
+let searchResults=[];
 let search={
- q:'',
- days:'',
- people:'',
- style:'',
- status:'',
- sort:'newest'
+  q:"",
+  days:"",
+  people:"",
+  style:"",
+  status:""
 };
 
-let lookupResults=[];
-let lookupBusy=false;
-let lastLookup=0;
-let draftTimer=null;
-let photoCache=new Map();
-
-let exportRatio='4:5';
 let exportTrip=null;
+let exportRatio="4:5";
 let exportPages=[];
+let exportIndex=0;
 
-const SAMPLES=[{
- id:'sample-kyoto',
- sample:true,
- title:'京都、街歩きと喫茶の2日間',
- destination:'京都',
- description:'寺社と喫茶を巡る旅。',
- style:'culture',
- status:'completed',
- published:true,
- template:'scrapbook',
- people:1,
- trip_month:'',
- icon:'🍵',
- itinerary:{
-  schedule:[
-   {
-    name:'Day 1',
-    stops:[
-     {
-      name:'清水寺',
-      time:'09:30',
-      stayMinutes:90,
-      coords:[34.9949,135.785]
-     },
-     {
-      name:'祇園',
-      time:'11:25',
-      stayMinutes:90,
-      transport:'walk',
-      travelMinutes:25,
-      coords:[35.003,135.778]
-     },
-     {
-      name:'鴨川',
-      time:'13:10',
-      stayMinutes:60,
-      transport:'walk',
-      travelMinutes:15,
-      coords:[35.01,135.771]
-     }
-    ]
-   },
-   {
-    name:'Day 2',
-    stops:[
-     {
-      name:'嵐山',
-      time:'10:00',
-      stayMinutes:120,
-      coords:[35.0094,135.6668]
-     },
-     {
-      name:'竹林の小径',
-      time:'12:15',
-      stayMinutes:90,
-      transport:'walk',
-      travelMinutes:15,
-      coords:[35.017,135.671]
-     }
-    ]
-   }
-  ]
- }
-}];
-
-/* ==========================================
-   03. UTILITIES
-========================================== */
+/* ========================================
+   02. UTILITIES
+======================================== */
 
 function uid(){
- return 't'+Date.now().toString(36)+
- Math.random().toString(36).slice(2,9);
+  return "t"+Date.now().toString(36)+
+    Math.random().toString(36).slice(2,9);
 }
 
 function clone(x){
- return JSON.parse(JSON.stringify(x));
+  return JSON.parse(JSON.stringify(x));
 }
 
 function esc(x){
- return String(x??'').replace(
-  /[&<>"']/g,
-  c=>({
-   '&':'&amp;',
-   '<':'&lt;',
-   '>':'&gt;',
-   '"':'&quot;',
-   "'":'&#39;'
-  }[c])
- );
+  return String(x??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
 }
 
 function num(x){
- return x!=='' &&
- x!=null &&
- Number.isFinite(+x);
+  return x!==""&&x!=null&&Number.isFinite(+x);
 }
 
 function money(n){
- return Math.round(n).toLocaleString('ja-JP')+'円';
+  return Math.round(n||0).toLocaleString("ja-JP")+"円";
 }
 
 function schedule(t){
- return t?.itinerary?.schedule||[];
+  return t?.itinerary?.schedule||[];
 }
 
 function count(t){
- return schedule(t).reduce(
-  (n,d)=>n+(d.stops||[]).length,0
- );
+  return schedule(t).reduce(
+    (n,d)=>n+(d.stops||[]).length,0
+  );
 }
 
 function total(t){
- return schedule(t).reduce(
-  (n,d)=>n+(d.stops||[]).reduce(
-   (a,s)=>a+(num(s.cost)?+s.cost:0),0
-  ),0
- );
-}
-
-function own(t){
- return !!user&&t?.user_id===user.id;
+  return schedule(t).reduce(
+    (n,d)=>n+(d.stops||[]).reduce(
+      (a,s)=>a+(num(s.cost)?+s.cost:0),0
+    ),0
+  );
 }
 
 function find(id){
- return [
-  ...trips,
-  ...savedTrips,
-  ...publicTrips,
-  ...searchResults,
-  ...SAMPLES
- ].find(t=>t.id===id);
-}
-
-function fail(e){
- console.error(e);
- alert(e?.message||String(e));
-}
-
-function requireLogin(){
- if(user)return true;
- alert('ログインしてください。');
- go('account');
- return false;
-}
-
-function validCoords(c){
- return Array.isArray(c)&&
- c.length===2&&
- c.every(v=>Number.isFinite(+v))&&
- Math.abs(+c[0])<=90&&
- Math.abs(+c[1])<=180;
-}
-
-function safeURL(u){
- try{
-  const x=new URL(u,location.href);
-  return ['http:','https:'].includes(x.protocol)
-   ?x.href:'';
- }catch(e){
-  return '';
- }
-}
-
-function configured(){
- return SUPABASE_URL.startsWith('https://')&&
- SUPABASE_URL.includes('.supabase.co')&&
- (
-  SUPABASE_KEY.startsWith('sb_publishable_')||
-  SUPABASE_KEY.startsWith('eyJ')
- );
+  return [...trips,...SAMPLES].find(t=>t.id===id);
 }
 
 function photoArray(s){
- if(Array.isArray(s.photos)){
-  return s.photos.filter(
-   p=>p&&typeof p==='object'
-  );
- }
-
- if(s.photoPath){
-  return [{
-   id:s.photoId||uid(),
-   path:s.photoPath
-  }];
- }
-
- if(s.photo){
-  return [{
-   id:s.photoId||uid(),
-   url:s.photo
-  }];
- }
-
- return [];
+  if(Array.isArray(s.photos))return s.photos;
+  if(s.photo)return [{id:uid(),url:s.photo}];
+  return [];
 }
 
 function normalize(t){
- const x=clone(t);
+  const x=clone(t);
 
- if(!x.itinerary){
-  x.itinerary={schedule:x.schedule||[]};
- }
+  if(!x.itinerary){
+    x.itinerary={schedule:x.schedule||[]};
+  }
 
- if(!Array.isArray(x.itinerary.schedule)){
-  x.itinerary.schedule=[];
- }
+  if(!Array.isArray(x.itinerary.schedule)){
+    x.itinerary.schedule=[];
+  }
 
- x.template=TEMPLATES[x.template]
-  ?x.template:'scrapbook';
+  x.template=TEMPLATES[x.template]
+    ?x.template:"scrapbook";
 
- x.status=x.status==='completed'
-  ?'completed':'planning';
+  x.status=x.status==="completed"
+    ?"completed":"planning";
 
- x.people=Math.max(
-  1,Math.min(99,parseInt(x.people)||1)
- );
+  x.people=Math.max(1,parseInt(x.people)||1);
 
- x.itinerary.schedule=
- x.itinerary.schedule.map((d,i)=>({
-  name:d.name||'Day '+(i+1),
-  stops:(d.stops||[]).map(s=>({
-   ...s,
-   uid:s.uid||uid(),
-   name:s.name||'',
-   time:s.time||'09:00',
-   stayMinutes:s.stayMinutes??'',
-   travelMinutes:s.travelMinutes??'',
-   transport:s.transport||'',
-   comment:s.comment||'',
-   cost:s.cost??'',
-   costCategory:s.costCategory||'other',
-   photos:photoArray(s)
-  }))
- }));
+  x.itinerary.schedule=x.itinerary.schedule.map(
+    (d,i)=>({
+      name:d.name||"Day "+(i+1),
+      stops:(d.stops||[]).map(s=>({
+        ...s,
+        uid:s.uid||uid(),
+        name:s.name||"",
+        time:s.time||"09:00",
+        stayMinutes:s.stayMinutes??"",
+        travelMinutes:s.travelMinutes??"",
+        transport:s.transport||"",
+        comment:s.comment||"",
+        cost:s.cost??"",
+        costCategory:s.costCategory||"other",
+        photos:photoArray(s)
+      }))
+    })
+  );
 
- return x;
+  return x;
 }
 
 function firstPhoto(t){
- for(const d of schedule(t)){
-  for(const s of d.stops||[]){
-   const p=photoArray(s);
-   if(p.length)return p[0];
+  for(const d of schedule(t)){
+    for(const s of d.stops||[]){
+      const p=photoArray(s);
+      if(p.length)return p[0];
+    }
   }
- }
- return null;
+  return null;
 }
 
-function timeMin(t){
- if(!/^\d\d:\d\d$/.test(t||''))return null;
-
- const [h,m]=t.split(':').map(Number);
-
- return h<24&&m<60?h*60+m:null;
-}
-
-function timeText(n){
- return n>=0&&n<1440
-  ?String(Math.floor(n/60)).padStart(2,'0')+
-   ':'+String(n%60).padStart(2,'0')
-  :null;
-}
-
-function slug(s){
- return String(s||'trip')
- .replace(/[^\w-]/g,'_')
- .slice(0,50);
-}
-
-/* ==========================================
-   04. PHOTO ACCESS
-========================================== */
-
-async function photoURL(p){
- if(!p)return '';
-
- if(p.path){
-  const cached=photoCache.get(p.path);
-
-  if(cached&&cached.expires>Date.now()){
-   return cached.url;
-  }
-
-  if(!sb)return '';
-
-  const {data,error}=await sb.storage
-  .from(BUCKET)
-  .createSignedUrl(p.path,3600);
-
-  if(error){
-   console.warn(error.message);
-   return '';
-  }
-
-  photoCache.set(p.path,{
-   url:data.signedUrl,
-   expires:Date.now()+3500000
-  });
-
-  return data.signedUrl;
- }
-
- return safeURL(p.url);
+function photoURL(p){
+  return p?.url||"";
 }
 
 function photoHTML(p){
- if(!p)return '';
-
- if(p.path){
-  return `<img data-private="${esc(p.path)}"
-   alt="旅の写真">`;
- }
-
- const url=safeURL(p.url);
-
- return url
-  ?`<img src="${esc(url)}" alt="旅の写真">`
-  :'';
-}
-
-async function decoratePhotos(){
- const nodes=[
-  ...document.querySelectorAll('[data-private]')
- ];
-
- await Promise.all(nodes.map(async el=>{
-  const src=await photoURL({
-   path:el.dataset.private
-  });
-
-  if(src&&el.isConnected){
-   el.src=src;
-  }
- }));
+  const url=photoURL(p);
+  return url?`<img src="${esc(url)}" alt="旅の写真">`:"";
 }
 
 function photoGrid(s){
- const photos=photoArray(s);
-
- if(!photos.length)return '';
-
- return `<div class="photo-grid">
- ${photos.map(photoHTML).join('')}
- </div>`;
-}
-
-/* ==========================================
-   05. INITIALIZATION
-========================================== */
-
-async function initialize(){
- if(!configured()){
-  app.innerHTML=`
-  <div class="warn">
-   <h2>Supabase設定が必要です</h2>
-   接続情報を確認してください。
+  const photos=photoArray(s);
+  if(!photos.length)return "";
+  return `<div class="photo-grid">
+    ${photos.map(photoHTML).join("")}
   </div>`;
-  return;
- }
-
- if(!window.supabase){
-  app.innerHTML=`
-  <div class="warn">
-   Supabaseライブラリを読み込めませんでした。
-  </div>`;
-  return;
- }
-
- try{
-  sb=window.supabase.createClient(
-   SUPABASE_URL,
-   SUPABASE_KEY
-  );
-
-  const {data,error}=await sb.auth.getUser();
-
-  if(error){
-   console.warn(error.message);
-  }
-
-  user=data?.user||null;
-
-  sb.auth.onAuthStateChange(
-   (event,session)=>{
-    const next=session?.user||null;
-
-    if(user?.id!==next?.id){
-     user=next;
-
-     setTimeout(async()=>{
-      await loadData();
-      await searchCloud();
-      go('home');
-     },0);
-    }
-   }
-  );
-
-  await loadData();
-  await searchCloud();
-  go('home');
-
- }catch(e){
-  console.error(e);
-
-  app.innerHTML=`
-  <div class="warn">
-   <h2>接続エラー</h2>
-   <p>${esc(e.message)}</p>
-  </div>`;
- }
 }
 
-/* ==========================================
-   06. CLOUD DATA
-========================================== */
-
-async function loadData(){
- if(!sb)return;
-
- try{
-  if(user){
-   const r=await sb.from('trips')
-   .select('*')
-   .eq('user_id',user.id)
-   .order('updated_at',{ascending:false})
-   .limit(500);
-
-   if(r.error)throw r.error;
-
-   trips=(r.data||[]).map(normalize);
-
-   const b=await sb.from('bookmarks')
-   .select('trip_id')
-   .eq('user_id',user.id);
-
-   if(b.error)throw b.error;
-
-   bookmarks=(b.data||[]).map(x=>x.trip_id);
-
-   if(bookmarks.length){
-    const saved=await sb.from('trips')
-    .select('*')
-    .in('id',bookmarks.slice(0,500));
-
-    if(saved.error)throw saved.error;
-
-    savedTrips=(saved.data||[]).map(normalize);
-   }else{
-    savedTrips=[];
-   }
-
-  }else{
-   trips=[];
-   bookmarks=[];
-   savedTrips=[];
-  }
-
-  const r=await sb.from('trips')
-  .select('*')
-  .eq('published',true)
-  .order('updated_at',{ascending:false})
-  .limit(12);
-
-  if(r.error)throw r.error;
-
-  publicTrips=(r.data||[]).map(normalize);
-
- }catch(e){
-  fail(e);
- }
+function options(obj,value){
+  return Object.entries(obj).map(([k,v])=>
+    `<option value="${esc(k)}"
+      ${String(value)===k?"selected":""}>
+      ${esc(v)}
+    </option>`
+  ).join("");
 }
 
-async function searchCloud(){
- if(!sb)return;
-
- try{
-  let q=sb.from('trips')
-  .select('*',{count:'exact'})
-  .eq('published',true);
-
-  if(search.q.trim()){
-   const term=search.q.trim()
-   .replace(/[%_,().]/g,' ')
-   .slice(0,80);
-
-   q=q.or(
-    `title.ilike.%${term}%,destination.ilike.%${term}%`
-   );
-  }
-
-  if(search.days){
-   q=q.eq('days',+search.days);
-  }
-
-  if(search.people){
-   q=q.eq('people',+search.people);
-  }
-
-  if(search.style){
-   q=q.eq('style',search.style);
-  }
-
-  if(search.status){
-   q=q.eq('status',search.status);
-  }
-
-  q=q.order('updated_at',{
-   ascending:search.sort==='oldest'
-  });
-
-  const start=searchPage*20;
-
-  const r=await q.range(start,start+19);
-
-  if(r.error)throw r.error;
-
-  searchResults=(r.data||[]).map(normalize);
-  searchTotal=r.count||0;
-
- }catch(e){
-  console.error(e);
-  searchResults=[];
-  searchTotal=0;
-
-  alert('検索に失敗しました：'+e.message);
- }
+function timeMin(t){
+  if(!/^\d\d:\d\d$/.test(t||""))return null;
+  const [h,m]=t.split(":").map(Number);
+  return h<24&&m<60?h*60+m:null;
 }
 
-async function refresh(){
- await loadData();
- await searchCloud();
- render();
+function timeText(n){
+  if(n<0||n>=1440)return "";
+  return String(Math.floor(n/60)).padStart(2,"0")+
+    ":"+String(n%60).padStart(2,"0");
 }
 
-/* ==========================================
-   07. AUTHENTICATION
-========================================== */
-
-function renderAccount(){
- if(user){
-  app.innerHTML=`
-  <div class="eyebrow">YOUR ACCOUNT</div>
-  <h2>アカウント</h2>
-
-  <div class="panel">
-   <p class="ok">ログイン中</p>
-   <p>${esc(user.email)}</p>
-
-   <button class="btn alt"
-    data-a="logout">
-    ログアウト
-   </button>
-  </div>
-
-  <button class="btn alt"
-   data-a="page"
-   data-id="migration">
-   旧データの移行
-  </button>`;
-  return;
- }
-
- app.innerHTML=`
- <div class="eyebrow">WELCOME TO TUMUGOU</div>
-
- <h2>
- ${authMode==='signup'?'新規登録':'ログイン'}
- </h2>
-
- <div class="panel">
-  <label>メールアドレス
-   <input id="auth-email"
-    type="email"
-    autocomplete="email">
-  </label>
-
-  <label>パスワード
-   <input id="auth-password"
-    type="password"
-    autocomplete="current-password">
-  </label>
-
-  <button class="btn" data-a="auth-submit">
-   ${authMode==='signup'?'新規登録':'ログイン'}
-  </button>
-
-  <button class="btn alt" data-a="auth-toggle">
-   ${authMode==='signup'
-    ?'ログインはこちら'
-    :'初めての方はこちら'}
-  </button>
- </div>`;
+function validCoords(c){
+  return Array.isArray(c)&&
+    c.length===2&&
+    c.every(v=>Number.isFinite(+v))&&
+    Math.abs(+c[0])<=90&&
+    Math.abs(+c[1])<=180;
 }
 
-async function submitAuth(){
- if(busy)return;
+/* ========================================
+   03. LOCAL STORAGE
+======================================== */
 
- const email=document.getElementById(
-  'auth-email'
- )?.value.trim();
-
- const password=document.getElementById(
-  'auth-password'
- )?.value||'';
-
- if(!email||password.length<6){
-  return alert(
-   'メールアドレスと6文字以上のパスワードを入力してください。'
-  );
- }
-
- busy=true;
-
- try{
-  const r=authMode==='signup'
-   ?await sb.auth.signUp({
-    email,
-    password,
-    options:{
-     emailRedirectTo:
-     location.origin+location.pathname
-    }
-   })
-   :await sb.auth.signInWithPassword({
-    email,password
-   });
-
-  if(r.error)throw r.error;
-
-  if(authMode==='signup'&&!r.data.session){
-   alert('確認メールを送信しました。');
-   authMode='login';
-   renderAccount();
-  }else{
-   user=r.data.user;
-
-   await loadData();
-   await searchCloud();
-
-   go('home');
+function save(){
+  try{
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        version:VERSION,
+        trips,
+        bookmarks,
+        updatedAt:new Date().toISOString()
+      })
+    );
+    return true;
+  }catch(e){
+    console.error(e);
+    alert("保存に失敗しました。写真が多すぎる可能性があります。バックアップを取ってください。");
+    return false;
   }
-
- }catch(e){
-  fail(e);
- }finally{
-  busy=false;
- }
 }
 
-async function logout(){
- if(!confirm('ログアウトしますか？'))return;
+function load(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return;
+    const data=JSON.parse(raw);
 
- const r=await sb.auth.signOut();
+    trips=Array.isArray(data.trips)
+      ?data.trips.map(normalize):[];
 
- if(r.error)return fail(r.error);
-
- user=null;
- trips=[];
- bookmarks=[];
- savedTrips=[];
- draft=null;
- editingId='';
-
- await loadData();
- go('home');
+    bookmarks=Array.isArray(data.bookmarks)
+      ?data.bookmarks:[];
+  }catch(e){
+    console.error(e);
+    alert("保存データを読み込めませんでした。");
+  }
 }
 
-/* ==========================================
-   08. NAVIGATION
-========================================== */
+/* ========================================
+   04. SAMPLE
+======================================== */
+
+const SAMPLES=[normalize({
+  id:"sample-kyoto",
+  sample:true,
+  title:"京都、街歩きと喫茶の2日間",
+  destination:"京都",
+  description:"寺社と喫茶を巡る、ゆったりした京都旅行。",
+  style:"culture",
+  status:"completed",
+  published:true,
+  template:"scrapbook",
+  people:1,
+  trip_month:"2026-04",
+  icon:"🍵",
+  itinerary:{
+    schedule:[
+      {
+        name:"京都東山と祇園",
+        stops:[
+          {
+            name:"清水寺",
+            time:"09:30",
+            stayMinutes:90,
+            coords:[34.9949,135.785]
+          },
+          {
+            name:"祇園",
+            time:"11:25",
+            stayMinutes:90,
+            transport:"walk",
+            travelMinutes:25,
+            coords:[35.003,135.778]
+          },
+          {
+            name:"鴨川",
+            time:"13:10",
+            stayMinutes:60,
+            transport:"walk",
+            travelMinutes:15,
+            coords:[35.01,135.771]
+          }
+        ]
+      },
+      {
+        name:"嵐山を散策",
+        stops:[
+          {
+            name:"嵐山",
+            time:"10:00",
+            stayMinutes:120,
+            coords:[35.0094,135.6668]
+          },
+          {
+            name:"竹林の小径",
+            time:"12:15",
+            stayMinutes:90,
+            transport:"walk",
+            travelMinutes:15,
+            coords:[35.017,135.671]
+          }
+        ]
+      }
+    ]
+  }
+})];
+
+/* ========================================
+   05. NAVIGATION
+======================================== */
 
 function menu(){
- const items=[
-  ['home','HOME','⌂'],
-  ['search','SEARCH','⌕'],
-  ['my','MY TRIP','♡'],
-  ['post','POST','＋'],
-  ['account','ACCOUNT','○']
- ];
+  const items=[
+    ["home","HOME","⌂"],
+    ["search","SEARCH","⌕"],
+    ["my","MY TRIP","♡"],
+    ["post","POST","＋"],
+    ["settings","SETTINGS","⚙"]
+  ];
 
- nav.innerHTML=items.map(
-  ([id,name,icon])=>`
-  <button class="${page===id?'active':''}"
-   data-a="page"
-   data-id="${id}">
-   ${icon}<br>${name}
-  </button>`
- ).join('');
+  nav.innerHTML=items.map(([id,name,icon])=>`
+    <button class="${page===id?"active":""}"
+      data-a="page" data-id="${id}">
+      ${icon}<br>${name}
+    </button>
+  `).join("");
 }
 
-function go(p,id=''){
- if(map){
-  map.remove();
-  map=null;
- }
-
- page=p;
- selected=id;
-
- window.scrollTo(0,0);
- render();
-
- if(p==='detail'){
-  setTimeout(()=>{
-   if(page==='detail'){
-    drawRealMap(find(id));
-   }
-  },100);
- }
+function go(p,id=""){
+  page=p;
+  selected=id;
+  window.scrollTo(0,0);
+  render();
 }
 
 function render(){
- menu();
+  menu();
 
- const views={
-  home:renderHome,
-  search:renderSearch,
-  my:renderMy,
-  post:renderPost,
-  account:renderAccount,
-  detail:renderDetail,
-  edit:renderEditor,
-  export:renderExport,
-  migration:renderMigration
- };
+  const views={
+    home:renderHome,
+    search:renderSearch,
+    my:renderMy,
+    post:renderPost,
+    settings:renderSettings,
+    detail:renderDetail,
+    edit:renderEditor,
+    export:renderExport
+  };
 
- views[page]?.();
-
- decoratePhotos();
+  if(views[page])views[page]();
 }
 
-/* ==========================================
-   09. HOME / CARDS
-========================================== */
+/* ========================================
+   06. CARDS
+======================================== */
 
 function cover(t){
- const p=firstPhoto(t);
+  const p=firstPhoto(t);
 
- return `<div class="cover">
- ${p?photoHTML(p):esc(t.icon||'🧳')}
- </div>`;
+  return `<div class="cover">
+    ${p?photoHTML(p):esc(t.icon||"🧳")}
+  </div>`;
 }
 
 function card(t){
- return `
- <article class="card">
-  ${cover(t)}
+  return `
+    <article class="card">
+      ${cover(t)}
 
-  <div>
-   <span class="tag">
-    ${esc(t.destination||'目的地未設定')}
-   </span>
+      <div>
+        <span class="tag">
+          ${esc(t.destination||"目的地未設定")}
+        </span>
+        <span class="tag">
+          ${schedule(t).length}日間
+        </span>
+        <span class="tag">
+          ${count(t)}スポット
+        </span>
+        <span class="tag">
+          ${t.status==="completed"
+            ?"実際に行った旅":"旅行計画"}
+        </span>
+      </div>
 
-   <span class="tag">
-    ${schedule(t).length}日間
-   </span>
+      <h3>${esc(t.title)}</h3>
 
-   <span class="tag">
-    ${count(t)}スポット
-   </span>
+      <p class="muted">
+        ${esc(t.description||"")}
+      </p>
 
-   <span class="tag">
-    ${t.status==='completed'
-     ?'実際に行った旅'
-     :'旅行計画'}
-   </span>
-  </div>
+      <button class="btn"
+        data-a="detail" data-id="${esc(t.id)}">
+        旅程を見る →
+      </button>
 
-  <h3>${esc(t.title)}</h3>
-
-  <p class="muted">
-   ${esc(t.description||'')}
-  </p>
-
-  <button class="btn"
-   data-a="detail"
-   data-id="${esc(t.id)}">
-   旅程を見る →
-  </button>
-
-  <button class="btn alt"
-   data-a="copy"
-   data-id="${esc(t.id)}">
-   コピーして編集
-  </button>
- </article>`;
+      <button class="btn alt"
+        data-a="copy" data-id="${esc(t.id)}">
+        コピーして編集
+      </button>
+    </article>
+  `;
 }
 
 function stats(){
- const values={
-  PLANNING:trips.filter(
-   t=>t.status==='planning'
-  ).length,
+  const values={
+    PLANNING:trips.filter(
+      t=>t.status==="planning"
+    ).length,
+    COMPLETED:trips.filter(
+      t=>t.status==="completed"
+    ).length,
+    POST:trips.filter(
+      t=>t.published
+    ).length,
+    SAVED:bookmarks.length
+  };
 
-  COMPLETED:trips.filter(
-   t=>t.status==='completed'
-  ).length,
-
-  POST:trips.filter(
-   t=>t.published
-  ).length,
-
-  SAVED:bookmarks.length
- };
-
- return `<div class="stats">
- ${Object.entries(values).map(
-  ([k,n])=>`
-  <div class="stat">
-   <b>${n}</b>
-   <small>${k}</small>
-  </div>`
- ).join('')}
- </div>`;
+  return `<div class="stats">
+    ${Object.entries(values).map(([k,n])=>`
+      <div class="stat">
+        <b>${n}</b>
+        <small>${k}</small>
+      </div>
+    `).join("")}
+  </div>`;
 }
+
+/* ========================================
+   07. HOME
+======================================== */
 
 function renderHome(){
- const saved=readDraft();
+  app.innerHTML=`
+    <div class="eyebrow">
+      YOUR JOURNEY, OUR STORY
+    </div>
 
- app.innerHTML=`
- <div class="eyebrow">
-  YOUR JOURNEY, OUR STORY
- </div>
+    <h1>
+      誰かの旅から、<br>
+      次の旅がはじまる。
+    </h1>
 
- <h1>
-  誰かの旅から、<br>
-  次の旅がはじまる。
- </h1>
+    <p>
+      実際の旅程を参考に、<br>
+      自分だけの旅を紡いでいこう。
+    </p>
 
- <p>
-  実際の旅程を参考に、
-  自分だけの旅を紡いでいこう。
- </p>
+    <button class="btn" data-a="new">
+      ＋ 新しい旅を計画
+    </button>
 
- <button class="btn" data-a="new">
-  ＋ 新しい旅を計画
- </button>
+    <button class="btn alt"
+      data-a="page" data-id="search">
+      旅程を探す
+    </button>
 
- <button class="btn alt"
-  data-a="page"
-  data-id="search">
-  旅程を探す
- </button>
+    <div class="notice">
+      <b>LOCAL STUDIO ver.5.0</b><br>
+      現在はログイン不要の開発モードです。
+      旅程はこのブラウザ内に保存されます。
+      他の端末とは同期されません。
+    </div>
 
- ${saved&&user&&saved.userId===user.id?`
- <div class="notice">
-  編集中の旅程があります。
+    ${stats()}
 
-  <button class="btn" data-a="resume">
-   下書きを再開
-  </button>
+    <h2>あなたの旅</h2>
 
-  <button class="btn danger"
-   data-a="discard">
-   破棄
-  </button>
- </div>`:''}
+    ${trips.slice(0,4).map(card).join("")
+      ||'<div class="empty">まだ旅程がありません。</div>'}
 
- ${user?`
- <p class="ok">
-  クラウド接続中：${esc(user.email)}
- </p>`:`
- <div class="notice">
-  ログインすると旅程を保存できます。
+    <h2>旅のインスピレーション</h2>
 
-  <button class="btn"
-   data-a="page"
-   data-id="account">
-   ログイン・新規登録
-  </button>
- </div>`}
-
- <h2>みんなの旅</h2>
-
- ${publicTrips.slice(0,6).map(card).join('')
- ||'<p>まだ公開旅程がありません。</p>'}
-
- <h2>サンプル旅程</h2>
-
- ${SAMPLES.map(card).join('')}`;
+    ${SAMPLES.map(card).join("")}
+  `;
 }
 
-/* ==========================================
-   10. STEP SEARCH
-========================================== */
+/* ========================================
+   08. SEARCH
+======================================== */
 
 function renderSearch(){
- app.innerHTML=`
- <div class="eyebrow">
-  FIND YOUR NEXT TRIP
- </div>
+  app.innerHTML=`
+    <div class="eyebrow">
+      FIND YOUR NEXT TRIP
+    </div>
 
- <h2>旅程を探す</h2>
+    <h2>旅程を探す</h2>
 
- <div class="panel">
+    <div class="panel">
 
-  <div class="search-step
-   ${searchStep===1?'':'hidden'}">
+      <div class="search-step">
 
-   <h3>01｜目的地</h3>
+        ${searchStep===1?`
+          <h3>01｜目的地</h3>
 
-   <label>
-    行きたい場所・キーワード
-    <input id="search-q"
-     value="${esc(search.q)}"
-     placeholder="例：京都、イタリア">
-   </label>
+          <label>行きたい場所
+            <input id="search-q"
+              value="${esc(search.q)}"
+              placeholder="例：京都、イタリア">
+          </label>
 
-   <button class="btn"
-    data-a="search-step"
-    data-id="2">
-    次へ →
-   </button>
-  </div>
+          <button class="btn"
+            data-a="search-step" data-id="2">
+            次へ →
+          </button>
+        `:""}
 
-  <div class="search-step
-   ${searchStep===2?'':'hidden'}">
+        ${searchStep===2?`
+          <h3>02｜旅行日数・同行者</h3>
 
-   <h3>02｜旅行日数・人数</h3>
+          <label>旅行日数
+            <select id="search-days">
+              <option value="">すべて</option>
+              ${Array.from({length:14},(_,i)=>i+1)
+                .map(n=>`
+                  <option value="${n}"
+                    ${search.days===String(n)
+                      ?"selected":""}>
+                    ${n}日間
+                  </option>
+                `).join("")}
+            </select>
+          </label>
 
-   <label>旅行日数
-    <select id="search-days">
-     <option value="">すべて</option>
+          <label>人数
+            <select id="search-people">
+              <option value="">すべて</option>
+              ${Array.from({length:10},(_,i)=>i+1)
+                .map(n=>`
+                  <option value="${n}"
+                    ${search.people===String(n)
+                      ?"selected":""}>
+                    ${n}人
+                  </option>
+                `).join("")}
+            </select>
+          </label>
 
-     ${Array.from(
-      {length:14},(_,i)=>i+1
-     ).map(n=>`
-      <option value="${n}"
-       ${search.days===String(n)
-        ?'selected':''}>
-       ${n}日間
-      </option>
-     `).join('')}
-    </select>
-   </label>
+          <button class="btn alt"
+            data-a="search-step" data-id="1">
+            ← 戻る
+          </button>
 
-   <label>同行人数
-    <select id="search-people">
-     <option value="">すべて</option>
+          <button class="btn"
+            data-a="search-step" data-id="3">
+            次へ →
+          </button>
+        `:""}
 
-     ${Array.from(
-      {length:10},(_,i)=>i+1
-     ).map(n=>`
-      <option value="${n}"
-       ${search.people===String(n)
-        ?'selected':''}>
-       ${n}人
-      </option>
-     `).join('')}
-    </select>
-   </label>
+        ${searchStep===3?`
+          <h3>03｜旅行スタイル</h3>
 
-   <button class="btn alt"
-    data-a="search-step"
-    data-id="1">
-    ← 戻る
-   </button>
+          <label>旅行スタイル
+            <select id="search-style">
+              ${options(STYLES,search.style)}
+            </select>
+          </label>
 
-   <button class="btn"
-    data-a="search-step"
-    data-id="3">
-    次へ →
-   </button>
-  </div>
+          <label>旅程の種類
+            <select id="search-status">
+              <option value="">すべて</option>
+              <option value="completed"
+                ${search.status==="completed"
+                  ?"selected":""}>
+                実際に行った旅
+              </option>
+              <option value="planning"
+                ${search.status==="planning"
+                  ?"selected":""}>
+                旅行計画
+              </option>
+            </select>
+          </label>
 
-  <div class="search-step
-   ${searchStep===3?'':'hidden'}">
+          <button class="btn alt"
+            data-a="search-step" data-id="2">
+            ← 戻る
+          </button>
 
-   <h3>03｜旅行スタイル</h3>
+          <button class="btn"
+            data-a="search-run">
+            この条件で検索
+          </button>
+        `:""}
 
-   <label>スタイル
-    <select id="search-style">
-     ${Object.entries(STYLES).map(
-      ([k,v])=>`
-      <option value="${k}"
-       ${search.style===k?'selected':''}>
-       ${esc(v)}
-      </option>`
-     ).join('')}
-    </select>
-   </label>
+      </div>
 
-   <label>旅程の種類
-    <select id="search-status">
-     <option value="">すべて</option>
-     <option value="completed"
-      ${search.status==='completed'
-       ?'selected':''}>
-      実際に行った旅
-     </option>
-     <option value="planning"
-      ${search.status==='planning'
-       ?'selected':''}>
-      旅行計画
-     </option>
-    </select>
-   </label>
+      <button class="btn alt"
+        data-a="search-reset">
+        条件をリセット
+      </button>
+    </div>
 
-   <label>並び順
-    <select id="search-sort">
-     <option value="newest"
-      ${search.sort==='newest'
-       ?'selected':''}>
-      新しい順
-     </option>
+    <div id="search-results"></div>
+  `;
 
-     <option value="oldest"
-      ${search.sort==='oldest'
-       ?'selected':''}>
-      古い順
-     </option>
-    </select>
-   </label>
-
-   <button class="btn alt"
-    data-a="search-step"
-    data-id="2">
-    ← 戻る
-   </button>
-
-   <button class="btn"
-    data-a="search-run">
-    この条件で検索
-   </button>
-  </div>
-
-  <button class="btn alt"
-   data-a="search-reset">
-   条件をリセット
-  </button>
-
- </div>
-
- <div id="search-results"></div>`;
-
- renderResults();
+  renderResults();
 }
 
-function rememberSearchFields(){
- const fields={
-  'search-q':'q',
-  'search-days':'days',
-  'search-people':'people',
-  'search-style':'style',
-  'search-status':'status',
-  'search-sort':'sort'
- };
+function rememberSearch(){
+  const fields={
+    "search-q":"q",
+    "search-days":"days",
+    "search-people":"people",
+    "search-style":"style",
+    "search-status":"status"
+  };
 
- for(const [id,key] of Object.entries(fields)){
-  const el=document.getElementById(id);
-
-  if(el){
-   search[key]=el.value;
+  for(const [id,key] of Object.entries(fields)){
+    const el=document.getElementById(id);
+    if(el)search[key]=el.value;
   }
- }
+}
+
+function runSearch(){
+  rememberSearch();
+
+  searchResults=[...trips,...SAMPLES].filter(t=>{
+    const q=search.q.toLowerCase();
+
+    if(q&&![
+      t.title,t.destination,t.description
+    ].join(" ").toLowerCase().includes(q)){
+      return false;
+    }
+
+    if(search.days&&
+      schedule(t).length!==+search.days){
+      return false;
+    }
+
+    if(search.people&&
+      +t.people!==+search.people){
+      return false;
+    }
+
+    if(search.style&&t.style!==search.style){
+      return false;
+    }
+
+    if(search.status&&t.status!==search.status){
+      return false;
+    }
+
+    return true;
+  });
+
+  renderResults();
 }
 
 function renderResults(){
- const el=document.getElementById(
-  'search-results'
- );
+  const el=document.getElementById("search-results");
+  if(!el)return;
 
- if(!el)return;
+  el.innerHTML=`
+    <h3>検索結果：${searchResults.length}件</h3>
 
- el.innerHTML=`
- <h3>検索結果：${searchTotal}件</h3>
-
- ${searchResults.map(card).join('')
- ||'<p>該当する旅程はありません。</p>'}
-
- <button class="btn alt"
-  data-a="search-prev"
-  ${searchPage===0?'disabled':''}>
-  前の20件
- </button>
-
- <button class="btn alt"
-  data-a="search-next"
-  ${(searchPage+1)*20>=searchTotal
-   ?'disabled':''}>
-  次の20件
- </button>`;
-
- decoratePhotos();
+    ${searchResults.map(card).join("")
+      ||'<p>該当する旅程はありません。</p>'}
+  `;
 }
 
-async function runSearch(){
- rememberSearchFields();
- searchPage=0;
-
- await searchCloud();
- renderResults();
-}
-
-/* ==========================================
-   11. MY TRIP / POST
-========================================== */
+/* ========================================
+   09. MY TRIP
+======================================== */
 
 function renderMy(){
- if(!user){
+  const list=tab==="saved"
+    ?bookmarks.map(find).filter(Boolean)
+    :tab==="post"
+      ?trips.filter(t=>t.published)
+      :trips.filter(t=>t.status===tab);
+
   app.innerHTML=`
-  <h2>MY TRIP</h2>
-  <p>ログインしてください。</p>
+    <div class="eyebrow">MY JOURNEYS</div>
 
-  <button class="btn"
-   data-a="page"
-   data-id="account">
-   ログイン
-  </button>`;
-  return;
- }
+    <h2>MY TRIP</h2>
 
- const list=tab==='saved'
-  ?bookmarks.map(find).filter(Boolean)
-  :tab==='post'
-   ?trips.filter(t=>t.published)
-   :trips.filter(t=>t.status===tab);
+    ${stats()}
 
- app.innerHTML=`
- <div class="eyebrow">MY JOURNEYS</div>
+    <button class="btn" data-a="new">
+      ＋ 旅程を作成
+    </button>
 
- <h2>MY TRIP</h2>
+    <div class="tabs">
+      ${["planning","completed","post","saved"]
+        .map(k=>`
+          <button class="btn ${tab===k?"":"alt"}"
+            data-a="tab" data-id="${k}">
+            ${k.toUpperCase()}
+          </button>
+        `).join("")}
+    </div>
 
- ${stats()}
+    ${list.map(t=>`
+      ${card(t)}
 
- <button class="btn" data-a="new">
-  ＋ 旅程を作成
- </button>
+      ${!t.sample?`
+        <div class="actions">
+          <button class="btn alt"
+            data-a="edit" data-id="${esc(t.id)}">
+            編集
+          </button>
 
- <button class="btn alt" data-a="refresh">
-  更新
- </button>
+          <button class="btn alt"
+            data-a="export" data-id="${esc(t.id)}">
+            画像出力
+          </button>
 
- <div class="tabs">
- ${['planning','completed','post','saved'].map(
-  k=>`
-  <button class="btn
-   ${tab===k?'':'alt'}"
-   data-a="tab"
-   data-id="${k}">
-   ${k.toUpperCase()}
-  </button>`
- ).join('')}
- </div>
+          <button class="btn alt"
+            data-a="status" data-id="${esc(t.id)}">
+            ${t.status==="completed"
+              ?"PLANNINGに戻す":"旅行を完了"}
+          </button>
 
- ${list.map(t=>`
-  ${card(t)}
+          <button class="btn alt"
+            data-a="publish" data-id="${esc(t.id)}">
+            ${t.published
+              ?"POSTから外す":"POSTに追加"}
+          </button>
 
-  ${own(t)?`
-  <div class="actions">
-
-   <button class="btn alt"
-    data-a="edit"
-    data-id="${esc(t.id)}">
-    編集
-   </button>
-
-   <button class="btn alt"
-    data-a="export"
-    data-id="${esc(t.id)}">
-    画像出力
-   </button>
-
-   <button class="btn alt"
-    data-a="status"
-    data-id="${esc(t.id)}">
-    ${t.status==='completed'
-     ?'PLANNINGに戻す'
-     :'旅行を完了'}
-   </button>
-
-   <button class="btn alt"
-    data-a="publish"
-    data-id="${esc(t.id)}">
-    ${t.published
-     ?'公開取り消し'
-     :'POSTに公開'}
-   </button>
-
-   <button class="btn danger"
-    data-a="delete"
-    data-id="${esc(t.id)}">
-    削除
-   </button>
-
-  </div>`:''}
- `).join('')||'<p>旅程がありません。</p>'}`;
+          <button class="btn danger"
+            data-a="delete" data-id="${esc(t.id)}">
+            削除
+          </button>
+        </div>
+      `:""}
+    `).join("")||`
+      <div class="empty">
+        旅程がありません。
+      </div>
+    `}
+  `;
 }
+
+/* ========================================
+   10. POST
+======================================== */
 
 function renderPost(){
- if(!user){
   app.innerHTML=`
-  <h2>POST</h2>
-  <p>ログインしてください。</p>`;
-  return;
- }
+    <div class="eyebrow">
+      SHARE YOUR JOURNEY
+    </div>
 
- app.innerHTML=`
- <div class="eyebrow">
-  SHARE YOUR JOURNEY
- </div>
+    <h2>あなたの旅を紡ぐ。</h2>
 
- <h2>あなたの旅を紡ぐ。</h2>
+    <p>
+      旅の記録を整理して、
+      次の誰かの旅につなげよう。
+    </p>
 
- <button class="btn"
-  data-a="new-publish">
-  ＋ 新規作成して投稿
- </button>
+    <div class="notice">
+      現在のPOSTはローカル管理です。
+      他のユーザーには公開されません。
+    </div>
 
- <h3>既存の旅程から投稿</h3>
+    <button class="btn"
+      data-a="new-publish">
+      ＋ 新規作成して投稿
+    </button>
 
- ${trips.map(t=>`
-  <div class="card">
-   <h3>${esc(t.title)}</h3>
+    <h3>既存の旅程から投稿</h3>
 
-   <span class="tag">
-    ${t.published?'公開中':'非公開'}
-   </span>
+    ${trips.map(t=>`
+      <div class="card">
+        <h3>${esc(t.title)}</h3>
 
-   <button class="btn alt"
-    data-a="edit"
-    data-id="${esc(t.id)}">
-    編集
-   </button>
+        <span class="tag">
+          ${t.published?"POST登録済み":"未登録"}
+        </span>
 
-   <button class="btn alt"
-    data-a="export"
-    data-id="${esc(t.id)}">
-    Instagram画像
-   </button>
+        <div class="actions">
+          <button class="btn alt"
+            data-a="edit" data-id="${esc(t.id)}">
+            編集
+          </button>
 
-   <button class="btn"
-    data-a="publish"
-    data-id="${esc(t.id)}">
-    ${t.published
-     ?'公開取り消し'
-     :'公開する'}
-   </button>
-  </div>
- `).join('')||'<p>旅程がありません。</p>'}`;
+          <button class="btn alt"
+            data-a="export" data-id="${esc(t.id)}">
+            Instagram画像
+          </button>
+
+          <button class="btn"
+            data-a="publish" data-id="${esc(t.id)}">
+            ${t.published?"POST解除":"POSTに追加"}
+          </button>
+        </div>
+      </div>
+    `).join("")||`
+      <div class="empty">
+        投稿する旅程がありません。
+      </div>
+    `}
+  `;
 }
 
-/* ==========================================
-   12. ILLUSTRATED MAP
-========================================== */
+/* ========================================
+   11. ROUTE MAP
+======================================== */
 
 function routePoints(t){
- const points=[];
+  const points=[];
 
- schedule(t).forEach((d,di)=>{
-  (d.stops||[]).forEach((s,si)=>{
-   if(validCoords(s.coords)){
-    points.push({
-     lat:+s.coords[0],
-     lng:+s.coords[1],
-     name:s.name,
-     di,
-     si,
-     travel:s.travelMinutes
+  schedule(t).forEach((d,di)=>{
+    (d.stops||[]).forEach((s,si)=>{
+      if(validCoords(s.coords)){
+        points.push({
+          lat:+s.coords[0],
+          lng:+s.coords[1],
+          name:s.name,
+          di,si,
+          travel:s.travelMinutes
+        });
+      }
     });
-   }
   });
- });
 
- return points;
+  return points;
 }
 
 function projectPoints(points,w,h){
- if(!points.length)return [];
+  if(!points.length)return [];
 
- const minLat=Math.min(
-  ...points.map(p=>p.lat)
- );
- const maxLat=Math.max(
-  ...points.map(p=>p.lat)
- );
- const minLng=Math.min(
-  ...points.map(p=>p.lng)
- );
- const maxLng=Math.max(
-  ...points.map(p=>p.lng)
- );
+  const minLat=Math.min(...points.map(p=>p.lat));
+  const maxLat=Math.max(...points.map(p=>p.lat));
+  const minLng=Math.min(...points.map(p=>p.lng));
+  const maxLng=Math.max(...points.map(p=>p.lng));
 
- const meanLat=(minLat+maxLat)/2;
- const cos=Math.max(
-  .1,Math.cos(meanLat*Math.PI/180)
- );
+  const meanLat=(minLat+maxLat)/2;
+  const cos=Math.max(
+    .1,Math.cos(meanLat*Math.PI/180)
+  );
 
- const xSpan=Math.max(
-  .005,(maxLng-minLng)*cos
- );
- const ySpan=Math.max(
-  .005,maxLat-minLat
- );
+  const xSpan=Math.max(
+    .005,(maxLng-minLng)*cos
+  );
+  const ySpan=Math.max(
+    .005,maxLat-minLat
+  );
 
- const scale=Math.min(
-  (w-120)/xSpan,
-  (h-150)/ySpan
- );
+  const scale=Math.min(
+    (w-120)/xSpan,
+    (h-150)/ySpan
+  );
 
- const centerLng=(minLng+maxLng)/2;
- const centerLat=(minLat+maxLat)/2;
+  const centerLng=(minLng+maxLng)/2;
+  const centerLat=(minLat+maxLat)/2;
 
- return points.map(p=>({
-  ...p,
-  x:w/2+(p.lng-centerLng)*cos*scale,
-  y:h/2-(p.lat-centerLat)*scale
- }));
+  return points.map(p=>({
+    ...p,
+    x:w/2+(p.lng-centerLng)*cos*scale,
+    y:h/2-(p.lat-centerLat)*scale
+  }));
 }
 
 function routeSVG(t){
- const w=600,h=520;
- const points=projectPoints(
-  routePoints(t),w,390
- ).map(p=>({
-  ...p,
-  y:p.y+60
- }));
+  const w=600,h=520;
 
- let shapes='';
+  const points=projectPoints(
+    routePoints(t),w,390
+  ).map(p=>({...p,y:p.y+60}));
 
- for(let i=0;i<9;i++){
-  const x=40+i*70;
-  const y=60+(i%3)*110;
-
-  shapes+=`
-  <path d="M ${x} ${y}
-   q 25 -17 52 5"
-   fill="none"
-   stroke="#ded7c7"
-   stroke-width="2"/>`;
- }
-
- schedule(t).forEach((d,di)=>{
-  const ps=points.filter(p=>p.di===di);
-
-  for(let i=1;i<ps.length;i++){
-   const a=ps[i-1];
-   const b=ps[i];
-
-   shapes+=`
-   <path d="M${a.x},${a.y}
-    Q${(a.x+b.x)/2+15},
-    ${(a.y+b.y)/2-18}
-    ${b.x},${b.y}"
-    fill="none"
-    stroke="${COLORS[di%COLORS.length]}"
-    stroke-width="5"
-    stroke-linecap="round"
-    stroke-dasharray="10 7"/>`;
-
-   if(num(b.travel)){
-    shapes+=`
-    <text x="${(a.x+b.x)/2}"
-     y="${(a.y+b.y)/2-13}"
-     text-anchor="middle"
-     font-size="12"
-     fill="#493c30">
-     ${esc(b.travel)}分
-    </text>`;
-   }
-  }
- });
-
- points.forEach(p=>{
-  const color=COLORS[
-   p.di%COLORS.length
-  ];
-
-  shapes+=`
-  <circle cx="${p.x}"
-   cy="${p.y}"
-   r="16"
-   fill="${color}"
-   stroke="#fffdf8"
-   stroke-width="3"/>
-
-  <text x="${p.x}"
-   y="${p.y+5}"
-   font-size="14"
-   text-anchor="middle"
-   fill="white"
-   font-weight="bold">
-   ${p.si+1}
-  </text>`;
- });
-
- const legend=schedule(t).map((d,i)=>`
-  <circle cx="${25+(i%3)*190}"
-   cy="${425+Math.floor(i/3)*23}"
-   r="6"
-   fill="${COLORS[i%COLORS.length]}"/>
-
-  <text x="${38+(i%3)*190}"
-   y="${430+Math.floor(i/3)*23}"
-   font-size="13"
-   fill="#493c30">
-   ${esc(d.name)}
-  </text>
- `).join('');
-
- return `
- <svg class="route-svg"
-  viewBox="0 0 600 520"
-  xmlns="http://www.w3.org/2000/svg">
-
-  <rect width="600"
-   height="520"
-   fill="#f3eddf"/>
-
-  <text x="30" y="37"
-   font-family="Georgia,serif"
-   font-size="25"
-   fill="#59634a">
-   THE JOURNEY MAP
-  </text>
-
-  ${shapes}
-  ${legend}
-
-  <text x="300" y="505"
-   text-anchor="middle"
-   font-size="11"
-   fill="#857c6d">
-   Illustrated route / Not to scale
-  </text>
- </svg>`;
-}
-
-/* ==========================================
-   13. DETAIL
-========================================== */
-
-function renderDetail(){
- const original=find(selected);
-
- if(!original){
-  go('home');
-  return;
- }
-
- const t=normalize(original);
-
- app.innerHTML=`
- <div class="template-${esc(t.template)}">
-
-  <div class="eyebrow">
-   TRAVEL JOURNAL
-  </div>
-
-  ${cover(t)}
-
-  <h1 class="trip-title">
-   ${esc(t.title)}
-  </h1>
-
-  <span class="tag">
-   ${esc(t.destination)}
-  </span>
-
-  <span class="tag">
-   ${schedule(t).length}日間
-  </span>
-
-  <span class="tag">
-   ${count(t)}スポット
-  </span>
-
-  <p>${esc(t.description||'')}</p>
-
-  <div class="panel">
-   <h3>旅の基本情報</h3>
-
-   <p>
-    旅行年月：
-    ${esc(t.trip_month||'未設定')}
-   </p>
-
-   <p>旅行人数：${t.people}人</p>
-
-   <p>
-    記録費用合計：
-    <b>${money(total(t))}</b>
-   </p>
-
-   <p>
-    1人当たり：
-    <b>${money(total(t)/t.people)}</b>
-   </p>
-  </div>
-
-  <div class="actions">
-
-   <button class="btn alt"
-    data-a="bookmark"
-    data-id="${esc(t.id)}">
-    ${bookmarks.includes(t.id)
-     ?'♥ 保存済み'
-     :'♡ 保存'}
-   </button>
-
-   <button class="btn"
-    data-a="copy"
-    data-id="${esc(t.id)}">
-    この旅程をコピー
-   </button>
-
-   <button class="btn alt"
-    data-a="export"
-    data-id="${esc(t.id)}">
-    Instagram画像
-   </button>
-
-   ${own(t)?`
-   <button class="btn alt"
-    data-a="edit"
-    data-id="${esc(t.id)}">
-    編集
-   </button>`:''}
-
-  </div>
-
-  <h2>全体ルートマップ</h2>
-
-  ${routeSVG(t)}
-
-  <p class="muted">
-   訪問順を示す簡略図です。
-   実際の道路経路ではありません。
-  </p>
-
-  <details class="panel">
-   <summary>実際の地図で確認</summary>
-   <div id="trip-map" class="map"></div>
-  </details>
-
-  <h2>旅のスケジュール</h2>
-
-  ${schedule(t).map((d,di)=>`
-   <section class="panel day-card"
-    style="border-left-color:
-    ${COLORS[di%COLORS.length]}">
-
-    <div class="eyebrow">
-     DAY ${di+1}
-    </div>
-
-    <h2>${esc(d.name)}</h2>
-
-    <div class="timeline">
-
-    ${(d.stops||[]).map((s,si)=>`
-
-     ${si?`
-     <div class="travel">
-      ↓ ${esc(MODES[s.transport]||'移動')}
-      ${num(s.travelMinutes)
-       ?'・'+s.travelMinutes+'分'
-       :''}
-     </div>`:''}
-
-     <div class="spot-card">
-
-      <div class="spot-time">
-       ${esc(s.time)}
-       SPOT ${si+1}
-      </div>
-
-      <h3>${esc(s.name)}</h3>
-
-      ${photoGrid(s)}
-
-      ${num(s.stayMinutes)?`
-      <p class="muted">
-       滞在 ${s.stayMinutes}分
-      </p>`:''}
-
-      ${num(s.cost)?`
-      <p class="muted">
-       ${esc(CATEGORIES[
-        s.costCategory
-       ]||'その他')}：
-       ${money(+s.cost)}
-      </p>`:''}
-
-      ${s.comment?`
-      <p>${esc(s.comment)}</p>`:''}
-
-     </div>
-
-    `).join('')}
-
-    </div>
-   </section>
-  `).join('')}
-
- </div>`;
-}
-
-function drawRealMap(t){
- const el=document.getElementById(
-  'trip-map'
- );
-
- if(!el||!t||typeof L==='undefined'){
-  return;
- }
-
- try{
-  map=L.map(el,{
-   scrollWheelZoom:false
-  });
-
-  L.tileLayer(
-   'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-   {
-    attribution:
-    '&copy; OpenStreetMap contributors',
-    maxZoom:19
-   }
-  ).addTo(map);
-
-  const bounds=[];
+  let shapes="";
 
   schedule(t).forEach((d,di)=>{
-   let previous=null;
+    const ps=points.filter(p=>p.di===di);
 
-   (d.stops||[]).forEach((s,si)=>{
-    if(!validCoords(s.coords)){
-     previous=null;
-     return;
-    }
+    for(let i=1;i<ps.length;i++){
+      const a=ps[i-1];
+      const b=ps[i];
+      const color=COLORS[di%COLORS.length];
 
-    const pos=s.coords.map(Number);
-    bounds.push(pos);
+      shapes+=`
+        <path d="M${a.x},${a.y}
+          Q${(a.x+b.x)/2+15},
+          ${(a.y+b.y)/2-18}
+          ${b.x},${b.y}"
+          fill="none"
+          stroke="${color}"
+          stroke-width="5"
+          stroke-linecap="round"
+          stroke-dasharray="10 7"/>
+      `;
 
-    L.circleMarker(pos,{
-     radius:10,
-     color:'#fff',
-     weight:2,
-     fillColor:
-     COLORS[di%COLORS.length],
-     fillOpacity:1
-    })
-    .addTo(map)
-    .bindPopup(
-     esc(d.name)+' / '+esc(s.name)
-    );
-
-    if(previous){
-     L.polyline(
-      [previous,pos],
-      {
-       color:COLORS[
-        di%COLORS.length
-       ],
-       weight:4
+      if(num(b.travel)){
+        shapes+=`
+          <text x="${(a.x+b.x)/2}"
+            y="${(a.y+b.y)/2-13}"
+            text-anchor="middle"
+            font-size="12"
+            fill="#493c30">
+            ${esc(b.travel)}分
+          </text>
+        `;
       }
-     ).addTo(map);
     }
-
-    previous=pos;
-   });
   });
 
-  if(bounds.length){
-   map.fitBounds(bounds,{
-    padding:[30,30],
-    maxZoom:13
-   });
-  }else{
-   map.setView([35.6812,139.7671],5);
+  points.forEach(p=>{
+    const color=COLORS[p.di%COLORS.length];
+
+    shapes+=`
+      <circle cx="${p.x}" cy="${p.y}"
+        r="16" fill="${color}"
+        stroke="#fffdf8"
+        stroke-width="3"/>
+
+      <text x="${p.x}" y="${p.y+5}"
+        text-anchor="middle"
+        font-size="14"
+        font-weight="bold"
+        fill="white">
+        ${p.si+1}
+      </text>
+    `;
+  });
+
+  const legend=schedule(t).map((d,i)=>`
+    <circle cx="${25+(i%3)*190}"
+      cy="${425+Math.floor(i/3)*23}"
+      r="6"
+      fill="${COLORS[i%COLORS.length]}"/>
+
+    <text x="${38+(i%3)*190}"
+      y="${430+Math.floor(i/3)*23}"
+      font-size="13"
+      fill="#493c30">
+      ${esc(d.name)}
+    </text>
+  `).join("");
+
+  return `
+    <svg class="route-svg"
+      viewBox="0 0 600 520"
+      xmlns="http://www.w3.org/2000/svg">
+
+      <rect width="600" height="520"
+        fill="#f3eddf"/>
+
+      <text x="30" y="37"
+        font-family="Georgia,serif"
+        font-size="25"
+        fill="#59634a">
+        THE JOURNEY MAP
+      </text>
+
+      ${shapes}
+      ${legend}
+
+      <text x="300" y="505"
+        text-anchor="middle"
+        font-size="11"
+        fill="#857c6d">
+        Illustrated route / Not to scale
+      </text>
+    </svg>
+  `;
+}
+
+/* ========================================
+   12. DETAIL
+======================================== */
+
+function renderDetail(){
+  const original=find(selected);
+
+  if(!original){
+    go("home");
+    return;
   }
 
-  setTimeout(()=>{
-   if(map)map.invalidateSize();
-  },200);
+  const t=normalize(original);
 
- }catch(e){
-  console.error(e);
- }
-}
+  app.innerHTML=`
+    <div class="template-${esc(t.template)}">
 
-/* ==========================================
-   14. DRAFT
-========================================== */
-
-function newSpot(){
- return {
-  uid:uid(),
-  time:'09:00',
-  name:'',
-  stayMinutes:'',
-  travelMinutes:'',
-  transport:'',
-  comment:'',
-  cost:'',
-  costCategory:'other',
-  photos:[]
- };
-}
-
-function newDraft(){
- return {
-  title:'',
-  destination:'',
-  description:'',
-  style:'',
-  trip_month:'',
-  people:1,
-  status:'planning',
-  published:false,
-  template:'scrapbook',
-  itinerary:{
-   schedule:[
-    {
-     name:'Day 1',
-     stops:[newSpot()]
-    },
-    {
-     name:'Day 2',
-     stops:[newSpot()]
-    }
-   ]
-  }
- };
-}
-
-function saveDraftLocal(){
- if(!draft||!user)return;
-
- try{
-  localStorage.setItem(
-   DRAFT_KEY,
-   JSON.stringify({
-    userId:user.id,
-    editingId,
-    draft,
-    updatedAt:new Date().toISOString()
-   })
-  );
-
-  const el=document.getElementById(
-   'autosave'
-  );
-
-  if(el){
-   el.textContent=
-   '下書き保存済み：'+
-   new Date().toLocaleTimeString('ja-JP');
-  }
-
- }catch(e){
-  console.warn(e);
- }
-}
-
-function readDraft(){
- try{
-  const a=JSON.parse(
-   localStorage.getItem(DRAFT_KEY)||'null'
-  );
-
-  if(a?.draft)return a;
-
-  const b=JSON.parse(
-   localStorage.getItem(OLD_DRAFT_KEY)||'null'
-  );
-
-  return b?.draft?b:null;
-
- }catch(e){
-  return null;
- }
-}
-
-function clearDraft(){
- localStorage.removeItem(DRAFT_KEY);
- localStorage.removeItem(OLD_DRAFT_KEY);
-}
-
-function queueDraft(){
- clearTimeout(draftTimer);
-
- draftTimer=setTimeout(()=>{
-  syncEditor();
-  saveDraftLocal();
- },500);
-}
-
-function resumeDraft(){
- if(!requireLogin())return;
-
- const x=readDraft();
-
- if(!x||x.userId!==user.id){
-  return alert('下書きがありません。');
- }
-
- draft=normalize(x.draft);
- editingId=x.editingId||'';
-
- if(editingId&&!trips.some(
-  t=>t.id===editingId
- )){
-  editingId='';
- }
-
- go('edit');
-}
-
-function discardDraft(){
- if(!confirm(
-  '下書きを破棄しますか？'
- ))return;
-
- clearDraft();
- draft=null;
- editingId='';
-
- go('home');
-}
-
-function openNew(publish=false){
- if(!requireLogin())return;
-
- if(
-  readDraft()?.userId===user.id&&
-  !confirm(
-   '保存済みの下書きを置き換えますか？'
-  )
- )return;
-
- draft=newDraft();
- draft.published=publish;
- editingId='';
-
- saveDraftLocal();
- go('edit');
-}
-
-function openEdit(id){
- if(!requireLogin())return;
-
- const t=find(id);
-
- if(!t||!own(t))return;
-
- draft=normalize(t);
- editingId=id;
-
- saveDraftLocal();
- go('edit');
-}
-
-function openCopy(id){
- if(!requireLogin())return;
-
- const t=find(id);
- if(!t)return;
-
- if(
-  readDraft()?.userId===user.id&&
-  !confirm(
-   '現在の下書きを置き換えますか？'
-  )
- )return;
-
- draft=normalize(t);
-
- delete draft.id;
- delete draft.user_id;
- delete draft.created_at;
- delete draft.updated_at;
-
- draft.title=t.title+'（コピー）';
- draft.status='planning';
- draft.published=false;
-
- // 写真の所有権をコピーしない。
- // 元の旅程は引き続き閲覧できる。
-
- for(const d of schedule(draft)){
-  for(const s of d.stops){
-   s.photos=[];
-   s.photo='';
-   s.photoPath='';
-  }
- }
-
- editingId='';
-
- saveDraftLocal();
- go('edit');
-}
-
-/* ==========================================
-   15. EDITOR
-========================================== */
-
-function renderEditor(){
- if(!draft){
-  draft=newDraft();
- }
-
- app.innerHTML=`
- <div class="eyebrow">
-  CREATE YOUR JOURNEY
- </div>
-
- <h2>
-  ${editingId
-   ?'旅程を編集'
-   :'旅程を作成'}
- </h2>
-
- <div class="ok" id="autosave">
-  下書き自動保存が有効です。
- </div>
-
- <div class="panel">
-
-  <label>タイトル
-   <input id="trip-title"
-    value="${esc(draft.title)}">
-  </label>
-
-  <label>目的地
-   <input id="trip-destination"
-    value="${esc(draft.destination)}">
-  </label>
-
-  <label>旅の説明
-   <textarea id="trip-description">${esc(
-    draft.description
-   )}</textarea>
-  </label>
-
-  <div class="row">
-
-   <label>旅行年月
-    <input id="trip-month"
-     type="month"
-     value="${esc(
-      draft.trip_month||''
-     )}">
-   </label>
-
-   <label>旅行人数
-    <input id="trip-people"
-     type="number"
-     min="1"
-     max="99"
-     value="${draft.people||1}">
-   </label>
-
-  </div>
-
-  <label>旅行スタイル
-   <select id="trip-style">
-    ${Object.entries(STYLES).map(
-     ([k,v])=>`
-     <option value="${k}"
-      ${draft.style===k
-       ?'selected':''}>
-      ${esc(v)}
-     </option>`
-    ).join('')}
-   </select>
-  </label>
-
-  <label>デザイン
-   <select id="trip-template">
-    ${Object.entries(TEMPLATES).map(
-     ([k,v])=>`
-     <option value="${k}"
-      ${draft.template===k
-       ?'selected':''}>
-      ${esc(v)}
-     </option>`
-    ).join('')}
-   </select>
-  </label>
-
-  <label>旅行状態
-   <select id="trip-status">
-    <option value="planning"
-     ${draft.status==='planning'
-      ?'selected':''}>
-     PLANNING
-    </option>
-
-    <option value="completed"
-     ${draft.status==='completed'
-      ?'selected':''}>
-     COMPLETED
-    </option>
-   </select>
-  </label>
-
-  <label>公開設定
-   <select id="trip-published">
-    <option value="false"
-     ${!draft.published
-      ?'selected':''}>
-     非公開
-    </option>
-
-    <option value="true"
-     ${draft.published
-      ?'selected':''}>
-     POSTに公開
-    </option>
-   </select>
-  </label>
-
- </div>
-
- <div id="day-editor"></div>
-
- <button class="btn"
-  data-a="day-add"
-  ${schedule(draft).length>=14
-   ?'disabled':''}>
-  ＋ DAYを追加
- </button>
-
- <div class="panel">
-  <h3>旅行費用</h3>
-
-  <p>
-   記録費用合計：
-   <b id="total-cost">
-    ${money(total(draft))}
-   </b>
-  </p>
-
-  <p>
-   1人当たり：
-   <b id="per-person">
-    ${money(
-     total(draft)/(draft.people||1)
-    )}
-   </b>
-  </p>
-
-  <div id="cost-categories"></div>
- </div>
-
- <button class="btn"
-  data-a="save-trip">
-  クラウドに保存
- </button>
-
- <button class="btn alt"
-  data-a="save-draft">
-  下書きを保存
- </button>
-
- <button class="btn danger"
-  data-a="discard">
-  下書きを破棄
- </button>
-
- <p class="muted">
-  写真は旅程を最初にクラウド保存した後、
-  追加できます。
- </p>`;
-
- renderDays();
- refreshCosts();
-}
-
-function renderDays(){
- const el=document.getElementById(
-  'day-editor'
- );
-
- if(!el||!draft)return;
-
- el.innerHTML=schedule(draft).map(
-  (d,di)=>`
-  <section class="panel day-card"
-   style="border-left-color:
-   ${COLORS[di%COLORS.length]}">
-
-   <div class="eyebrow">
-    DAY ${di+1}
-   </div>
-
-   <label>DAY名
-    <input data-dayname="${di}"
-     value="${esc(d.name)}">
-   </label>
-
-   <div class="actions">
-    <button class="btn alt"
-     data-a="day-up"
-     data-day="${di}"
-     ${di===0?'disabled':''}>
-     DAY ▲
-    </button>
-
-    <button class="btn alt"
-     data-a="day-down"
-     data-day="${di}"
-     ${di===schedule(draft).length-1
-      ?'disabled':''}>
-     DAY ▼
-    </button>
-
-    <button class="btn danger"
-     data-a="day-delete"
-     data-day="${di}"
-     ${schedule(draft).length===1
-      ?'disabled':''}>
-     DAY削除
-    </button>
-   </div>
-
-   <button class="btn alt"
-    data-a="calculate"
-    data-day="${di}">
-    到着時刻を自動計算
-   </button>
-
-   <button class="btn alt"
-    data-a="check"
-    data-day="${di}">
-    時間チェック
-   </button>
-
-   <div id="check-${di}"></div>
-
-   ${(d.stops||[]).map((s,si)=>`
-    <div class="spot-card">
-
-     <h3>SPOT ${si+1}</h3>
-
-     <div class="actions">
-      <button class="btn alt"
-       data-a="spot-up"
-       data-day="${di}"
-       data-spot="${si}"
-       ${si===0?'disabled':''}>
-       ▲
-      </button>
-
-      <button class="btn alt"
-       data-a="spot-down"
-       data-day="${di}"
-       data-spot="${si}"
-       ${si===d.stops.length-1
-        ?'disabled':''}>
-       ▼
-      </button>
-     </div>
-
-     <div class="row">
-
-      <label>訪問時刻
-       <input type="time"
-        data-field="time"
-        data-day="${di}"
-        data-spot="${si}"
-        value="${esc(s.time)}">
-      </label>
-
-      <label>訪問場所
-       <input
-        data-field="name"
-        data-day="${di}"
-        data-spot="${si}"
-        value="${esc(s.name)}">
-      </label>
-
-     </div>
-
-     <label>滞在時間（分）
-      <input type="number"
-       min="0"
-       data-field="stayMinutes"
-       data-day="${di}"
-       data-spot="${si}"
-       value="${esc(s.stayMinutes)}">
-     </label>
-
-     ${si?`
-     <div class="panel">
-
-      <b>前のスポットからの移動</b>
-
-      <label>移動手段
-       <select
-        data-field="transport"
-        data-day="${di}"
-        data-spot="${si}">
-
-        ${Object.entries(MODES).map(
-         ([k,v])=>`
-         <option value="${k}"
-          ${s.transport===k
-           ?'selected':''}>
-          ${esc(v)}
-         </option>`
-        ).join('')}
-       </select>
-      </label>
-
-      <label>移動時間（分）
-       <input type="number"
-        min="0"
-        data-field="travelMinutes"
-        data-day="${di}"
-        data-spot="${si}"
-        value="${esc(
-         s.travelMinutes
-        )}">
-      </label>
-
-     </div>`:''}
-
-     <div class="row">
-
-      <label>費用カテゴリ
-       <select
-        data-field="costCategory"
-        data-day="${di}"
-        data-spot="${si}">
-
-        ${Object.entries(
-         CATEGORIES
-        ).map(([k,v])=>`
-         <option value="${k}"
-          ${s.costCategory===k
-           ?'selected':''}>
-          ${esc(v)}
-         </option>`
-        ).join('')}
-       </select>
-      </label>
-
-      <label>費用（円）
-       <input type="number"
-        min="0"
-        data-field="cost"
-        data-day="${di}"
-        data-spot="${si}"
-        value="${esc(s.cost)}">
-      </label>
-
-     </div>
-
-     <label>コメント
-      <textarea
-       data-field="comment"
-       data-day="${di}"
-       data-spot="${si}">${esc(
-        s.comment
-       )}</textarea>
-     </label>
-
-     <h3>
-      旅の写真（${photoArray(s).length}枚）
-     </h3>
-
-     ${photoGrid(s)}
-
-     ${photoArray(s).map((p,pi)=>`
-      <div class="photo-controls">
-
-       <span class="muted">
-        写真 ${pi+1}
-       </span>
-
-       <button class="btn alt"
-        data-a="photo-up"
-        data-day="${di}"
-        data-spot="${si}"
-        data-index="${pi}"
-        ${pi===0?'disabled':''}>
-        左へ
-       </button>
-
-       <button class="btn alt"
-        data-a="photo-down"
-        data-day="${di}"
-        data-spot="${si}"
-        data-index="${pi}"
-        ${pi===photoArray(s).length-1
-         ?'disabled':''}>
-        右へ
-       </button>
-
-       <button class="btn danger"
-        data-a="photo-remove"
-        data-day="${di}"
-        data-spot="${si}"
-        data-index="${pi}">
-        外す
-       </button>
-
+      <div class="eyebrow">
+        TRAVEL JOURNAL
       </div>
-     `).join('')}
 
-     ${editingId?`
-     <label>
-      写真を追加（複数選択可）
-      <input type="file"
-       accept="image/*"
-       multiple
-       data-photo="1"
-       data-day="${di}"
-       data-spot="${si}">
-     </label>`:`
-     <p class="muted">
-      最初に旅程をクラウド保存してください。
-     </p>`}
+      ${cover(t)}
 
-     <p class="muted">
-      ${validCoords(s.coords)
-       ?'✓ 地図位置登録済み'
-       :'地図位置未登録'}
-     </p>
+      <h1 class="trip-title">
+        ${esc(t.title)}
+      </h1>
 
-     <label>地図検索キーワード
-      <input
-       data-field="lookup"
-       data-day="${di}"
-       data-spot="${si}"
-       value="${esc(
-        s.lookup||s.name
-       )}">
-     </label>
+      <span class="tag">
+        ${esc(t.destination)}
+      </span>
 
-     <button class="btn alt"
-      data-a="lookup"
-      data-day="${di}"
-      data-spot="${si}">
-      場所を検索
-     </button>
+      <span class="tag">
+        ${schedule(t).length}日間
+      </span>
 
-     <div id="lookup-${di}-${si}"></div>
+      <span class="tag">
+        ${count(t)}スポット
+      </span>
 
-     <label>別のDAYへ移動
-      <select data-move-target="${di}-${si}">
+      <p>${esc(t.description||"")}</p>
 
-       ${schedule(draft).map(
-        (day,j)=>`
-        <option value="${j}"
-         ${j===di?'selected':''}>
-         ${esc(day.name)}
-        </option>`
-       ).join('')}
+      <div class="panel">
+        <h3>旅の基本情報</h3>
+        <p>旅行年月：${esc(t.trip_month||"未設定")}</p>
+        <p>旅行人数：${t.people}人</p>
+        <p>記録費用合計：<b>${money(total(t))}</b></p>
+        <p>1人当たり：<b>${money(total(t)/t.people)}</b></p>
+      </div>
 
-      </select>
-     </label>
+      <div class="actions">
+        <button class="btn alt"
+          data-a="bookmark"
+          data-id="${esc(t.id)}">
+          ${bookmarks.includes(t.id)
+            ?"♥ 保存済み":"♡ 保存"}
+        </button>
 
-     <div class="actions">
+        <button class="btn"
+          data-a="copy"
+          data-id="${esc(t.id)}">
+          この旅程をコピー
+        </button>
 
-      <button class="btn alt"
-       data-a="move-day"
-       data-day="${di}"
-       data-spot="${si}">
-       DAY移動
-      </button>
+        <button class="btn alt"
+          data-a="export"
+          data-id="${esc(t.id)}">
+          Instagram画像
+        </button>
 
-      <button class="btn alt"
-       data-a="spot-duplicate"
-       data-day="${di}"
-       data-spot="${si}">
-       複製
-      </button>
+        ${!t.sample?`
+          <button class="btn alt"
+            data-a="edit"
+            data-id="${esc(t.id)}">
+            編集
+          </button>
+        `:""}
+      </div>
 
-      <button class="btn danger"
-       data-a="spot-delete"
-       data-day="${di}"
-       data-spot="${si}">
-       削除
-      </button>
+      <h2>全体ルートマップ</h2>
 
-     </div>
+      ${routeSVG(t)}
+
+      <p class="muted">
+        緯度・経度が登録されたスポットを
+        訪問順に結んだ簡略図です。
+        実際の道路経路ではありません。
+      </p>
+
+      <h2>旅のスケジュール</h2>
+
+      ${schedule(t).map((d,di)=>`
+        <section class="panel day-card"
+          style="border-left-color:
+          ${COLORS[di%COLORS.length]}">
+
+          <div class="eyebrow">
+            DAY ${di+1}
+          </div>
+
+          <h2>${esc(d.name)}</h2>
+
+          <div class="timeline">
+
+            ${(d.stops||[]).map((s,si)=>`
+
+              ${si?`
+                <div class="travel">
+                  ↓ ${esc(MODES[s.transport]||"移動")}
+                  ${num(s.travelMinutes)
+                    ?"・"+s.travelMinutes+"分":""}
+                </div>
+              `:""}
+
+              <div class="spot-card">
+                <div class="spot-time">
+                  ${esc(s.time)}
+                  SPOT ${si+1}
+                </div>
+
+                <h3>${esc(s.name)}</h3>
+
+                ${photoGrid(s)}
+
+                ${num(s.stayMinutes)?`
+                  <p class="muted">
+                    滞在 ${s.stayMinutes}分
+                  </p>
+                `:""}
+
+                ${num(s.cost)?`
+                  <p class="muted">
+                    ${esc(CATEGORIES[
+                      s.costCategory
+                    ]||"その他")}：
+                    ${money(+s.cost)}
+                  </p>
+                `:""}
+
+                ${s.comment?`
+                  <p>${esc(s.comment)}</p>
+                `:""}
+              </div>
+
+            `).join("")}
+
+          </div>
+        </section>
+      `).join("")}
 
     </div>
-   `).join('')}
-
-   <button class="btn alt"
-    data-a="spot-add"
-    data-day="${di}">
-    ＋ スポット追加
-   </button>
-
-  </section>
- `).join('');
-
- decoratePhotos();
+  `;
 }
 
-function syncEditor(){
- if(!draft||page!=='edit')return;
-
- const fields={
-  'trip-title':'title',
-  'trip-destination':'destination',
-  'trip-description':'description',
-  'trip-month':'trip_month',
-  'trip-people':'people',
-  'trip-style':'style',
-  'trip-template':'template',
-  'trip-status':'status'
- };
-
- for(const [id,key] of Object.entries(fields)){
-  const el=document.getElementById(id);
-
-  if(el){
-   draft[key]=el.value;
-  }
- }
-
- const pub=document.getElementById(
-  'trip-published'
- );
-
- if(pub){
-  draft.published=pub.value==='true';
- }
-
- draft.people=Math.max(
-  1,Math.min(
-   99,parseInt(draft.people)||1
-  )
- );
-
- document.querySelectorAll(
-  '[data-dayname]'
- ).forEach(el=>{
-  const d=schedule(draft)[
-   +el.dataset.dayname
-  ];
-
-  if(d){
-   d.name=el.value;
-  }
- });
-
- document.querySelectorAll(
-  '[data-field]'
- ).forEach(el=>{
-  const s=schedule(draft)[
-   +el.dataset.day
-  ]?.stops[
-   +el.dataset.spot
-  ];
-
-  if(!s)return;
-
-  const f=el.dataset.field;
-
-  if(f==='name'&&s.name!==el.value){
-   s.name=el.value;
-   s.lookup='';
-   delete s.coords;
-   delete s.locationLabel;
-  }else if(f!=='name'){
-   s[f]=el.value;
-  }
- });
-}
-
-function refreshCosts(){
- if(!draft)return;
-
- const a=document.getElementById(
-  'total-cost'
- );
-
- const b=document.getElementById(
-  'per-person'
- );
-
- if(a){
-  a.textContent=money(total(draft));
- }
-
- if(b){
-  b.textContent=money(
-   total(draft)/(draft.people||1)
-  );
- }
-
- const sums={};
-
- for(const d of schedule(draft)){
-  for(const s of d.stops){
-   const k=s.costCategory||'other';
-
-   sums[k]=(sums[k]||0)+
-   (num(s.cost)?+s.cost:0);
-  }
- }
-
- const el=document.getElementById(
-  'cost-categories'
- );
-
- if(el){
-  el.innerHTML=Object.entries(sums)
-  .filter(([,v])=>v>0)
-  .map(([k,v])=>`
-   <p class="muted">
-    ${esc(CATEGORIES[k]||'その他')}：
-    ${money(v)}
-   </p>`
-  ).join('');
- }
-}
-
-function editorChanged(){
- saveDraftLocal();
- renderDays();
- refreshCosts();
-}
-
-/* ==========================================
-   16. DAY / SPOT OPERATIONS
-========================================== */
-
-function dayAdd(){
- syncEditor();
-
- if(schedule(draft).length>=14){
-  return alert('最大14日間です。');
- }
-
- schedule(draft).push({
-  name:'Day '+(schedule(draft).length+1),
-  stops:[newSpot()]
- });
-
- editorChanged();
-}
-
-function dayDelete(di){
- syncEditor();
-
- if(
-  schedule(draft).length<=1||
-  !confirm('このDAYを削除しますか？')
- )return;
-
- schedule(draft).splice(di,1);
- editorChanged();
-}
-
-function dayMove(di,delta){
- syncEditor();
-
- const a=schedule(draft);
- const j=di+delta;
-
- if(j<0||j>=a.length)return;
-
- [a[di],a[j]]=[a[j],a[di]];
-
- editorChanged();
-}
-
-function spotAdd(di){
- syncEditor();
-
- schedule(draft)[di].stops.push(
-  newSpot()
- );
-
- editorChanged();
-}
-
-function spotDelete(di,si){
- syncEditor();
-
- if(!confirm(
-  'このスポットを削除しますか？'
- ))return;
-
- const a=schedule(draft)[di].stops;
-
- a.splice(si,1);
-
- if(a[si]){
-  a[si].transport='';
-  a[si].travelMinutes='';
- }
-
- editorChanged();
-}
-
-function spotMove(di,si,delta){
- syncEditor();
-
- const a=schedule(draft)[di].stops;
- const j=si+delta;
-
- if(j<0||j>=a.length)return;
-
- [a[si],a[j]]=[a[j],a[si]];
-
- // 訪問順の変更により
- // 移動時間の再確認が必要
-
- for(const s of a){
-  s.transport='';
-  s.travelMinutes='';
- }
-
- editorChanged();
-
- alert(
-  '訪問順を変更しました。移動時間を再確認してください。'
- );
-}
-
-function spotDuplicate(di,si){
- syncEditor();
-
- const a=schedule(draft)[di].stops;
- const s=clone(a[si]);
-
- s.uid=uid();
- s.transport='';
- s.travelMinutes='';
-
- a.splice(si+1,0,s);
-
- editorChanged();
-}
-
-function moveDay(di,si){
- const target=+
- document.querySelector(
-  `[data-move-target="${di}-${si}"]`
- )?.value;
-
- syncEditor();
-
- if(
-  target===di||
-  !schedule(draft)[target]
- ){
-  return alert(
-   '別のDAYを選択してください。'
-  );
- }
-
- const from=schedule(draft)[di].stops;
- const to=schedule(draft)[target].stops;
-
- const [s]=from.splice(si,1);
-
- s.transport='';
- s.travelMinutes='';
-
- to.push(s);
-
- if(from[si]){
-  from[si].transport='';
-  from[si].travelMinutes='';
- }
-
- editorChanged();
-}
-
-function calculateDay(di){
- syncEditor();
-
- const a=schedule(draft)[di].stops;
-
- if(a.length<2){
-  return alert(
-   'スポットを2件以上登録してください。'
-  );
- }
-
- let current=timeMin(a[0].time);
-
- if(current===null){
-  return alert(
-   '最初の訪問時刻を設定してください。'
-  );
- }
-
- const times=[];
-
- for(let i=1;i<a.length;i++){
-  const p=a[i-1];
-  const n=a[i];
-
-  if(
-   !num(p.stayMinutes)||
-   !num(n.travelMinutes)
-  ){
-   return alert(
-    '滞在時間と移動時間を入力してください。'
-   );
-  }
-
-  if(
-   +p.stayMinutes<0||
-   +n.travelMinutes<0
-  ){
-   return alert(
-    '時間は0以上で入力してください。'
-   );
-  }
-
-  current+=
-   +p.stayMinutes+
-   +n.travelMinutes;
-
-  const t=timeText(current);
-
-  if(!t){
-   return alert(
-    '翌日にまたがるため計算できません。'
-   );
-  }
-
-  times.push(t);
- }
-
- if(!confirm(
-  '2件目以降の時刻を上書きしますか？'
- ))return;
-
- times.forEach((t,i)=>{
-  a[i+1].time=t;
- });
-
- editorChanged();
-}
-
-function checkDay(di){
- syncEditor();
-
- const a=schedule(draft)[di].stops;
- const el=document.getElementById(
-  'check-'+di
- );
-
- if(!el)return;
-
- el.innerHTML=a.slice(1).map(
-  (s,i)=>{
-   const p=a[i];
-   const x=timeMin(p.time);
-   const y=timeMin(s.time);
-
-   if(x===null||y===null){
-    return '<p class="warn">時刻未設定</p>';
-   }
-
-   if(
-    !num(p.stayMinutes)||
-    !num(s.travelMinutes)
-   ){
-    return `
-    <p class="muted">
-     時間が未設定
-    </p>`;
-   }
-
-   const gap=
-    y-x-
-    (+p.stayMinutes)-
-    (+s.travelMinutes);
-
-   return `
-   <p class="${gap<0?'warn':'ok'}">
-    ${i+1} → ${i+2}：
-    ${gap<0
-     ?(-gap)+'分不足'
-     :gap+'分の余裕'}
-   </p>`;
-  }
- ).join('')||'<p>スポットが2件以上必要です。</p>';
-}
-
-/* ==========================================
-   17. PHOTO UPLOAD
-========================================== */
-
-async function uploadPhotos(files,di,si){
- if(!requireLogin()||busy)return;
-
- if(!editingId){
-  return alert(
-   '最初に旅程をクラウド保存してください。'
-  );
- }
-
- syncEditor();
-
- const s=schedule(draft)[di]?.stops[si];
-
- if(!s)return;
-
- busy=true;
-
- let uploaded=0;
-
- try{
-  for(const file of files){
-   if(!file.type.startsWith('image/')){
-    continue;
-   }
-
-   if(file.size>20*1024*1024){
-    throw Error(
-     '20MB以下の写真を選択してください。'
-    );
-   }
-
-   const url=URL.createObjectURL(file);
-   const img=new Image();
-
-   try{
-    await new Promise(
-     (resolve,reject)=>{
-      img.onload=resolve;
-      img.onerror=reject;
-      img.src=url;
-     }
-    );
-   }finally{
-    URL.revokeObjectURL(url);
-   }
-
-   const scale=Math.min(
-    1,
-    1400/Math.max(
-     img.width,img.height
-    )
-   );
-
-   const canvas=document.createElement(
-    'canvas'
-   );
-
-   canvas.width=Math.max(
-    1,Math.round(img.width*scale)
-   );
-
-   canvas.height=Math.max(
-    1,Math.round(img.height*scale)
-   );
-
-   const ctx=canvas.getContext('2d');
-
-   ctx.fillStyle='white';
-   ctx.fillRect(
-    0,0,canvas.width,canvas.height
-   );
-
-   ctx.drawImage(
-    img,0,0,
-    canvas.width,canvas.height
-   );
-
-   const blob=await new Promise(
-    resolve=>canvas.toBlob(
-     resolve,'image/jpeg',.8
-    )
-   );
-
-   if(!blob){
-    throw Error(
-     '写真の変換に失敗しました。'
-    );
-   }
-
-   const path=
-    user.id+'/'+
-    editingId+'/'+
-    uid()+'.jpg';
-
-   const r=await sb.storage
-   .from(BUCKET)
-   .upload(path,blob,{
-    contentType:'image/jpeg',
-    upsert:false
-   });
-
-   if(r.error)throw r.error;
-
-   s.photos=photoArray(s);
-
-   s.photos.push({
+/* ========================================
+   13. EDITOR
+======================================== */
+
+function blankTrip(){
+  return normalize({
     id:uid(),
-    path
-   });
-
-   uploaded++;
-
-   saveDraftLocal();
-  }
-
-  editorChanged();
-
-  alert(
-   uploaded+
-   '枚をアップロードしました。クラウド保存も行ってください。'
-  );
-
- }catch(e){
-  fail(e);
- }finally{
-  busy=false;
- }
-}
-
-function photoMove(di,si,pi,delta){
- syncEditor();
-
- const a=schedule(draft)[di]
- .stops[si].photos;
-
- const j=pi+delta;
-
- if(j<0||j>=a.length)return;
-
- [a[pi],a[j]]=[a[j],a[pi]];
-
- editorChanged();
-}
-
-function photoRemove(di,si,pi){
- syncEditor();
-
- if(!confirm(
-  '旅程からこの写真を外しますか？'
- ))return;
-
- schedule(draft)[di]
- .stops[si]
- .photos.splice(pi,1);
-
- editorChanged();
-}
-
-/* ==========================================
-   18. LOCATION SEARCH
-========================================== */
-
-async function lookupPlace(di,si){
- syncEditor();
-
- const s=schedule(draft)[di]?.stops[si];
-
- const el=document.getElementById(
-  `lookup-${di}-${si}`
- );
-
- if(!s||!el)return;
-
- const q=(s.lookup||s.name||'').trim();
-
- if(!q){
-  return alert(
-   '検索キーワードを入力してください。'
-  );
- }
-
- if(
-  lookupBusy||
-  Date.now()-lastLookup<1300
- ){
-  return alert(
-   '少し待ってから検索してください。'
-  );
- }
-
- lookupBusy=true;
- lastLookup=Date.now();
-
- el.textContent='検索中...';
-
- try{
-  const params=new URLSearchParams({
-   format:'jsonv2',
-   q,
-   limit:'5',
-   'accept-language':'ja,en'
+    title:"",
+    destination:"",
+    description:"",
+    style:"",
+    status:"planning",
+    published:false,
+    template:"scrapbook",
+    people:1,
+    trip_month:"",
+    itinerary:{
+      schedule:[{
+        name:"Day 1",
+        stops:[]
+      }]
+    }
   });
+}
 
-  const r=await fetch(
-   'https://nominatim.openstreetmap.org/search?'+
-   params
-  );
+function startNew(publish=false){
+  draft=blankTrip();
+  draft.published=publish;
+  editingId="";
+  go("edit");
+}
 
-  if(!r.ok){
-   throw Error('検索に失敗しました。');
+function startEdit(id){
+  const t=trips.find(t=>t.id===id);
+  if(!t)return;
+  draft=normalize(t);
+  editingId=id;
+  go("edit");
+}
+
+function startCopy(id){
+  const t=find(id);
+  if(!t)return;
+
+  draft=normalize(t);
+  draft.id=uid();
+  draft.title=(t.title||"旅程")+"（コピー）";
+  draft.published=false;
+  draft.status="planning";
+  delete draft.sample;
+
+  editingId="";
+  go("edit");
+}
+
+function renderEditor(){
+  if(!draft){
+    go("my");
+    return;
   }
 
-  lookupResults=(await r.json())
-  .map(x=>({
-   name:x.display_name,
-   coords:[+x.lat,+x.lon]
-  }))
-  .filter(x=>validCoords(x.coords));
+  const t=draft;
 
-  el.innerHTML=lookupResults.map(
-   (x,i)=>`
-   <div class="card">
-    <p class="muted">
-     ${esc(x.name)}
-    </p>
+  app.innerHTML=`
+    <div class="eyebrow">
+      CREATE YOUR JOURNEY
+    </div>
+
+    <h2>${editingId?"旅程を編集":"新しい旅を作る"}</h2>
+
+    <div class="notice">
+      入力内容は「旅程を保存」を押すと
+      ブラウザ内に保存されます。
+    </div>
+
+    <div class="panel">
+      <h3>01｜旅の基本情報</h3>
+
+      <label>旅のタイトル
+        <input data-field="title"
+          value="${esc(t.title)}"
+          placeholder="例：イタリア7日間の旅">
+      </label>
+
+      <label>目的地
+        <input data-field="destination"
+          value="${esc(t.destination)}"
+          placeholder="例：ローマ、フィレンツェ">
+      </label>
+
+      <label>旅の紹介
+        <textarea data-field="description"
+          placeholder="旅の魅力や特徴">${esc(t.description)}</textarea>
+      </label>
+
+      <div class="row">
+        <label>旅行年月
+          <input type="month"
+            data-field="trip_month"
+            value="${esc(t.trip_month||"")}">
+        </label>
+
+        <label>人数
+          <input type="number" min="1" max="99"
+            data-field="people"
+            value="${t.people}">
+        </label>
+      </div>
+
+      <label>旅行スタイル
+        <select data-field="style">
+          ${options(STYLES,t.style)}
+        </select>
+      </label>
+
+      <label>ステータス
+        <select data-field="status">
+          <option value="planning"
+            ${t.status==="planning"?"selected":""}>
+            Planning｜計画中
+          </option>
+          <option value="completed"
+            ${t.status==="completed"?"selected":""}>
+            Completed｜旅行済み
+          </option>
+        </select>
+      </label>
+
+      <label>デザイン
+        <select data-field="template">
+          ${options(TEMPLATES,t.template)}
+        </select>
+      </label>
+
+      <label>
+        <input type="checkbox"
+          data-field="published"
+          ${t.published?"checked":""}
+          style="display:inline;width:auto">
+        POSTに登録する
+      </label>
+    </div>
+
+    <h2>02｜旅のスケジュール</h2>
+
+    ${schedule(t).map((d,di)=>`
+      <section class="panel day-card"
+        style="border-left-color:
+        ${COLORS[di%COLORS.length]}">
+
+        <div class="eyebrow">
+          DAY ${di+1}
+        </div>
+
+        <label>Dayのタイトル
+          <input data-day="${di}"
+            data-day-field="name"
+            value="${esc(d.name)}">
+        </label>
+
+        <div class="actions">
+          <button class="btn alt"
+            data-a="day-up" data-di="${di}">
+            ↑ Day移動
+          </button>
+
+          <button class="btn alt"
+            data-a="day-down" data-di="${di}">
+            ↓ Day移動
+          </button>
+
+          <button class="btn danger"
+            data-a="day-delete" data-di="${di}">
+            Day削除
+          </button>
+        </div>
+
+        ${(d.stops||[]).map((s,si)=>`
+          <div class="spot-card">
+
+            <div class="eyebrow">
+              SPOT ${si+1}
+            </div>
+
+            <label>訪問場所
+              <input
+                data-di="${di}"
+                data-si="${si}"
+                data-spot-field="name"
+                value="${esc(s.name)}"
+                placeholder="例：コロッセオ">
+            </label>
+
+            <div class="row">
+              <label>到着時刻
+                <input type="time"
+                  data-di="${di}"
+                  data-si="${si}"
+                  data-spot-field="time"
+                  value="${esc(s.time)}">
+              </label>
+
+              <label>滞在時間（分）
+                <input type="number" min="0"
+                  data-di="${di}"
+                  data-si="${si}"
+                  data-spot-field="stayMinutes"
+                  value="${esc(s.stayMinutes)}">
+              </label>
+            </div>
+
+            <div class="row">
+              <label>前スポットからの移動手段
+                <select
+                  data-di="${di}"
+                  data-si="${si}"
+                  data-spot-field="transport">
+                  ${options(MODES,s.transport)}
+                </select>
+              </label>
+
+              <label>移動時間（分）
+                <input type="number" min="0"
+                  data-di="${di}"
+                  data-si="${si}"
+                  data-spot-field="travelMinutes"
+                  value="${esc(s.travelMinutes)}">
+              </label>
+            </div>
+
+            <div class="row">
+              <label>費用（円）
+                <input type="number" min="0"
+                  data-di="${di}"
+                  data-si="${si}"
+                  data-spot-field="cost"
+                  value="${esc(s.cost)}">
+              </label>
+
+              <label>費用カテゴリ
+                <select
+                  data-di="${di}"
+                  data-si="${si}"
+                  data-spot-field="costCategory">
+                  ${options(CATEGORIES,s.costCategory)}
+                </select>
+              </label>
+            </div>
+
+            <label>コメント・おすすめポイント
+              <textarea
+                data-di="${di}"
+                data-si="${si}"
+                data-spot-field="comment">${esc(s.comment)}</textarea>
+            </label>
+
+            <details>
+              <summary>地図用の位置情報</summary>
+
+              <p class="muted">
+                緯度・経度を入力すると
+                全体ルートマップに表示されます。
+              </p>
+
+              <div class="row">
+                <label>緯度
+                  <input type="number" step="any"
+                    data-di="${di}"
+                    data-si="${si}"
+                    data-spot-field="lat"
+                    value="${validCoords(s.coords)
+                      ?s.coords[0]:""}">
+                </label>
+
+                <label>経度
+                  <input type="number" step="any"
+                    data-di="${di}"
+                    data-si="${si}"
+                    data-spot-field="lng"
+                    value="${validCoords(s.coords)
+                      ?s.coords[1]:""}">
+                </label>
+              </div>
+            </details>
+
+            <h4>写真</h4>
+
+            ${photoArray(s).length?`
+              <div class="photo-grid">
+                ${photoArray(s).map((p,pi)=>`
+                  <div class="photo-item">
+                    ${photoHTML(p)}
+
+                    <button class="btn alt"
+                      data-a="photo-up"
+                      data-di="${di}"
+                      data-si="${si}"
+                      data-pi="${pi}">
+                      ↑
+                    </button>
+
+                    <button class="btn alt"
+                      data-a="photo-down"
+                      data-di="${di}"
+                      data-si="${si}"
+                      data-pi="${pi}">
+                      ↓
+                    </button>
+
+                    <button class="btn danger"
+                      data-a="photo-delete"
+                      data-di="${di}"
+                      data-si="${si}"
+                      data-pi="${pi}">
+                      削除
+                    </button>
+                  </div>
+                `).join("")}
+              </div>
+            `:""}
+
+            <label>写真を追加
+              <input type="file"
+                accept="image/*"
+                multiple
+                data-photo-di="${di}"
+                data-photo-si="${si}">
+            </label>
+
+            <div class="actions">
+              <button class="btn alt"
+                data-a="spot-up"
+                data-di="${di}"
+                data-si="${si}">
+                ↑ 移動
+              </button>
+
+              <button class="btn alt"
+                data-a="spot-down"
+                data-di="${di}"
+                data-si="${si}">
+                ↓ 移動
+              </button>
+
+              <button class="btn danger"
+                data-a="spot-delete"
+                data-di="${di}"
+                data-si="${si}">
+                スポット削除
+              </button>
+            </div>
+          </div>
+        `).join("")}
+
+        <button class="btn"
+          data-a="spot-add" data-di="${di}">
+          ＋ スポットを追加
+        </button>
+      </section>
+    `).join("")}
 
     <button class="btn alt"
-     data-a="choose-location"
-     data-day="${di}"
-     data-spot="${si}"
-     data-index="${i}">
-     この場所を選択
+      data-a="day-add">
+      ＋ Dayを追加
     </button>
-   </div>`
-  ).join('')||'候補なし';
 
- }catch(e){
-  console.error(e);
-  el.textContent='検索に失敗しました。';
- }finally{
-  lookupBusy=false;
- }
+    <div class="panel">
+      <h3>03｜保存</h3>
+
+      <button class="btn"
+        data-a="save-trip">
+        旅程を保存
+      </button>
+
+      <button class="btn alt"
+        data-a="page" data-id="my">
+        MY TRIPに戻る
+      </button>
+    </div>
+  `;
 }
 
-function chooseLocation(di,si,index){
- syncEditor();
+function updateField(el){
+  if(!draft)return;
 
- const s=schedule(draft)[di]?.stops[si];
- const r=lookupResults[index];
+  if(el.dataset.field){
+    const key=el.dataset.field;
+    draft[key]=key==="published"
+      ?el.checked:el.value;
+    return;
+  }
 
- if(!s||!r)return;
+  if(el.dataset.dayField){
+    const d=schedule(draft)[+el.dataset.day];
+    if(d)d[el.dataset.dayField]=el.value;
+    return;
+  }
 
- s.coords=r.coords;
- s.locationLabel=r.name;
- s.lookup=r.name;
+  if(el.dataset.spotField){
+    const di=+el.dataset.di;
+    const si=+el.dataset.si;
+    const s=schedule(draft)[di]?.stops[si];
+    if(!s)return;
 
- editorChanged();
-}
+    const key=el.dataset.spotField;
 
-/* ==========================================
-   19. CLOUD SAVE
-========================================== */
+    if(key==="lat"||key==="lng"){
+      const c=Array.isArray(s.coords)
+        ?[...s.coords]:["",""];
 
-async function saveTrip(){
- if(!requireLogin()||busy)return;
-
- syncEditor();
-
- if(
-  !draft.title.trim()||
-  !draft.destination.trim()
- ){
-  return alert(
-   'タイトルと目的地を入力してください。'
-  );
- }
-
- const days=schedule(draft);
-
- if(
-  !days.length||
-  days.some(
-   d=>!d.stops.length||
-   d.stops.some(s=>!s.name.trim())
-  )
- ){
-  return alert(
-   'すべてのDAYに訪問場所を入力してください。'
-  );
- }
-
- for(const d of days){
-  for(const s of d.stops){
-   for(const v of [
-    s.stayMinutes,
-    s.travelMinutes,
-    s.cost
-   ]){
-    if(
-     v!==''&&v!=null&&
-     (
-      !Number.isInteger(+v)||
-      +v<0
-     )
-    ){
-     return alert(
-      '時間と費用は0以上の整数にしてください。'
-     );
+      c[key==="lat"?0:1]=el.value;
+      s.coords=c;
+    }else{
+      s[key]=el.value;
     }
-   }
   }
- }
+}
 
- const payload={
-  user_id:user.id,
-  title:draft.title.trim(),
-  destination:draft.destination.trim(),
-  description:draft.description||'',
-  style:draft.style||'',
-  trip_month:draft.trip_month||null,
-  people:draft.people||1,
-  status:draft.status,
-  published:!!draft.published,
-  template:draft.template,
-  itinerary:clone(draft.itinerary),
-  updated_at:new Date().toISOString()
- };
+function saveTrip(){
+  if(!draft)return;
 
- busy=true;
+  if(!draft.title.trim()){
+    alert("旅のタイトルを入力してください。");
+    return;
+  }
 
- try{
-  const r=editingId
-   ?await sb.from('trips')
-    .update(payload)
-    .eq('id',editingId)
-    .eq('user_id',user.id)
-    .select()
-    .single()
-   :await sb.from('trips')
-    .insert(payload)
-    .select()
-    .single();
+  draft.people=Math.max(
+    1,parseInt(draft.people)||1
+  );
 
-  if(r.error)throw r.error;
+  draft.updated_at=new Date().toISOString();
 
-  const id=r.data.id;
+  const t=normalize(draft);
 
-  clearDraft();
+  const i=trips.findIndex(x=>x.id===t.id);
+
+  if(i>=0){
+    trips[i]=t;
+  }else{
+    trips.unshift(t);
+  }
+
+  if(!save())return;
+
   draft=null;
-  editingId='';
-
-  await loadData();
-  await searchCloud();
-
-  go('detail',id);
-
-  alert(
-   'クラウドに保存しました。'
-  );
-
- }catch(e){
-  fail(e);
- }finally{
-  busy=false;
- }
+  editingId="";
+  go("detail",t.id);
 }
 
-async function updateTrip(id,changes){
- if(!requireLogin())return;
+/* ========================================
+   14. EDIT ACTIONS
+======================================== */
 
- const t=trips.find(x=>x.id===id);
-
- if(!t||!own(t))return;
-
- try{
-  const r=await sb.from('trips')
-  .update({
-   ...changes,
-   updated_at:new Date().toISOString()
-  })
-  .eq('id',id)
-  .eq('user_id',user.id);
-
-  if(r.error)throw r.error;
-
-  await refresh();
-
- }catch(e){
-  fail(e);
- }
+function move(arr,from,to){
+  if(to<0||to>=arr.length)return;
+  const [x]=arr.splice(from,1);
+  arr.splice(to,0,x);
 }
 
-async function toggleStatus(id){
- const t=trips.find(x=>x.id===id);
+function editAction(a,di,si,pi){
+  if(!draft)return;
 
- if(!t)return;
+  const days=schedule(draft);
+  const d=days[di];
+  const s=d?.stops[si];
 
- await updateTrip(id,{
-  status:t.status==='completed'
-   ?'planning':'completed'
- });
+  switch(a){
+    case "day-add":
+      days.push({
+        name:"Day "+(days.length+1),
+        stops:[]
+      });
+      break;
+
+    case "day-delete":
+      if(days.length<=1){
+        alert("Dayは最低1つ必要です。");
+        return;
+      }
+      if(!confirm("このDayを削除しますか？"))return;
+      days.splice(di,1);
+      break;
+
+    case "day-up":
+      move(days,di,di-1);
+      break;
+
+    case "day-down":
+      move(days,di,di+1);
+      break;
+
+    case "spot-add":
+      d.stops.push({
+        uid:uid(),
+        name:"",
+        time:"09:00",
+        stayMinutes:"",
+        travelMinutes:"",
+        transport:"",
+        comment:"",
+        cost:"",
+        costCategory:"other",
+        photos:[]
+      });
+      break;
+
+    case "spot-delete":
+      if(!confirm("このスポットを削除しますか？"))return;
+      d.stops.splice(si,1);
+      break;
+
+    case "spot-up":
+      move(d.stops,si,si-1);
+      break;
+
+    case "spot-down":
+      move(d.stops,si,si+1);
+      break;
+
+    case "photo-delete":
+      s.photos.splice(pi,1);
+      break;
+
+    case "photo-up":
+      move(s.photos,pi,pi-1);
+      break;
+
+    case "photo-down":
+      move(s.photos,pi,pi+1);
+      break;
+  }
+
+  renderEditor();
 }
 
-async function togglePublish(id){
- const t=trips.find(x=>x.id===id);
+async function addPhotos(files,di,si){
+  if(!draft)return;
 
- if(!t)return;
+  const s=schedule(draft)[di]?.stops[si];
+  if(!s)return;
 
- if(
-  !t.published&&
-  !confirm('この旅程を公開しますか？')
- )return;
+  for(const file of files){
+    if(!file.type.startsWith("image/"))continue;
 
- await updateTrip(id,{
-  published:!t.published
- });
+    try{
+      const url=await resizeImage(file,1000,0.72);
+      s.photos.push({id:uid(),url});
+    }catch(e){
+      console.error(e);
+      alert("写真の読み込みに失敗しました。");
+    }
+  }
+
+  renderEditor();
 }
 
-async function deleteTrip(id){
- if(!requireLogin())return;
+function resizeImage(file,maxSize,quality){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
 
- const t=trips.find(x=>x.id===id);
+    reader.onerror=()=>reject(
+      new Error("ファイル読み込み失敗")
+    );
 
- if(
-  !t||
-  !own(t)||
-  !confirm(
-   '「'+t.title+'」を削除しますか？'
-  )
- )return;
+    reader.onload=()=>{
+      const img=new Image();
 
- try{
-  const r=await sb.from('trips')
-  .delete()
-  .eq('id',id)
-  .eq('user_id',user.id);
+      img.onerror=()=>reject(
+        new Error("画像読み込み失敗")
+      );
 
-  if(r.error)throw r.error;
+      img.onload=()=>{
+        const scale=Math.min(
+          1,maxSize/Math.max(img.width,img.height)
+        );
 
-  await loadData();
-  await searchCloud();
+        const canvas=document.createElement("canvas");
+        canvas.width=Math.max(
+          1,Math.round(img.width*scale)
+        );
+        canvas.height=Math.max(
+          1,Math.round(img.height*scale)
+        );
 
-  go('my');
+        const ctx=canvas.getContext("2d");
+        ctx.drawImage(
+          img,0,0,canvas.width,canvas.height
+        );
 
- }catch(e){
-  fail(e);
- }
+        resolve(
+          canvas.toDataURL("image/jpeg",quality)
+        );
+      };
+
+      img.src=reader.result;
+    };
+
+    reader.readAsDataURL(file);
+  });
 }
 
-async function toggleBookmark(id){
- if(!requireLogin())return;
+/* ========================================
+   15. TRIP MANAGEMENT
+======================================== */
 
- const t=find(id);
+function toggleBookmark(id){
+  const i=bookmarks.indexOf(id);
 
- if(!t||t.sample){
-  return alert(
-   'サンプルは保存できません。'
-  );
- }
+  if(i>=0){
+    bookmarks.splice(i,1);
+  }else{
+    bookmarks.push(id);
+  }
 
- try{
-  const r=bookmarks.includes(id)
-   ?await sb.from('bookmarks')
-    .delete()
-    .eq('user_id',user.id)
-    .eq('trip_id',id)
-   :await sb.from('bookmarks')
-    .insert({
-     user_id:user.id,
-     trip_id:id
-    });
-
-  if(r.error)throw r.error;
-
-  await loadData();
+  save();
   render();
-
- }catch(e){
-  fail(e);
- }
 }
 
-/* ==========================================
-   20. INSTAGRAM EXPORT SETTINGS
-========================================== */
+function toggleStatus(id){
+  const t=trips.find(t=>t.id===id);
+  if(!t)return;
 
-function exportSize(){
- return exportRatio==='9:16'
-  ?[1080,1920]
-  :[1080,1350];
+  t.status=t.status==="completed"
+    ?"planning":"completed";
+
+  t.updated_at=new Date().toISOString();
+
+  save();
+  render();
 }
 
-function exportPageCapacity(){
- return exportRatio==='9:16'
-  ?5:3;
+function togglePublish(id){
+  const t=trips.find(t=>t.id===id);
+  if(!t)return;
+
+  t.published=!t.published;
+  t.updated_at=new Date().toISOString();
+
+  save();
+  render();
 }
 
-function buildExportPages(t){
- const pages=[
-  {
-   type:'cover',
-   label:'表紙'
-  },
-  {
-   type:'map',
-   label:'全体ルートマップ'
+function deleteTrip(id){
+  if(!confirm("この旅程を削除しますか？"))return;
+
+  trips=trips.filter(t=>t.id!==id);
+  bookmarks=bookmarks.filter(x=>x!==id);
+
+  save();
+  render();
+}
+
+/* ========================================
+   16. INSTAGRAM EXPORT
+======================================== */
+
+function canvasText(ctx,text,x,y,maxWidth,lineHeight,maxLines=8){
+  const chars=Array.from(String(text||""));
+  let line="";
+  let lines=0;
+
+  for(const ch of chars){
+    const test=line+ch;
+
+    if(ctx.measureText(test).width>maxWidth&&line){
+      ctx.fillText(line,x,y);
+      y+=lineHeight;
+      lines++;
+
+      if(lines>=maxLines)return y;
+
+      line=ch;
+    }else{
+      line=test;
+    }
   }
- ];
 
- schedule(t).forEach((d,di)=>{
-  const stops=d.stops||[];
-  const capacity=exportPageCapacity();
-
-  if(!stops.length){
-   pages.push({
-    type:'day',
-    di,
-    start:0,
-    end:0,
-    label:'DAY '+(di+1)
-   });
-   return;
+  if(line){
+    ctx.fillText(line,x,y);
+    y+=lineHeight;
   }
 
-  for(
-   let start=0;
-   start<stops.length;
-   start+=capacity
-  ){
-   const end=Math.min(
-    stops.length,
-    start+capacity
-   );
-
-   pages.push({
-    type:'day',
-    di,
-    start,
-    end,
-    label:
-     'DAY '+(di+1)+
-     (
-      stops.length>capacity
-       ?' / '+(
-        Math.floor(start/capacity)+1
-       )
-       :''
-     )
-   });
-  }
- });
-
- return pages;
+  return y;
 }
 
-function openExport(id){
- const t=find(id);
+function roundRect(ctx,x,y,w,h,r,fill){
+  ctx.fillStyle=fill;
+  ctx.beginPath();
+  ctx.roundRect(x,y,w,h,r);
+  ctx.fill();
+}
 
- if(!t)return;
+function drawBase(ctx,w,h,t){
+  ctx.fillStyle="#f7f4ec";
+  ctx.fillRect(0,0,w,h);
 
- exportTrip=normalize(t);
- exportPages=buildExportPages(exportTrip);
+  ctx.fillStyle="#59634a";
+  ctx.fillRect(0,0,w,18);
 
- go('export');
+  ctx.fillStyle="#59634a";
+  ctx.font="bold 45px Georgia";
+  ctx.textAlign="center";
+  ctx.fillText("TUMUGOU",w/2,95);
+
+  ctx.fillStyle="#857c6d";
+  ctx.font="20px sans-serif";
+  ctx.fillText(
+    "YOUR JOURNEY, OUR STORY",
+    w/2,128
+  );
+
+  ctx.fillStyle="#493c30";
+  ctx.textAlign="left";
+}
+
+function makeCanvas(){
+  const c=document.createElement("canvas");
+
+  c.width=1080;
+  c.height=exportRatio==="4:5"?1350:1920;
+
+  return c;
 }
 
 function renderExport(){
- if(!exportTrip){
-  go('home');
-  return;
- }
-
- app.innerHTML=`
- <div class="eyebrow">
-  SHARE YOUR JOURNEY
- </div>
-
- <h2>Instagram画像を作成</h2>
-
- <p>${esc(exportTrip.title)}</p>
-
- <div class="panel">
-
-  <label>画像の比率
-   <select id="export-ratio">
-
-    <option value="4:5"
-     ${exportRatio==='4:5'
-      ?'selected':''}>
-     4:5｜1080 × 1350
-    </option>
-
-    <option value="9:16"
-     ${exportRatio==='9:16'
-      ?'selected':''}>
-     9:16｜1080 × 1920
-    </option>
-
-   </select>
-  </label>
-
-  <p class="muted">
-   表紙・ルートマップ・DAY別ページを
-   個別に保存できます。
-  </p>
-
- </div>
-
- <div id="export-list">
-
- ${exportPages.map((p,i)=>`
-  <div class="export-page">
-
-   <h3>${esc(p.label)}</h3>
-
-   <canvas
-    id="export-canvas-${i}"
-    width="1080"
-    height="${exportSize()[1]}">
-   </canvas>
-
-   <button class="btn"
-    data-a="export-save"
-    data-index="${i}">
-    このページを保存・共有
-   </button>
-
-  </div>
- `).join('')}
-
- </div>
-
- <button class="btn alt"
-  data-a="detail"
-  data-id="${esc(exportTrip.id)}">
-  旅程に戻る
- </button>`;
-
- drawExportPreviews();
-}
-
-/* ==========================================
-   21. CANVAS DRAWING HELPERS
-========================================== */
-
-function roundRect(ctx,x,y,w,h,r,fill){
- ctx.beginPath();
-
- ctx.roundRect(
-  x,y,w,h,r
- );
-
- ctx.fillStyle=fill;
- ctx.fill();
-}
-
-function wrapText(
- ctx,text,x,y,maxWidth,lineHeight,maxLines=5
-){
- const chars=Array.from(
-  String(text||'')
- );
-
- let line='';
- let lines=0;
-
- for(const c of chars){
-  if(
-   ctx.measureText(line+c).width>
-   maxWidth&&line
-  ){
-   ctx.fillText(
-    line,x,y+lines*lineHeight
-   );
-
-   lines++;
-   line=c;
-
-   if(lines>=maxLines){
-    return y+lines*lineHeight;
-   }
-  }else{
-   line+=c;
-  }
- }
-
- if(line){
-  ctx.fillText(
-   line,x,y+lines*lineHeight
-  );
-  lines++;
- }
-
- return y+lines*lineHeight;
-}
-
-function canvasBase(ctx,w,h){
- ctx.fillStyle='#f7f4ec';
- ctx.fillRect(0,0,w,h);
-
- ctx.fillStyle='#e8ddca';
- ctx.fillRect(30,30,w-60,h-60);
-
- ctx.fillStyle='#fffdf8';
- ctx.fillRect(48,48,w-96,h-96);
-
- ctx.fillStyle='#59634a';
- ctx.font='bold 47px Georgia,serif';
-
- ctx.fillText(
-  'TUMUGOU',88,120
- );
-
- ctx.font='22px sans-serif';
-
- ctx.fillText(
-  'あなたの旅が、次の誰かの旅になる。',
-  90,160
- );
-
- ctx.fillStyle='#857c6d';
- ctx.font='20px sans-serif';
-
- ctx.fillText(
-  'TRAVEL JOURNAL / '+VERSION,
-  90,h-95
- );
-}
-
-async function loadCanvasImage(p){
- const url=await photoURL(p);
-
- if(!url)return null;
-
- try{
-  const response=await fetch(url);
-
-  if(!response.ok)return null;
-
-  const blob=await response.blob();
-  const obj=URL.createObjectURL(blob);
-  const img=new Image();
-
-  try{
-   await new Promise(
-    (resolve,reject)=>{
-     img.onload=resolve;
-     img.onerror=reject;
-     img.src=obj;
-    }
-   );
-
-   return img;
-
-  }finally{
-   URL.revokeObjectURL(obj);
-  }
-
- }catch(e){
-  console.warn(
-   '画像読み込み失敗:',
-   e
-  );
-  return null;
- }
-}
-
-function drawImageCover(
- ctx,img,x,y,w,h
-){
- const scale=Math.max(
-  w/img.width,
-  h/img.height
- );
-
- const sw=w/scale;
- const sh=h/scale;
-
- const sx=(img.width-sw)/2;
- const sy=(img.height-sh)/2;
-
- ctx.drawImage(
-  img,
-  sx,sy,sw,sh,
-  x,y,w,h
- );
-}
-
-/* ==========================================
-   22. CANVAS ROUTE MAP
-========================================== */
-
-function drawCanvasMap(
- ctx,t,x,y,w,h
-){
- roundRect(
-  ctx,x,y,w,h,18,'#f3eddf'
- );
-
- const points=projectPoints(
-  routePoints(t),
-  w-120,
-  h-150
- ).map(p=>({
-  ...p,
-  x:x+60+p.x,
-  y:y+65+p.y
- }));
-
- ctx.save();
-
- ctx.beginPath();
- ctx.rect(x,y,w,h);
- ctx.clip();
-
- for(let i=0;i<8;i++){
-  ctx.strokeStyle='#ded7c7';
-  ctx.lineWidth=3;
-
-  ctx.beginPath();
-
-  const px=x+30+i*120;
-  const py=y+50+(i%3)*140;
-
-  ctx.moveTo(px,py);
-  ctx.quadraticCurveTo(
-   px+40,py-25,
-   px+85,py+5
-  );
-
-  ctx.stroke();
- }
-
- schedule(t).forEach((d,di)=>{
-  const ps=points.filter(
-   p=>p.di===di
-  );
-
-  ctx.strokeStyle=
-  COLORS[di%COLORS.length];
-
-  ctx.lineWidth=7;
-  ctx.setLineDash([13,10]);
-
-  for(let i=1;i<ps.length;i++){
-   const a=ps[i-1];
-   const b=ps[i];
-
-   ctx.beginPath();
-   ctx.moveTo(a.x,a.y);
-   ctx.lineTo(b.x,b.y);
-   ctx.stroke();
-
-   if(num(b.travel)){
-    ctx.fillStyle='#493c30';
-    ctx.font='20px sans-serif';
-
-    ctx.fillText(
-     b.travel+'分',
-     (a.x+b.x)/2,
-     (a.y+b.y)/2-15
-    );
-   }
-  }
- });
-
- ctx.setLineDash([]);
-
- points.forEach(p=>{
-  const color=COLORS[
-   p.di%COLORS.length
-  ];
-
-  ctx.fillStyle=color;
-  ctx.strokeStyle='white';
-  ctx.lineWidth=4;
-
-  ctx.beginPath();
-  ctx.arc(
-   p.x,p.y,21,0,Math.PI*2
-  );
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle='white';
-  ctx.font='bold 20px sans-serif';
-  ctx.textAlign='center';
-
-  ctx.fillText(
-   String(p.si+1),
-   p.x,p.y+7
-  );
-
-  ctx.textAlign='left';
- });
-
- ctx.restore();
-
- ctx.fillStyle='#59634a';
- ctx.font='20px sans-serif';
-
- ctx.fillText(
-  'Illustrated route / Not to scale',
-  x+25,y+h-30
- );
-}
-
-/* ==========================================
-   23. EXPORT PAGE RENDERING
-========================================== */
-
-async function drawExportPage(index){
- const t=exportTrip;
- const p=exportPages[index];
-
- if(!t||!p)return;
-
- const canvas=document.getElementById(
-  'export-canvas-'+index
- );
-
- if(!canvas)return;
-
- const [w,h]=exportSize();
-
- canvas.width=w;
- canvas.height=h;
-
- const ctx=canvas.getContext('2d');
-
- canvasBase(ctx,w,h);
-
- const left=92;
- const contentW=w-184;
-
- if(p.type==='cover'){
-  ctx.fillStyle='#59634a';
-  ctx.font='28px sans-serif';
-
-  ctx.fillText(
-   'MY TRAVEL STORY',
-   left,245
-  );
-
-  const photo=firstPhoto(t);
-  const img=await loadCanvasImage(photo);
-
-  const imageY=285;
-  const imageH=Math.min(
-   650,h*.42
-  );
-
-  if(img){
-   drawImageCover(
-    ctx,img,
-    left,imageY,
-    contentW,imageH
-   );
-  }else{
-   roundRect(
-    ctx,
-    left,imageY,
-    contentW,imageH,
-    18,'#b7c3ad'
-   );
-
-   ctx.fillStyle='#fffdf8';
-   ctx.font='130px serif';
-
-   ctx.fillText(
-    '✈',
-    w/2-70,
-    imageY+imageH/2+45
-   );
-  }
-
-  ctx.fillStyle='#493c30';
-  ctx.font='bold 57px serif';
-
-  const ty=imageY+imageH+85;
-
-  const end=wrapText(
-   ctx,t.title,
-   left,ty,
-   contentW,72,3
-  );
-
-  ctx.fillStyle='#59634a';
-  ctx.font='30px sans-serif';
-
-  ctx.fillText(
-   t.destination||'',
-   left,end+25
-  );
-
-  ctx.font='25px sans-serif';
-
-  ctx.fillText(
-   schedule(t).length+
-   ' DAYS / '+
-   count(t)+' SPOTS',
-   left,end+80
-  );
-
- }else if(p.type==='map'){
-  ctx.fillStyle='#493c30';
-  ctx.font='bold 48px serif';
-
-  ctx.fillText(
-   'THE JOURNEY MAP',
-   left,240
-  );
-
-  const mapH=Math.min(
-   850,h-500
-  );
-
-  drawCanvasMap(
-   ctx,t,
-   left,285,
-   contentW,mapH
-  );
-
-  let legendY=285+mapH+50;
-
-  schedule(t).forEach((d,di)=>{
-   if(legendY>h-150)return;
-
-   ctx.fillStyle=
-   COLORS[di%COLORS.length];
-
-   ctx.beginPath();
-   ctx.arc(
-    left+15,legendY-7,
-    10,0,Math.PI*2
-   );
-   ctx.fill();
-
-   ctx.fillStyle='#493c30';
-   ctx.font='23px sans-serif';
-
-   ctx.fillText(
-    d.name,
-    left+40,legendY
-   );
-
-   legendY+=37;
-  });
-
- }else if(p.type==='day'){
-  const d=schedule(t)[p.di];
-
-  const stops=(d.stops||[])
-  .slice(p.start,p.end);
-
-  const color=COLORS[
-   p.di%COLORS.length
-  ];
-
-  ctx.fillStyle=color;
-  ctx.fillRect(
-   left,225,12,80
-  );
-
-  ctx.fillStyle='#493c30';
-  ctx.font='bold 53px Georgia,serif';
-
-  ctx.fillText(
-   'DAY '+(p.di+1),
-   left+30,278
-  );
-
-  ctx.font='29px sans-serif';
-
-  wrapText(
-   ctx,d.name,
-   left+30,330,
-   contentW-30,39,2
-  );
-
-  const top=420;
-  const bottom=h-160;
-
-  const usable=bottom-top;
-  const per=usable/
-   Math.max(1,stops.length);
-
-  for(let i=0;i<stops.length;i++){
-   const s=stops[i];
-   const y=top+i*per;
-
-   ctx.fillStyle=color;
-
-   ctx.beginPath();
-   ctx.arc(
-    left+15,y+17,
-    12,0,Math.PI*2
-   );
-   ctx.fill();
-
-   ctx.fillStyle='#493c30';
-   ctx.font='bold 26px sans-serif';
-
-   const spotNumber=p.start+i+1;
-
-   wrapText(
-    ctx,
-    (s.time||'--:--')+
-    '  '+spotNumber+'. '+s.name,
-    left+42,y+25,
-    contentW-45,32,2
-   );
-
-   ctx.fillStyle='#857c6d';
-   ctx.font='20px sans-serif';
-
-   const info=[
-    num(s.stayMinutes)
-     ?'滞在 '+s.stayMinutes+'分'
-     :'',
-    num(s.cost)
-     ?money(+s.cost)
-     :''
-   ].filter(Boolean).join(' / ');
-
-   ctx.fillText(
-    info,
-    left+42,y+85
-   );
-
-   const photos=photoArray(s);
-
-   if(photos.length){
-    const img=await loadCanvasImage(
-     photos[0]
-    );
-
-    if(img){
-     const photoY=y+108;
-
-     const photoH=Math.min(
-      150,
-      Math.max(75,per-160)
-     );
-
-     drawImageCover(
-      ctx,img,
-      left+42,photoY,
-      270,photoH
-     );
-    }
-   }
-
-   if(s.comment){
-    ctx.fillStyle='#493c30';
-    ctx.font='20px sans-serif';
-
-    wrapText(
-     ctx,s.comment,
-     left+340,y+125,
-     contentW-350,
-     29,3
-    );
-   }
-
-   if(i<stops.length-1){
-    ctx.strokeStyle=color;
-    ctx.lineWidth=3;
-
-    ctx.beginPath();
-    ctx.moveTo(
-     left+15,y+35
-    );
-    ctx.lineTo(
-     left+15,y+per-10
-    );
-    ctx.stroke();
-
-    const next=stops[i+1];
-
-    if(num(next.travelMinutes)){
-     ctx.fillStyle='#857c6d';
-     ctx.font='18px sans-serif';
-
-     ctx.fillText(
-      '移動 '+
-      next.travelMinutes+'分',
-      left+42,y+per-17
-     );
-    }
-   }
-  }
-
-  ctx.fillStyle='#59634a';
-  ctx.font='21px sans-serif';
-
-  ctx.fillText(
-   'SPOTS '+
-   (p.start+1)+' - '+p.end+
-   ' / '+(d.stops||[]).length,
-   left,h-170
-  );
- }
-}
-
-async function drawExportPreviews(){
- for(let i=0;i<exportPages.length;i++){
-  await drawExportPage(i);
- }
-}
-
-async function saveExport(index){
- const canvas=document.getElementById(
-  'export-canvas-'+index
- );
-
- if(!canvas)return;
-
- await drawExportPage(index);
-
- const blob=await new Promise(
-  resolve=>canvas.toBlob(
-   resolve,'image/png'
-  )
- );
-
- if(!blob){
-  return alert(
-   '画像の生成に失敗しました。'
-  );
- }
-
- const name=
-  'TUMUGOU_'+
-  slug(exportTrip.title)+'_'+
-  (index+1)+'_'+
-  exportRatio.replace(':','x')+
-  '.png';
-
- const file=new File(
-  [blob],
-  name,
-  {type:'image/png'}
- );
-
- if(
-  navigator.canShare&&
-  navigator.canShare({
-   files:[file]
-  })
- ){
-  try{
-   await navigator.share({
-    files:[file],
-    title:'TUMUGOU'
-   });
-
-   return;
-
-  }catch(e){
-   if(e.name==='AbortError'){
+  if(!exportTrip){
+    go("my");
     return;
-   }
   }
- }
 
- const url=URL.createObjectURL(blob);
- const a=document.createElement('a');
+  const t=exportTrip;
 
- a.href=url;
- a.download=name;
+  exportPages=[
+    {type:"cover",title:"表紙"},
+    {type:"map",title:"全体ルート"},
+    ...schedule(t).map((d,i)=>({
+      type:"day",
+      index:i,
+      title:"Day "+(i+1)
+    }))
+  ];
 
- document.body.appendChild(a);
- a.click();
- a.remove();
+  if(exportIndex>=exportPages.length){
+    exportIndex=0;
+  }
 
- setTimeout(()=>{
-  URL.revokeObjectURL(url);
- },60000);
-}
-
-/* ==========================================
-   24. LEGACY MIGRATION
-========================================== */
-
-function legacyState(){
- try{
-  const x=JSON.parse(
-   localStorage.getItem(LEGACY_KEY)
-  );
-
-  return x&&Array.isArray(x.plans)
-   ?x:null;
-
- }catch(e){
-  return null;
- }
-}
-
-function renderMigration(){
- if(!user){
   app.innerHTML=`
-  <p>ログインしてください。</p>`;
-  return;
- }
+    <div class="eyebrow">
+      SHARE YOUR JOURNEY
+    </div>
 
- const old=legacyState();
+    <h2>Instagram画像を作る</h2>
 
- app.innerHTML=`
- <div class="eyebrow">
-  DATA MIGRATION
- </div>
+    <div class="panel">
+      <label>画像サイズ
+        <select id="export-ratio">
+          <option value="4:5"
+            ${exportRatio==="4:5"?"selected":""}>
+            4:5｜Instagram投稿
+          </option>
+          <option value="9:16"
+            ${exportRatio==="9:16"?"selected":""}>
+            9:16｜ストーリーズ
+          </option>
+        </select>
+      </label>
 
- <h2>旧データの移行</h2>
+      <label>出力ページ
+        <select id="export-page">
+          ${exportPages.map((p,i)=>`
+            <option value="${i}"
+              ${exportIndex===i?"selected":""}>
+              ${esc(p.title)}
+            </option>
+          `).join("")}
+        </select>
+      </label>
 
- <p>
-  検出した旧旅程：
-  ${old?.plans.length||0}件
- </p>
+      <button class="btn"
+        data-a="export-save">
+        このページを画像保存
+      </button>
 
- <div class="notice">
-  旧データは削除しません。
-  写真の移行は保存形式によって
-  対応できない場合があります。
- </div>
+      <button class="btn alt"
+        data-a="export-share">
+        このページを共有
+      </button>
 
- <button class="btn"
-  data-a="migrate"
-  ${!old?.plans.length
-   ?'disabled':''}>
-  旧旅程を移行
- </button>
+      <p class="muted">
+        写真が多いDayは、
+        一部のスポットが画像内に収まらない
+        場合があります。
+      </p>
 
- <div id="migration-status"></div>`;
+      <canvas id="export-canvas"
+        class="export-preview"></canvas>
+    </div>
+  `;
+
+  drawExport();
 }
 
-async function migrateLegacy(){
- if(!requireLogin()||busy)return;
-
- const old=legacyState();
-
- if(!old?.plans.length)return;
-
- if(!confirm(
-  old.plans.length+
-  '件をクラウドにコピーしますか？'
- ))return;
-
- busy=true;
-
- let done=0;
- let failed=0;
-
- const el=document.getElementById(
-  'migration-status'
- );
-
- try{
-  for(const original of old.plans){
-   try{
-    const t=normalize({
-     ...original,
-     destination:
-      original.place||
-      original.destination||
-      '',
-     trip_month:
-      original.tripMonth||
-      original.trip_month||
-      '',
-     itinerary:
-      original.itinerary||
-      {schedule:original.schedule||[]}
-    });
-
-    if(
-     trips.some(
-      x=>x.itinerary?.legacyId===
-      original.id
-     )
-    ){
-     done++;
-     continue;
-    }
-
-    t.itinerary.legacyId=original.id;
-
-    // 旧端末内の画像参照を
-    // 新しい旅程には持ち込まない。
-    // 元のデータは保持する。
-
-    for(const d of schedule(t)){
-     for(const s of d.stops){
-      s.photos=[];
-      s.photo='';
-      s.photoPath='';
-     }
-    }
-
-    const r=await sb.from('trips')
-    .insert({
-     user_id:user.id,
-     title:t.title,
-     destination:t.destination,
-     description:t.description||'',
-     style:t.style||'',
-     trip_month:t.trip_month||null,
-     people:t.people||1,
-     status:t.status,
-     published:false,
-     template:t.template,
-     itinerary:t.itinerary
-    });
-
-    if(r.error)throw r.error;
-
-    done++;
-
-   }catch(e){
-    console.error(e);
-    failed++;
-   }
-
-   if(el){
-    el.textContent=
-    '移行中：'+
-    (done+failed)+' / '+
-    old.plans.length;
-   }
-  }
-
-  await loadData();
-  await searchCloud();
-
-  if(el){
-   el.innerHTML=`
-   <p class="ok">
-    成功 ${done}件 /
-    失敗 ${failed}件
-   </p>`;
-  }
-
-  alert(
-   '移行終了：成功 '+
-   done+'件、失敗 '+
-   failed+'件'
+function drawExport(){
+  const canvas=document.getElementById(
+    "export-canvas"
   );
 
- }finally{
-  busy=false;
- }
+  if(!canvas||!exportTrip)return;
+
+  const temp=makeCanvas();
+  canvas.width=temp.width;
+  canvas.height=temp.height;
+
+  const ctx=canvas.getContext("2d");
+  const w=canvas.width;
+  const h=canvas.height;
+  const t=exportTrip;
+  const p=exportPages[exportIndex];
+
+  drawBase(ctx,w,h,t);
+
+  if(p.type==="cover"){
+    ctx.textAlign="center";
+
+    ctx.fillStyle="#e5d8c3";
+    ctx.fillRect(65,185,w-130,h-360);
+
+    ctx.fillStyle="#59634a";
+    ctx.font="bold 38px Georgia";
+    ctx.fillText("TRAVEL JOURNAL",w/2,285);
+
+    ctx.fillStyle="#493c30";
+    ctx.font="bold 68px serif";
+
+    canvasText(
+      ctx,t.title,w/2,420,w-210,95,5
+    );
+
+    ctx.fillStyle="#59634a";
+    ctx.font="32px sans-serif";
+    ctx.fillText(
+      t.destination||"MY JOURNEY",
+      w/2,h-320
+    );
+
+    ctx.font="28px sans-serif";
+    ctx.fillText(
+      schedule(t).length+" DAYS",
+      w/2,h-255
+    );
+  }
+
+  if(p.type==="map"){
+    ctx.textAlign="center";
+    ctx.fillStyle="#493c30";
+    ctx.font="bold 48px serif";
+    ctx.fillText("THE JOURNEY MAP",w/2,210);
+
+    const points=projectPoints(
+      routePoints(t),w-120,h-430
+    ).map(q=>({
+      ...q,
+      x:q.x+60,
+      y:q.y+260
+    }));
+
+    schedule(t).forEach((d,di)=>{
+      const ps=points.filter(q=>q.di===di);
+
+      ctx.strokeStyle=COLORS[di%COLORS.length];
+      ctx.lineWidth=8;
+      ctx.setLineDash([18,12]);
+
+      ctx.beginPath();
+
+      ps.forEach((q,i)=>{
+        if(i===0)ctx.moveTo(q.x,q.y);
+        else ctx.lineTo(q.x,q.y);
+      });
+
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    points.forEach(q=>{
+      ctx.fillStyle=COLORS[q.di%COLORS.length];
+      ctx.beginPath();
+      ctx.arc(q.x,q.y,23,0,Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle="white";
+      ctx.textAlign="center";
+      ctx.font="bold 25px sans-serif";
+      ctx.fillText(q.si+1,q.x,q.y+8);
+    });
+
+    ctx.textAlign="left";
+    ctx.font="25px sans-serif";
+
+    schedule(t).forEach((d,i)=>{
+      ctx.fillStyle=COLORS[i%COLORS.length];
+      ctx.fillText(
+        "● Day "+(i+1)+" "+d.name,
+        90,h-190+i*32
+      );
+    });
+  }
+
+  if(p.type==="day"){
+    const d=schedule(t)[p.index];
+
+    ctx.textAlign="left";
+    ctx.fillStyle=COLORS[p.index%COLORS.length];
+    ctx.font="bold 54px Georgia";
+    ctx.fillText(
+      "DAY "+(p.index+1),75,220
+    );
+
+    ctx.fillStyle="#493c30";
+    ctx.font="bold 37px serif";
+
+    canvasText(
+      ctx,d.name,75,285,w-150,48,2
+    );
+
+    const available=h-460;
+    const items=d.stops||[];
+    const rowH=Math.min(
+      205,available/Math.max(items.length,1)
+    );
+
+    let y=370;
+
+    items.forEach((s,i)=>{
+      if(y+rowH>h-80)return;
+
+      roundRect(
+        ctx,65,y,w-130,rowH-12,16,
+        "#fffdf8"
+      );
+
+      ctx.fillStyle=COLORS[p.index%COLORS.length];
+      ctx.font="bold 28px sans-serif";
+      ctx.fillText(
+        (s.time||"--:--")+"  "+(i+1),
+        90,y+45
+      );
+
+      ctx.fillStyle="#493c30";
+      ctx.font="bold 32px sans-serif";
+
+      canvasText(
+        ctx,s.name||"訪問スポット",
+        90,y+88,w-190,39,2
+      );
+
+      ctx.fillStyle="#857c6d";
+      ctx.font="22px sans-serif";
+
+      const details=[
+        num(s.stayMinutes)
+          ?"滞在 "+s.stayMinutes+"分":"",
+        num(s.travelMinutes)&&i
+          ?"移動 "+s.travelMinutes+"分":"",
+        num(s.cost)
+          ?money(+s.cost):""
+      ].filter(Boolean).join(" / ");
+
+      ctx.fillText(
+        details.slice(0,45),
+        90,y+rowH-35
+      );
+
+      y+=rowH;
+    });
+  }
+
+  ctx.textAlign="center";
+  ctx.fillStyle="#857c6d";
+  ctx.font="20px Georgia";
+  ctx.fillText(
+    "TUMUGOU • Someone's journey becomes yours.",
+    w/2,h-35
+  );
 }
 
-/* ==========================================
-   25. EVENTS
-========================================== */
+function exportStart(id){
+  const t=find(id);
+  if(!t)return;
 
-document.addEventListener(
- 'click',
- async e=>{
-  const btn=e.target.closest(
-   '[data-a]'
+  exportTrip=normalize(t);
+  exportIndex=0;
+  go("export");
+}
+
+function canvasBlob(canvas){
+  return new Promise((resolve,reject)=>{
+    canvas.toBlob(
+      b=>b?resolve(b):reject(
+        new Error("画像を生成できませんでした")
+      ),
+      "image/png"
+    );
+  });
+}
+
+async function exportImage(share=false){
+  const canvas=document.getElementById(
+    "export-canvas"
   );
 
-  if(!btn||busy)return;
+  if(!canvas)return;
 
-  const a=btn.dataset.a;
-  const id=btn.dataset.id||'';
+  const blob=await canvasBlob(canvas);
+  const name="TUMUGOU_"+exportIndex+".png";
 
-  const di=+btn.dataset.day;
-  const si=+btn.dataset.spot;
-  const pi=+btn.dataset.index;
+  if(share&&navigator.share&&navigator.canShare){
+    const file=new File([blob],name,{
+      type:"image/png"
+    });
+
+    if(navigator.canShare({files:[file]})){
+      await navigator.share({files:[file]});
+      return;
+    }
+  }
+
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+
+  a.href=url;
+  a.download=name;
+  a.click();
+
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+
+/* ========================================
+   17. BACKUP / RESTORE
+======================================== */
+
+function backup(){
+  const data={
+    version:VERSION,
+    exportedAt:new Date().toISOString(),
+    trips,
+    bookmarks
+  };
+
+  const blob=new Blob(
+    [JSON.stringify(data,null,2)],
+    {type:"application/json"}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+
+  a.href=url;
+  a.download="tumugou_backup.json";
+  a.click();
+
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+
+async function restore(file){
+  if(!file)return;
+
+  let data;
 
   try{
-   switch(a){
-
-    case 'page':
-     if(page==='edit'&&draft){
-      syncEditor();
-      saveDraftLocal();
-     }
-     go(id);
-     break;
-
-    case 'detail':
-     go('detail',id);
-     break;
-
-    case 'refresh':
-     await refresh();
-     break;
-
-    case 'auth-toggle':
-     authMode=authMode==='login'
-      ?'signup':'login';
-     renderAccount();
-     break;
-
-    case 'auth-submit':
-     await submitAuth();
-     break;
-
-    case 'logout':
-     await logout();
-     break;
-
-    case 'new':
-     openNew(false);
-     break;
-
-    case 'new-publish':
-     openNew(true);
-     break;
-
-    case 'edit':
-     openEdit(id);
-     break;
-
-    case 'copy':
-     openCopy(id);
-     break;
-
-    case 'tab':
-     tab=id;
-     renderMy();
-     break;
-
-    case 'save-trip':
-     await saveTrip();
-     break;
-
-    case 'save-draft':
-     syncEditor();
-     saveDraftLocal();
-     alert('下書きを保存しました。');
-     break;
-
-    case 'resume':
-     resumeDraft();
-     break;
-
-    case 'discard':
-     discardDraft();
-     break;
-
-    case 'status':
-     await toggleStatus(id);
-     break;
-
-    case 'publish':
-     await togglePublish(id);
-     break;
-
-    case 'delete':
-     await deleteTrip(id);
-     break;
-
-    case 'bookmark':
-     await toggleBookmark(id);
-     break;
-
-    case 'search-step':
-     rememberSearchFields();
-     searchStep=+id;
-     renderSearch();
-     break;
-
-    case 'search-run':
-     await runSearch();
-     break;
-
-    case 'search-reset':
-     search={
-      q:'',
-      days:'',
-      people:'',
-      style:'',
-      status:'',
-      sort:'newest'
-     };
-     searchStep=1;
-     searchPage=0;
-     await searchCloud();
-     renderSearch();
-     break;
-
-    case 'search-prev':
-     if(searchPage>0){
-      searchPage--;
-      await searchCloud();
-      renderResults();
-     }
-     break;
-
-    case 'search-next':
-     if(
-      (searchPage+1)*20<
-      searchTotal
-     ){
-      searchPage++;
-      await searchCloud();
-      renderResults();
-     }
-     break;
-
-    case 'day-add':
-     dayAdd();
-     break;
-
-    case 'day-delete':
-     dayDelete(di);
-     break;
-
-    case 'day-up':
-     dayMove(di,-1);
-     break;
-
-    case 'day-down':
-     dayMove(di,1);
-     break;
-
-    case 'spot-add':
-     spotAdd(di);
-     break;
-
-    case 'spot-delete':
-     spotDelete(di,si);
-     break;
-
-    case 'spot-up':
-     spotMove(di,si,-1);
-     break;
-
-    case 'spot-down':
-     spotMove(di,si,1);
-     break;
-
-    case 'spot-duplicate':
-     spotDuplicate(di,si);
-     break;
-
-    case 'move-day':
-     moveDay(di,si);
-     break;
-
-    case 'calculate':
-     calculateDay(di);
-     break;
-
-    case 'check':
-     checkDay(di);
-     break;
-
-    case 'lookup':
-     await lookupPlace(di,si);
-     break;
-
-    case 'choose-location':
-     chooseLocation(di,si,pi);
-     break;
-
-    case 'photo-up':
-     photoMove(di,si,pi,-1);
-     break;
-
-    case 'photo-down':
-     photoMove(di,si,pi,1);
-     break;
-
-    case 'photo-remove':
-     photoRemove(di,si,pi);
-     break;
-
-    case 'export':
-     openExport(id);
-     break;
-
-    case 'export-save':
-     await saveExport(pi);
-     break;
-
-    case 'migrate':
-     await migrateLegacy();
-     break;
-   }
-
+    data=JSON.parse(await file.text());
   }catch(e){
-   fail(e);
+    alert("JSONファイルを読み込めません。");
+    return;
   }
- }
-);
 
-document.addEventListener(
- 'input',
- e=>{
+  if(!Array.isArray(data.trips)){
+    alert("TUMUGOUのバックアップ形式ではありません。");
+    return;
+  }
+
+  if(!confirm(
+    "現在の旅程をバックアップの内容で置き換えますか？"
+  ))return;
+
+  const oldTrips=trips;
+  const oldBookmarks=bookmarks;
+
+  trips=data.trips.map(normalize);
+  bookmarks=Array.isArray(data.bookmarks)
+    ?data.bookmarks:[];
+
+  if(!save()){
+    trips=oldTrips;
+    bookmarks=oldBookmarks;
+    return;
+  }
+
+  alert("復元しました。");
+  go("my");
+}
+
+/* ========================================
+   18. SETTINGS
+======================================== */
+
+function renderSettings(){
+  app.innerHTML=`
+    <div class="eyebrow">
+      YOUR TRAVEL STUDIO
+    </div>
+
+    <h2>設定・データ管理</h2>
+
+    <div class="panel">
+      <h3>現在の動作モード</h3>
+
+      <p>
+        TUMUGOU ver.${VERSION}<br>
+        ローカル運用モード
+      </p>
+
+      <div class="notice">
+        Supabaseには接続していません。
+        データはこのブラウザ内に保存されます。
+      </div>
+
+      ${stats()}
+    </div>
+
+    <div class="panel">
+      <h3>バックアップ</h3>
+
+      <p>
+        旅程データをJSON形式で保存します。
+        大切な旅程は定期的にバックアップしてください。
+      </p>
+
+      <button class="btn"
+        data-a="backup">
+        データをバックアップ
+      </button>
+    </div>
+
+    <div class="panel">
+      <h3>データを復元</h3>
+
+      <p>
+        バックアップしたJSONファイルから
+        旅程を復元します。
+      </p>
+
+      <label>バックアップファイル
+        <input type="file"
+          id="restore-file"
+          accept=".json,application/json">
+      </label>
+
+      <button class="btn alt"
+        data-a="restore">
+        復元する
+      </button>
+    </div>
+
+    <div class="panel">
+      <h3>注意事項</h3>
+
+      <p class="muted">
+        写真は現在、旅程データ内に圧縮画像として
+        保存されます。大量の写真を追加すると、
+        ブラウザの保存容量を超える場合があります。
+      </p>
+
+      <p class="muted">
+        ブラウザの履歴・サイトデータを削除すると、
+        保存した旅程が消える可能性があります。
+      </p>
+
+      <p class="muted">
+        このバージョンは、ユーザー認証、
+        端末間同期、実際の公開検索には対応していません。
+      </p>
+    </div>
+  `;
+}
+
+/* ========================================
+   19. EVENTS
+======================================== */
+
+document.addEventListener("input",e=>{
+  const el=e.target;
+
   if(
-   page==='edit'&&
-   draft&&
-   e.target.matches(
-    'input,textarea,select'
-   )
+    el.dataset.field||
+    el.dataset.dayField||
+    el.dataset.spotField
   ){
-   syncEditor();
-   refreshCosts();
-   queueDraft();
+    updateField(el);
   }
- }
-);
+});
 
-document.addEventListener(
- 'change',
- async e=>{
-  if(
-   page==='edit'&&
-   draft&&
-   !e.target.matches('[data-photo]')
-  ){
-   syncEditor();
-   refreshCosts();
-   queueDraft();
-  }
+document.addEventListener("change",async e=>{
+  const el=e.target;
 
-  if(e.target.matches('[data-photo]')){
-   const files=[
-    ...(e.target.files||[])
-   ];
-
-   if(files.length){
-    await uploadPhotos(
-     files,
-     +e.target.dataset.day,
-     +e.target.dataset.spot
+  if(el.dataset.photoDi!==undefined){
+    await addPhotos(
+      [...el.files],
+      +el.dataset.photoDi,
+      +el.dataset.photoSi
     );
-   }
   }
 
-  if(e.target.id==='export-ratio'){
-   exportRatio=e.target.value;
-
-   exportPages=buildExportPages(
-    exportTrip
-   );
-
-   renderExport();
+  if(el.id==="export-ratio"){
+    exportRatio=el.value;
+    renderExport();
   }
- }
-);
 
-window.addEventListener(
- 'pagehide',
- ()=>{
-  if(page==='edit'&&draft){
-   syncEditor();
-   saveDraftLocal();
+  if(el.id==="export-page"){
+    exportIndex=+el.value;
+    drawExport();
   }
- }
-);
+});
 
-/* ==========================================
-   26. START
-========================================== */
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("[data-a]");
+  if(!b)return;
 
-initialize();
+  const a=b.dataset.a;
+  const id=b.dataset.id||"";
+  const di=+b.dataset.di;
+  const si=+b.dataset.si;
+  const pi=+b.dataset.pi;
+
+  try{
+    switch(a){
+      case "page":
+        go(id);
+        break;
+
+      case "detail":
+        go("detail",id);
+        break;
+
+      case "new":
+        startNew();
+        break;
+
+      case "new-publish":
+        startNew(true);
+        break;
+
+      case "edit":
+        startEdit(id);
+        break;
+
+      case "copy":
+        startCopy(id);
+        break;
+
+      case "save-trip":
+        saveTrip();
+        break;
+
+      case "tab":
+        tab=id;
+        renderMy();
+        break;
+
+      case "bookmark":
+        toggleBookmark(id);
+        break;
+
+      case "status":
+        toggleStatus(id);
+        break;
+
+      case "publish":
+        togglePublish(id);
+        break;
+
+      case "delete":
+        deleteTrip(id);
+        break;
+
+      case "search-step":
+        rememberSearch();
+        searchStep=+id;
+        renderSearch();
+        break;
+
+      case "search-run":
+        runSearch();
+        break;
+
+      case "search-reset":
+        search={
+          q:"",
+          days:"",
+          people:"",
+          style:"",
+          status:""
+        };
+        searchStep=1;
+        searchResults=[];
+        renderSearch();
+        break;
+
+      case "export":
+        exportStart(id);
+        break;
+
+      case "export-save":
+        await exportImage(false);
+        break;
+
+      case "export-share":
+        await exportImage(true);
+        break;
+
+      case "backup":
+        backup();
+        break;
+
+      case "restore":
+        await restore(
+          document.getElementById(
+            "restore-file"
+          )?.files[0]
+        );
+        break;
+
+      default:
+        if(
+          a.startsWith("day-")||
+          a.startsWith("spot-")||
+          a.startsWith("photo-")
+        ){
+          editAction(a,di,si,pi);
+        }
+    }
+  }catch(err){
+    console.error(err);
+    alert(
+      "操作に失敗しました："+
+      (err.message||String(err))
+    );
+  }
+});
+
+/* ========================================
+   20. INITIALIZATION
+======================================== */
+
+load();
+render();
 
 </script>
 </body>
